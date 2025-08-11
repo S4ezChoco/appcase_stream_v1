@@ -282,7 +282,6 @@
                     <input id="username" class="form-input" />
                     <label>Password</label>
                     <input id="password" type="password" class="form-input" />
-                    <label class="checkbox"><input id="useAsRef" type="checkbox" /><span>Use as Reference for AI</span></label>
                 </div>
                 <div class="subgroup">
                     <div class="sub-title">Location</div>
@@ -978,6 +977,105 @@
             renderDetections(2, dets, srcW, srcH);
         }
 
+        // RTSP streaming function - gets frames from detection service
+        let streamingIntervals = {};
+        
+        async function startRtspStreaming(cameraSlot, rtspUrl) {
+            // Clear any existing interval for this slot
+            if (streamingIntervals[cameraSlot]) {
+                clearInterval(streamingIntervals[cameraSlot]);
+            }
+            
+            const origImg = document.getElementById(`camera${cameraSlot}-original`);
+            const aiImg = document.getElementById(`camera${cameraSlot}-ai`);
+            
+            if (!origImg || !aiImg) return;
+            
+            // Function to get and display a frame
+            const getFrame = async () => {
+                try {
+                    const response = await fetch('http://127.0.0.1:5001/detect', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ source: rtspUrl })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        
+                        if (result.error) {
+                            console.error('RTSP Stream Error:', result.error);
+                            // Show error in original frame
+                            origImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGMzNTQ1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNhbWVyYSBFcnJvcjwvdGV4dD48L3N2Zz4=';
+                            return;
+                        }
+                        
+                        // If we have actual frame data, use it
+                        if (result.frameData) {
+                            const frameDataUrl = `data:image/jpeg;base64,${result.frameData}`;
+                            origImg.src = frameDataUrl;
+                            
+                            // Create AI canvas with detections overlaid
+                            if (result.frameW && result.frameH) {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = result.frameW;
+                                canvas.height = result.frameH;
+                                const ctx = canvas.getContext('2d');
+                                
+                                // Draw the original frame
+                                const tempImg = new Image();
+                                tempImg.onload = () => {
+                                    ctx.drawImage(tempImg, 0, 0);
+                                    
+                                    // Draw detections on top
+                                    if (Array.isArray(result.detections)) {
+                                        result.detections.forEach(det => {
+                                            if (det.color) ctx.strokeStyle = det.color;
+                                            else ctx.strokeStyle = 'rgba(255,0,0,0.8)';
+                                            ctx.lineWidth = 2;
+                                            ctx.strokeRect(det.x, det.y, det.w, det.h);
+                                            
+                                            // Label background
+                                            ctx.fillStyle = ctx.strokeStyle;
+                                            const text = `${det.label} ${(det.score * 100).toFixed(0)}%`;
+                                            ctx.font = '12px Arial';
+                                            const textWidth = ctx.measureText(text).width;
+                                            ctx.fillRect(det.x, det.y - 20, textWidth + 8, 20);
+                                            
+                                            // Label text
+                                            ctx.fillStyle = '#fff';
+                                            ctx.fillText(text, det.x + 4, det.y - 6);
+                                        });
+                                    }
+                                    
+                                    // Set AI image source
+                                    aiImg.src = canvas.toDataURL('image/jpeg', 0.9);
+                                };
+                                tempImg.src = frameDataUrl;
+                            }
+                            
+                            if (typeof result.gaugePct === 'number') {
+                                setGauge(cameraSlot, result.gaugePct);
+                            }
+                            
+                            // Update last update time
+                            const slot = cameraSlots[cameraSlot];
+                            if (slot) setLastUpdate(slot.lu);
+                        }
+                    }
+                } catch (error) {
+                    console.error('RTSP streaming error:', error);
+                    origImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGMzNTQ1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNvbm5lY3Rpb24gRXJyb3I8L3RleHQ+PC9zdmc+';
+                }
+            };
+            
+            // Get initial frame
+            await getFrame();
+            
+            // Set up interval to get frames every 2 seconds (adjust as needed)
+            streamingIntervals[cameraSlot] = setInterval(getFrame, 2000);
+        }
+
         async function runDetectionFromCurrentMedia(cameraSlot = null) {
             // If no specific slot provided, run detection on all active cameras
             if (cameraSlot === null) {
@@ -988,6 +1086,12 @@
                     }
                 }
                 return;
+            }
+
+            // Check if this is an RTSP camera - if so, streaming handles detection
+            const section = document.getElementById(`section-${cameraSlot}`);
+            if (section && section.getAttribute('data-camera-type') === 'rtsp') {
+                return; // RTSP streaming handles detection automatically
             }
 
             const aiEl = document.getElementById(`camera${cameraSlot}-ai`);
@@ -1424,11 +1528,12 @@
             // If user provided full URL, respect it and just inject credentials if missing
             let url = ip.match(/^https?:\/\//i) || ip.match(/^rtsp:\/\//i) ? ip : `rtsp://${ip}`;
 
-            // Insert credentials (escape at-sign for Razor)
+            // Insert credentials - fix the at symbol issue
             if (user) {
                 const [scheme, rest] = url.split('://');
-                if (rest && rest.indexOf('@@') === -1) {
-                    url = `${scheme}://${user}${pass ? ':' + pass : ''}@@${rest}`;
+                const atSymbol = String.fromCharCode(64); // at character
+                if (rest && rest.indexOf(atSymbol) === -1) {
+                    url = `${scheme}://${user}${pass ? ':' + pass : ''}${atSymbol}${rest}`;
                 }
             }
 
@@ -1453,28 +1558,155 @@
             const preview = document.getElementById('connPreview');
             preview.innerHTML = '';
             if (!url) return;
+            
             const isRtsp = /^rtsp:\/\//i.test(url);
             const videoLike = /\.(mp4|webm|ogg|m3u8)(\?|$)/i.test(url);
             const imageLike = /\.(png|jpe?g|gif)(\?|$)/i.test(url) || /snapshot|picture/i.test(url);
+            
             if (imageLike) {
                 const img = document.createElement('img');
-                img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '100%';
+                img.src = url; 
+                img.style.maxWidth = '100%'; 
+                img.style.maxHeight = '100%';
+                img.style.objectFit = 'contain';
+                img.onerror = () => {
+                    preview.innerHTML = '<div style="padding: 20px; text-align: center; color: #dc3545;">Failed to load image from: ' + url + '</div>';
+                };
                 preview.appendChild(img);
             } else if (!isRtsp && videoLike) {
                 const vid = document.createElement('video');
-                vid.src = url; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.controls = true;
-                vid.style.maxWidth = '100%'; vid.style.maxHeight = '100%';
+                vid.src = url; 
+                vid.autoplay = true; 
+                vid.muted = true; 
+                vid.loop = true; 
+                vid.controls = true;
+                vid.style.maxWidth = '100%'; 
+                vid.style.maxHeight = '100%';
+                vid.style.objectFit = 'contain';
+                vid.onerror = () => {
+                    preview.innerHTML = '<div style="padding: 20px; text-align: center; color: #dc3545;">Failed to load video from: ' + url + '</div>';
+                };
                 preview.appendChild(vid);
             } else if (isRtsp) {
-                const note = document.createElement('div');
-                note.textContent = 'RTSP preview is not supported by browsers. Use an RTSP→HLS proxy if you need live preview here.';
-                note.style.padding = '10px'; note.style.color = '#b94a48';
-                preview.appendChild(note);
+                const container = document.createElement('div');
+                container.style.padding = '20px';
+                container.style.textAlign = 'center';
+                container.style.background = '#f8f9fa';
+                container.style.border = '2px dashed #dee2e6';
+                container.style.borderRadius = '8px';
+                container.innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <svg width="48" height="48" fill="#6c757d" viewBox="0 0 16 16">
+                            <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5v3A1.5 1.5 0 0 0 6.5 7h3A1.5 1.5 0 0 0 11 5.5v-3A1.5 1.5 0 0 0 9.5 1h-3zM11 5.5a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3z"/>
+                            <path d="M2 9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9zm10.5 1a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0zm1.5 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0z"/>
+                        </svg>
+                    </div>
+                    <h5 style="color: #495057; margin-bottom: 10px;">RTSP Stream Configured</h5>
+                    <p style="color: #6c757d; margin-bottom: 15px; font-size: 14px;">
+                        RTSP streams cannot be previewed directly in web browsers.<br>
+                        Testing connection to detection service...
+                    </p>
+                    <div id="rtsp-status" style="margin-bottom: 15px;">
+                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                            <span class="sr-only">Testing...</span>
+                        </div>
+                        <span style="margin-left: 10px; color: #6c757d;">Connecting...</span>
+                    </div>
+                    <div style="font-size: 12px; color: #868e96; background: white; padding: 8px; border-radius: 4px; border: 1px solid #e9ecef;">
+                        <strong>Stream URL:</strong> ${url}
+                    </div>
+                `;
+                preview.appendChild(container);
+                
+                // Test RTSP connection via detection service
+                testRtspConnection(url);
             } else {
-                const txt = document.createElement('div');
-                txt.textContent = 'Unsupported preview format.';
-                txt.style.padding = '10px';
-                preview.appendChild(txt);
+                const container = document.createElement('div');
+                container.style.padding = '20px';
+                container.style.textAlign = 'center';
+                container.style.color = '#dc3545';
+                container.innerHTML = `
+                    <h5>Unsupported Format</h5>
+                    <p>The URL format is not supported for preview.</p>
+                    <small>Supported: HTTP/HTTPS images, videos, and RTSP streams</small>
+                `;
+                preview.appendChild(container);
+            }
+        }
+
+        async function testRtspConnection(url) {
+            const statusEl = document.getElementById('rtsp-status');
+            if (!statusEl) return;
+            
+            try {
+                const response = await fetch('http://127.0.0.1:5001/test_rtsp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ source: url })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    statusEl.innerHTML = `
+                        <div style="color: #28a745;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.061L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>
+                            Connection Successful
+                        </div>
+                        <div style="font-size: 12px; color: #6c757d; margin-top: 5px;">
+                            Resolution: ${result.width}x${result.height}, FPS: ${result.fps || 'Unknown'}
+                        </div>
+                    `;
+                    
+                    // Update main status
+                    const connStatus = document.getElementById('connStatus');
+                    if (connStatus) {
+                        connStatus.textContent = 'RTSP Camera Connected ✓';
+                        connStatus.style.color = '#28a745';
+                    }
+                } else {
+                    statusEl.innerHTML = `
+                        <div style="color: #dc3545;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                            </svg>
+                            Connection Failed
+                        </div>
+                        <div style="font-size: 12px; color: #dc3545; margin-top: 5px;">
+                            ${result.error || 'Unknown error'}
+                        </div>
+                    `;
+                    
+                    // Update main status
+                    const connStatus = document.getElementById('connStatus');
+                    if (connStatus) {
+                        connStatus.textContent = 'RTSP Connection Failed ✗';
+                        connStatus.style.color = '#dc3545';
+                    }
+                }
+            } catch (error) {
+                statusEl.innerHTML = `
+                    <div style="color: #dc3545;">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Detection Service Unavailable
+                    </div>
+                    <div style="font-size: 12px; color: #dc3545; margin-top: 5px;">
+                        Cannot connect to detection service at http://127.0.0.1:5001
+                    </div>
+                `;
+                
+                // Update main status
+                const connStatus = document.getElementById('connStatus');
+                if (connStatus) {
+                    connStatus.textContent = 'Detection Service Offline ✗';
+                    connStatus.style.color = '#dc3545';
+                }
             }
         }
 
@@ -1543,8 +1775,29 @@
             const slot = cameraSlots[nextSlot];
             document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
             document.getElementById('no-cameras').classList.add('hidden');
-            document.getElementById(slot.orig).src = url;
-            document.getElementById(slot.ai).src = url;
+            
+            // Store camera URL for RTSP handling
+            const cameraSection = document.getElementById(`section-${nextSlot}`);
+            cameraSection.setAttribute('data-camera-url', url);
+            cameraSection.setAttribute('data-camera-type', url.startsWith('rtsp://') ? 'rtsp' : 'http');
+            
+            // For RTSP streams, show placeholder initially and start streaming
+            if (url.startsWith('rtsp://')) {
+                const origImg = document.getElementById(slot.orig);
+                const aiImg = document.getElementById(slot.ai);
+                
+                // Set placeholder images
+                origImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNvbm5lY3RpbmcgUlRTUC4uLjwvdGV4dD48L3N2Zz4=';
+                aiImg.src = origImg.src;
+                
+                // Start RTSP streaming
+                startRtspStreaming(nextSlot, url);
+            } else {
+                // For HTTP streams, set directly
+                document.getElementById(slot.orig).src = url;
+                document.getElementById(slot.ai).src = url;
+            }
+            
             setLastUpdate(slot.lu);
 
             // Update location header title with provided name

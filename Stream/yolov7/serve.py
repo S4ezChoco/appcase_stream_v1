@@ -19,6 +19,26 @@ def health_check():
     return jsonify({'status': 'Detection server is running!', 'version': '1.0'})
 
 def read_image_from_source(source: str):
+    # If source is RTSP, use VideoCapture
+    if source.startswith('rtsp://'):
+        try:
+            cap = cv2.VideoCapture(source)
+            if not cap.isOpened():
+                return None
+            
+            # Set timeout and buffer size for RTSP
+            cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+            
+            # Read a frame
+            ret, frame = cap.read()
+            cap.release()
+            
+            if ret and frame is not None:
+                return frame
+            return None
+        except Exception:
+            return None
+    
     # If source is http(s), try to read via cv2
     if source.startswith('http'):  # http image or video snapshot endpoint
         try:
@@ -28,6 +48,7 @@ def read_image_from_source(source: str):
             return img
         except Exception:
             return None
+    
     if os.path.isfile(source):
         img = cv2.imread(source)
         return img
@@ -85,16 +106,55 @@ def enhanced_detect(img):
     
     return detections, gauge_pct
 
+@app.post('/test_rtsp')
+def test_rtsp():
+    """Test RTSP connection and return basic info"""
+    try:
+        payload = request.get_json(force=True)
+        source = payload.get('source', '')
+        
+        if not source.startswith('rtsp://'):
+            return jsonify({'success': False, 'error': 'Not an RTSP URL'})
+        
+        cap = cv2.VideoCapture(source)
+        if not cap.isOpened():
+            return jsonify({'success': False, 'error': 'Cannot connect to RTSP stream'})
+        
+        # Get stream info
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        
+        # Try to read one frame
+        ret, frame = cap.read()
+        cap.release()
+        
+        if not ret:
+            return jsonify({'success': False, 'error': 'Cannot read frames from stream'})
+        
+        return jsonify({
+            'success': True, 
+            'fps': fps,
+            'width': width,
+            'height': height,
+            'message': 'RTSP connection successful'
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
 @app.post('/detect')
 def detect():
     try:
         payload = request.get_json(force=True)
     except Exception:
-        return jsonify({'detections': [], 'gaugePct': None})
+        return jsonify({'detections': [], 'gaugePct': None, 'error': 'Invalid JSON payload'})
+    
     # Accept either a source URL/path or a base64 data URL (imageData)
     source = payload.get('source') or ''
     image_data = payload.get('imageData')
     img = None
+    
     if image_data:
         try:
             # image_data may be data:image/png;base64,XXXXX
@@ -104,13 +164,34 @@ def detect():
             img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
         except Exception:
             img = None
+    
     if img is None and source:
         img = read_image_from_source(source)
+    
     if img is None:
-        return jsonify({'detections': [], 'gaugePct': None})
+        error_msg = 'Cannot read image from source' if source else 'No image data provided'
+        return jsonify({'detections': [], 'gaugePct': None, 'error': error_msg})
+    
     detections, gauge_pct = enhanced_detect(img)
     h, w = img.shape[:2]
-    return jsonify({'detections': detections, 'gaugePct': gauge_pct, 'frameW': int(w), 'frameH': int(h)})
+    
+    # For RTSP sources, also return the frame as base64 for display
+    frame_data = None
+    if source.startswith('rtsp://'):
+        try:
+            # Encode frame as JPEG
+            _, buffer = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, 85])
+            frame_data = base64.b64encode(buffer).decode('utf-8')
+        except Exception:
+            frame_data = None
+    
+    return jsonify({
+        'detections': detections, 
+        'gaugePct': gauge_pct, 
+        'frameW': int(w), 
+        'frameH': int(h),
+        'frameData': frame_data
+    })
 
 if __name__ == '__main__':
     # Run on localhost:5001
