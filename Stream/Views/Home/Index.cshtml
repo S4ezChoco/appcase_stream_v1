@@ -25,7 +25,13 @@
 
 <div class="dashboard-container">
     <div class="left-section">
-        <div id="no-cameras" class="no-cameras">No Camera</div>
+        <div id="no-cameras" class="no-cameras">
+            <div style="text-align: center;">
+                <div style="font-size: 24px; margin-bottom: 10px;">📷</div>
+                <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;">No Cameras Available</div>
+                <div style="font-size: 14px; color: #868e96;">Click "Connection" in the menu to add your first camera</div>
+            </div>
+        </div>
         <div class="location-section" id="section-1">
             <div class="panel-header">
                 <div class="panel-title">BINAG (Bohol)</div>
@@ -38,6 +44,7 @@
                         <button class="dropdown-item" data-action="configure" data-section="1">⚙ Configure</button>
                         <button class="dropdown-item" data-action="capture" data-section="1">📸 Capture</button>
                         <div class="dropdown-sep"></div>
+                        <button class="dropdown-item" data-action="delete" data-section="1" style="color: #dc3545;">🗑️ Delete Camera</button>
                         <button class="dropdown-item" data-action="demo" data-section="1">🎬 Demo</button>
                     </div>
                 </div>
@@ -101,6 +108,7 @@
                         <button class="dropdown-item" data-action="configure" data-section="2">⚙ Configure</button>
                         <button class="dropdown-item" data-action="capture" data-section="2">📸 Capture</button>
                         <div class="dropdown-sep"></div>
+                        <button class="dropdown-item" data-action="delete" data-section="2" style="color: #dc3545;">🗑️ Delete Camera</button>
                         <button class="dropdown-item" data-action="demo" data-section="2">🎬 Demo</button>
                     </div>
                 </div>
@@ -164,6 +172,7 @@
                         <button class="dropdown-item" data-action="configure" data-section="3">⚙ Configure</button>
                         <button class="dropdown-item" data-action="capture" data-section="3">📸 Capture</button>
                         <div class="dropdown-sep"></div>
+                        <button class="dropdown-item" data-action="delete" data-section="3" style="color: #dc3545;">🗑️ Delete Camera</button>
                         <button class="dropdown-item" data-action="demo" data-section="3">🎬 Demo</button>
                     </div>
                 </div>
@@ -445,53 +454,8 @@
         const geofenceLayer = L.layerGroup().addTo(map);
 
         // Hide all sections initially (no cameras yet) and show placeholder
-        ['section-1','section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        // Keep section-2 visible for testing
-        document.getElementById('section-2').classList.remove('hidden');
-        document.getElementById('no-cameras').classList.add('hidden');
-
-        // Auto-load demo images for Camera 2 for testing (keeping only camera 2 visible for demo)
-        setTimeout(() => {
-            const demoImageUrl = 'https://picsum.photos/640/360?random=1';
-            document.getElementById('camera2-original').src = demoImageUrl;
-            document.getElementById('camera2-ai').src = demoImageUrl;
-            document.getElementById('camera2-nosignal').style.display = 'none';
-            document.getElementById('camera2-ai-nosignal').style.display = 'none';
-
-            // Trigger detection after image loads
-            setTimeout(async () => {
-                try {
-                    const aiEl = document.getElementById('camera2-ai');
-                    if (aiEl && aiEl.complete) {
-                        const canvas = document.createElement('canvas');
-                        const w = aiEl.naturalWidth || 640;
-                        const h = aiEl.naturalHeight || 360;
-                        canvas.width = w; canvas.height = h;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(aiEl, 0, 0, w, h);
-
-                        const imageData = canvas.toDataURL('image/jpeg');
-                        console.log('Auto-triggering detection for demo image...');
-                        const resp = await fetch('http://127.0.0.1:5001/detect', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ imageData })
-                        });
-
-                        if (resp.ok) {
-                            const result = await resp.json();
-                            console.log('Auto-detection result:', result);
-                            if (Array.isArray(result.detections)) {
-                                renderDetections(2, result.detections, result.frameW, result.frameH);
-                                if (typeof result.gaugePct === 'number') setGauge(2, result.gaugePct);
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.log('Auto-detection error:', error);
-                }
-            }, 2000);
-        }, 1000);
+        ['section-1','section-2','section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        document.getElementById('no-cameras').classList.remove('hidden');
 
         // Removed an unused single analytics chart setup to avoid errors
 
@@ -722,6 +686,27 @@
         }
         bindConfigureHandlers();
 
+        // Delete button handlers
+        function bindDeleteHandlers() {
+            document.querySelectorAll('.dropdown-item[data-action="delete"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sectionIdx = parseInt(btn.getAttribute('data-section'));
+
+                    // Check if camera exists in this section
+                    if (!cameraConfigs[sectionIdx]) {
+                        alert('No camera found in this section to delete.');
+                        return;
+                    }
+
+                    // Confirmation dialog
+                    const cameraName = cameraConfigs[sectionIdx].locName || `Camera ${sectionIdx}`;
+                    if (confirm(`Are you sure you want to delete "${cameraName}"?\n\nThis action cannot be undone.`)) {
+                        deleteCamera(sectionIdx);
+                    }
+                });
+            });
+        }
+        bindDeleteHandlers();
         // Function to update configure button states
         function updateConfigureButtonStates() {
             document.querySelectorAll('.dropdown-item[data-action="configure"]').forEach(btn => {
@@ -738,8 +723,24 @@
             });
         }
 
+        // Function to update delete button states
+        function updateDeleteButtonStates() {
+            document.querySelectorAll('.dropdown-item[data-action="delete"]').forEach(btn => {
+                const sectionIdx = parseInt(btn.getAttribute('data-section'));
+                if (cameraConfigs[sectionIdx]) {
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                    btn.title = 'Delete this camera';
+                } else {
+                    btn.style.opacity = '0.5';
+                    btn.style.pointerEvents = 'auto'; // Keep enabled to show the alert
+                    btn.title = 'No camera configured for this section';
+                }
+            });
+        }
         // Initialize button states
         updateConfigureButtonStates();
+        updateDeleteButtonStates();
 
         // Example: function to programmatically set gauge value (0-100) for any camera
         function setGauge(cameraSlot, percent) {
@@ -1170,6 +1171,7 @@
 
             // Update configure button states
             updateConfigureButtonStates();
+            updateDeleteButtonStates();
         }
         
         function updateCamera(slotNumber, configData) {
@@ -1208,6 +1210,60 @@
                 
             // Update configure button states
             updateConfigureButtonStates();
+            updateDeleteButtonStates();
+        }
+        
+        function deleteCamera(slotNumber) {
+            const slot = cameraSlots[slotNumber];
+            const config = cameraConfigs[slotNumber];
+            
+            if (!config) return;
+            
+            // Remove camera configuration
+            cameraConfigs[slotNumber] = null;
+            
+            // Hide camera section
+            document.getElementById(`section-${slotNumber}`).classList.add('hidden');
+            
+            // Clear camera sources
+            document.getElementById(slot.orig).src = '';
+            document.getElementById(slot.ai).src = '';
+            
+            // Reset section title to default
+            const headerTitleEl = document.querySelector(`#section-${slotNumber} .panel-title`);
+            if (headerTitleEl) {
+                headerTitleEl.textContent = `Camera ${slotNumber}`;
+            }
+            
+            // Remove map marker
+            cameraMarkers.eachLayer(layer => {
+                if (layer.getLatLng().lat === config.latitude && 
+                    layer.getLatLng().lng === config.longitude) {
+                    cameraMarkers.removeLayer(layer);
+                }
+            });
+            
+            // Clear any detection canvas overlays
+            const detectionCanvas = document.getElementById(`det${slotNumber}`);
+            if (detectionCanvas) {
+                const ctx = detectionCanvas.getContext('2d');
+                if (ctx) ctx.clearRect(0, 0, detectionCanvas.width, detectionCanvas.height);
+            }
+            
+            // Show "no cameras" message if all cameras are deleted
+            const activeCameras = Object.values(cameraConfigs).filter(config => config !== null);
+            if (activeCameras.length === 0) {
+                document.getElementById('no-cameras').classList.remove('hidden');
+            }
+            
+            // Update configure button states
+            updateConfigureButtonStates();
+            updateDeleteButtonStates();
+            
+            // If this was the last added camera, adjust nextSlot
+            if (slotNumber === nextSlot - 1) {
+                nextSlot = slotNumber;
+            }
         }
 
         // Settings Modal JavaScript
