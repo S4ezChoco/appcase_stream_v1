@@ -1,0 +1,51 @@
+# .gitignore for ASP.NET Core + Python (YOLOv7)
+# Build and publish folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET secrets
+secrets.json
+
+# Logs
+*.log
+
+# Python cache and artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Python virtual environments
+venv/
+.env/
+.envrc
+
+# Data and model files
+Stream/yolov7/data/
+Stream/yolov7/models/*.pt
+Stream/yolov7/models/*.onnx
+Stream/yolov7/models/*.engine
+
+# Misc
+*.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules/
+
+# Test output
+TestResults/
