@@ -255,72 +255,64 @@
         </div>
         <div id="map"></div>
     </div>
-    <!-- Connections Modal (Add Camera) -->
-    <div id="connectionModal" class="modal-overlay hidden">
-        <div class="modal-card addcam-modal">
-            <div class="modal-header">
-                <div class="modal-header-left">
-                    <span class="status-dot"></></span>
-                    <span class="modal-title">STREAM | Add Camera</span>
-                </div>
-                <button class="btn-close" id="connClose" aria-label="Close">×</button>
+<!-- Connections Modal (Add Camera) -->
+<div id="connectionModal" class="modal-overlay hidden">
+    <div class="modal-card addcam-modal">
+        <div class="modal-header">
+            <div class="modal-header-left">
+                <span class="status-dot"></></span>
+                <span class="modal-title">STREAM | Add Camera</span>
             </div>
-            <div class="modal-toolbar">
-                <button type="button" class="tool-btn" id="btnAddCamera">📷 Add Camera</button>
-                <button type="button" class="tool-btn" id="btnClear">🧹 Clear</button>
-            </div>
-            <div class="addcam-body">
-                <div class="preview-pane">
-                    <div class="preview-video" id="connPreview"></div>
+            <button class="btn-close" id="connClose" aria-label="Close">×</button>
+        </div>
+        <div class="modal-toolbar">
+            <button type="button" class="tool-btn" id="btnAddCamera">📷 Add Camera</button>
+            <button type="button" class="tool-btn" id="btnClear">🧹 Clear</button>
+        </div>
+        <div class="addcam-body">
+            <div class="preview-pane"><div class="preview-video" id="connPreview"></div></div>
+            <div class="config-pane">
+                <div class="group-box"><div class="group-title">Configuration</div></div>
+                <div class="subgroup">
+                    <div class="sub-title">Camera</div>
+                    <label>IP Address <span class="req">*</span></label>
+                    <input id="ipAddress" class="form-input" placeholder="e.g. 192.168.1.100" />
+                    <label>Port</label>
+                    <input id="port" class="form-input" placeholder="e.g. 554" />
+                    <label>Channel</label>
+                    <input id="channel" class="form-input" value="Streaming/Channels/101" />
+                    <label>Username</label>
+                    <input id="username" class="form-input" />
+                    <label>Password</label>
+                    <input id="password" type="password" class="form-input" />
+                    <label class="checkbox"><input id="useAsRef" type="checkbox" /><span>Use as Reference for AI</span></label>
                 </div>
-                <div class="config-pane">
-                    <div class="group-box">
-                        <div class="group-title">Configuration</div>
+                <div class="subgroup">
+                    <div class="sub-title">Location</div>
+                    <label>Name <span class="req">*</span></label>
+                    <input id="locName" class="form-input" />
+                    <label>Latitude <span class="req">*</span></label>
+                    <input id="latitude" class="form-input" />
+                    <label>Longitude <span class="req">*</span></label>
+                    <div class="inline">
+                        <input id="longitude" class="form-input" />
+                        <button type="button" class="btn small" id="btnMap">Map</button>
                     </div>
-                    <div class="subgroup">
-                        <div class="sub-title">Camera</div>
-                        <label>IP Address <span class="req">*</span></label>
-                        <input id="ipAddress" class="form-input" placeholder="e.g. 192.168.1.100" />
-                        <label>Port</label>
-                        <input id="port" class="form-input" placeholder="e.g. 554" />
-                        <label>Channel</label>
-                        <input id="channel" class="form-input" value="Streaming/Channels/101" />
-                        <label>Username</label>
-                        <input id="username" class="form-input" />
-                        <label>Password</label>
-                        <input id="password" type="password" class="form-input" />
-                        <label class="checkbox"><input id="useAsRef" type="checkbox" /><span>Use as Reference for
-                                AI</span></label>
-                    </div>
-                    <div class="subgroup">
-                        <div class="sub-title">Location</div>
-                        <label>Name <span class="req">*</span></label>
-                        <input id="locName" class="form-input" />
-                        <label>Latitude <span class="req">*</span></label>
-                        <input id="latitude" class="form-input" />
-                        <label>Longitude <span class="req">*</span></label>
-                        <div class="inline">
-                            <input id="longitude" class="form-input" />
-                            <button type="button" class="btn small" id="btnMap">Map</button>
-                        </div>
-                    </div>
-                    <div class="player-controls">
-                        <button type="button" class="btn green" id="btnPlay">Play</button>
-                        <button type="button" class="btn" id="btnStop">Stop</button>
-                    </div>
-                    <div class="helper-text">Enter the RTSP stream URL of your camera to view and test the live feed.
-                        Once entered, press PLAY to begin streaming.</div>
                 </div>
-            </div>
-            <div class="status-bar">
-                <span id="connStatus">RTSP Camera Started: —</span>
-                <div class="progress">
-                    <div class="progress-fill" id="connProgress"></div>
+                <div class="player-controls">
+                    <button type="button" class="btn green" id="btnPlay">Play</button>
+                    <button type="button" class="btn" id="btnStop">Stop</button>
                 </div>
+                <div class="helper-text">Enter the RTSP stream URL of your camera to view and test the live feed. Once entered, press PLAY to begin streaming.</div>
             </div>
         </div>
-        <div class="modal-backdrop"></div>
+        <div class="status-bar">
+            <span id="connStatus">RTSP Camera Started: —</span>
+            <div class="progress"><div class="progress-fill" id="connProgress"></div></div>
+        </div>
     </div>
+    <div class="modal-backdrop"></div>
+</div>
 
     <!-- Map Picker Modal -->
     <div id="mapPicker" class="map-picker-overlay hidden">
@@ -1367,22 +1359,22 @@
                 });
             }
 
-            // Legacy function for backward compatibility
-            function renderDetections2(dets, srcW, srcH) {
-                renderDetections(2, dets, srcW, srcH);
-            }
+        // Legacy function for backward compatibility
+        function renderDetections2(dets, srcW, srcH) {
+            renderDetections(2, dets, srcW, srcH);
+        }
 
-            async function runDetectionFromCurrentMedia(cameraSlot = null) {
-                // If no specific slot provided, run detection on all active cameras
-                if (cameraSlot === null) {
-                    for (let slot = 1; slot <= 3; slot++) {
-                        const section = document.getElementById(`section-${slot}`);
-                        if (section && !section.classList.contains('hidden')) {
-                            await runDetectionFromCurrentMedia(slot);
-                        }
+        async function runDetectionFromCurrentMedia(cameraSlot = null) {
+            // If no specific slot provided, run detection on all active cameras
+            if (cameraSlot === null) {
+                for (let slot = 1; slot <= 3; slot++) {
+                    const section = document.getElementById(`section-${slot}`);
+                    if (section && !section.classList.contains('hidden')) {
+                        await runDetectionFromCurrentMedia(slot);
                     }
-                    return;
                 }
+                return;
+            }
 
                 const aiEl = document.getElementById(`camera${cameraSlot}-ai`);
                 if (!aiEl) return;
@@ -1818,13 +1810,13 @@
                 // If user provided full URL, respect it and just inject credentials if missing
                 let url = ip.match(/^https?:\/\//i) || ip.match(/^rtsp:\/\//i) ? ip : `rtsp://${ip}`;
 
-                // Insert credentials (escape at-sign for Razor)
-                if (user) {
-                    const [scheme, rest] = url.split('://');
-                    if (rest && rest.indexOf('@@') === -1) {
-                        url = `${scheme}://${user}${pass ? ':' + pass : ''}@@${rest}`;
-                    }
+            // Insert credentials (escape at-sign for Razor)
+            if (user) {
+                const [scheme, rest] = url.split('://');
+                if (rest && rest.indexOf('@@') === -1) {
+                    url = `${scheme}://${user}${pass ? ':' + pass : ''}@@${rest}`;
                 }
+            }
 
                 // Insert port if provided and none present
                 if (port && !/:[0-9]+/.test((url.split('://')[1] || ''))) {
@@ -1842,35 +1834,35 @@
                 return url;
             }
 
-            // Preview handling (browser supports HTTP(S) video/image; RTSP requires external player)
-            function showPreview(url) {
-                const preview = document.getElementById('connPreview');
-                preview.innerHTML = '';
-                if (!url) return;
-                const isRtsp = /^rtsp:\/\//i.test(url);
-                const videoLike = /\.(mp4|webm|ogg|m3u8)(\?|$)/i.test(url);
-                const imageLike = /\.(png|jpe?g|gif)(\?|$)/i.test(url) || /snapshot|picture/i.test(url);
-                if (imageLike) {
-                    const img = document.createElement('img');
-                    img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '100%';
-                    preview.appendChild(img);
-                } else if (!isRtsp && videoLike) {
-                    const vid = document.createElement('video');
-                    vid.src = url; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.controls = true;
-                    vid.style.maxWidth = '100%'; vid.style.maxHeight = '100%';
-                    preview.appendChild(vid);
-                } else if (isRtsp) {
-                    const note = document.createElement('div');
-                    note.textContent = 'RTSP preview is not supported by browsers. Use an RTSP→HLS proxy if you need live preview here.';
-                    note.style.padding = '10px'; note.style.color = '#b94a48';
-                    preview.appendChild(note);
-                } else {
-                    const txt = document.createElement('div');
-                    txt.textContent = 'Unsupported preview format.';
-                    txt.style.padding = '10px';
-                    preview.appendChild(txt);
-                }
+        // Preview handling (browser supports HTTP(S) video/image; RTSP requires external player)
+        function showPreview(url) {
+            const preview = document.getElementById('connPreview');
+            preview.innerHTML = '';
+            if (!url) return;
+            const isRtsp = /^rtsp:\/\//i.test(url);
+            const videoLike = /\.(mp4|webm|ogg|m3u8)(\?|$)/i.test(url);
+            const imageLike = /\.(png|jpe?g|gif)(\?|$)/i.test(url) || /snapshot|picture/i.test(url);
+            if (imageLike) {
+                const img = document.createElement('img');
+                img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '100%';
+                preview.appendChild(img);
+            } else if (!isRtsp && videoLike) {
+                const vid = document.createElement('video');
+                vid.src = url; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.controls = true;
+                vid.style.maxWidth = '100%'; vid.style.maxHeight = '100%';
+                preview.appendChild(vid);
+            } else if (isRtsp) {
+                const note = document.createElement('div');
+                note.textContent = 'RTSP preview is not supported by browsers. Use an RTSP→HLS proxy if you need live preview here.';
+                note.style.padding = '10px'; note.style.color = '#b94a48';
+                preview.appendChild(note);
+            } else {
+                const txt = document.createElement('div');
+                txt.textContent = 'Unsupported preview format.';
+                txt.style.padding = '10px';
+                preview.appendChild(txt);
             }
+        }
 
             document.getElementById('btnPlay').addEventListener('click', async () => {
                 const url = buildStreamUrl();
@@ -1934,12 +1926,12 @@
                 const locName = (document.getElementById('locName').value || '').trim();
                 if (!url || Number.isNaN(lat) || Number.isNaN(lng)) return;
 
-                const slot = cameraSlots[nextSlot];
-                document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
-                document.getElementById('no-cameras').classList.add('hidden');
-                document.getElementById(slot.orig).src = url;
-                document.getElementById(slot.ai).src = url;
-                setLastUpdate(slot.lu);
+            const slot = cameraSlots[nextSlot];
+            document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
+            document.getElementById('no-cameras').classList.add('hidden');
+            document.getElementById(slot.orig).src = url;
+            document.getElementById(slot.ai).src = url;
+            setLastUpdate(slot.lu);
 
                 // Update location header title with provided name
                 const headerTitleEl = document.querySelector(`#section-${nextSlot} .panel-title`);
