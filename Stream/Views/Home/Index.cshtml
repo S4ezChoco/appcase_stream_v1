@@ -20,7 +20,7 @@
             <span id="headerClock"></span>
         </div>
     </div>
-    
+
 </div>
 
 <div class="dashboard-container">
@@ -45,7 +45,8 @@
                         <button class="dropdown-item" data-action="capture" data-section="1">📸 Capture</button>
                         <div class="dropdown-sep"></div>
                         <button class="dropdown-item" data-action="demo" data-section="1">🎬 Demo</button>
-                        <button class="dropdown-item delete-item" data-action="delete" data-section="1">🗑 Delete Camera</button>
+                        <button class="dropdown-item delete-item" data-action="delete" data-section="1">🗑 Delete
+                            Camera</button>
                     </div>
                 </div>
             </div>
@@ -109,7 +110,8 @@
                         <button class="dropdown-item" data-action="capture" data-section="2">📸 Capture</button>
                         <div class="dropdown-sep"></div>
                         <button class="dropdown-item" data-action="demo" data-section="2">🎬 Demo</button>
-                        <button class="dropdown-item delete-item" data-action="delete" data-section="2">🗑 Delete Camera</button>
+                        <button class="dropdown-item delete-item" data-action="delete" data-section="2">🗑 Delete
+                            Camera</button>
                     </div>
                 </div>
             </div>
@@ -173,7 +175,8 @@
                         <button class="dropdown-item" data-action="capture" data-section="3">📸 Capture</button>
                         <div class="dropdown-sep"></div>
                         <button class="dropdown-item" data-action="demo" data-section="3">🎬 Demo</button>
-                        <button class="dropdown-item delete-item" data-action="delete" data-section="3">🗑 Delete Camera</button>
+                        <button class="dropdown-item delete-item" data-action="delete" data-section="3">🗑 Delete
+                            Camera</button>
                     </div>
                 </div>
             </div>
@@ -252,1584 +255,1975 @@
         </div>
         <div id="map"></div>
     </div>
-<!-- Connections Modal (Add Camera) -->
-<div id="connectionModal" class="modal-overlay hidden">
-    <div class="modal-card addcam-modal">
-        <div class="modal-header">
-            <div class="modal-header-left">
-                <span class="status-dot"></></span>
-                <span class="modal-title">STREAM | Add Camera</span>
-            </div>
-            <button class="btn-close" id="connClose" aria-label="Close">×</button>
-        </div>
-        <div class="modal-toolbar">
-            <button type="button" class="tool-btn" id="btnAddCamera">📷 Add Camera</button>
-            <button type="button" class="tool-btn" id="btnClear">🧹 Clear</button>
-        </div>
-        <div class="addcam-body">
-            <div class="preview-pane"><div class="preview-video" id="connPreview"></div></div>
-            <div class="config-pane">
-                <div class="group-box"><div class="group-title">Configuration</div></div>
-                <div class="subgroup">
-                    <div class="sub-title">Camera</div>
-                    <label>IP Address <span class="req">*</span></label>
-                    <input id="ipAddress" class="form-input" placeholder="e.g. 192.168.1.100" />
-                    <label>Port</label>
-                    <input id="port" class="form-input" placeholder="e.g. 554" />
-                    <label>Channel</label>
-                    <input id="channel" class="form-input" value="Streaming/Channels/101" />
-                    <label>Username</label>
-                    <input id="username" class="form-input" />
-                    <label>Password</label>
-                    <input id="password" type="password" class="form-input" />
-                    <label class="checkbox"><input id="useAsRef" type="checkbox" /><span>Use as Reference for AI</span></label>
+    <!-- Connections Modal (Add Camera) -->
+    <div id="connectionModal" class="modal-overlay hidden">
+        <div class="modal-card addcam-modal">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="status-dot"></></span>
+                    <span class="modal-title">STREAM | Add Camera</span>
                 </div>
-                <div class="subgroup">
-                    <div class="sub-title">Location</div>
-                    <label>Name <span class="req">*</span></label>
-                    <input id="locName" class="form-input" />
-                    <label>Latitude <span class="req">*</span></label>
-                    <input id="latitude" class="form-input" />
-                    <label>Longitude <span class="req">*</span></label>
-                    <div class="inline">
-                        <input id="longitude" class="form-input" />
-                        <button type="button" class="btn small" id="btnMap">Map</button>
+                <button class="btn-close" id="connClose" aria-label="Close">×</button>
+            </div>
+            <div class="modal-toolbar">
+                <button type="button" class="tool-btn" id="btnAddCamera">📷 Add Camera</button>
+                <button type="button" class="tool-btn" id="btnClear">🧹 Clear</button>
+            </div>
+            <div class="addcam-body">
+                <div class="preview-pane">
+                    <div class="preview-video" id="connPreview"></div>
+                </div>
+                <div class="config-pane">
+                    <div class="group-box">
+                        <div class="group-title">Configuration</div>
                     </div>
+                    <div class="subgroup">
+                        <div class="sub-title">Camera</div>
+                        <label>IP Address <span class="req">*</span></label>
+                        <input id="ipAddress" class="form-input" placeholder="e.g. 192.168.1.100" />
+                        <label>Port</label>
+                        <input id="port" class="form-input" placeholder="e.g. 554" />
+                        <label>Channel</label>
+                        <input id="channel" class="form-input" value="Streaming/Channels/101" />
+                        <label>Username</label>
+                        <input id="username" class="form-input" />
+                        <label>Password</label>
+                        <input id="password" type="password" class="form-input" />
+                        <label class="checkbox"><input id="useAsRef" type="checkbox" /><span>Use as Reference for
+                                AI</span></label>
+                    </div>
+                    <div class="subgroup">
+                        <div class="sub-title">Location</div>
+                        <label>Name <span class="req">*</span></label>
+                        <input id="locName" class="form-input" />
+                        <label>Latitude <span class="req">*</span></label>
+                        <input id="latitude" class="form-input" />
+                        <label>Longitude <span class="req">*</span></label>
+                        <div class="inline">
+                            <input id="longitude" class="form-input" />
+                            <button type="button" class="btn small" id="btnMap">Map</button>
+                        </div>
+                    </div>
+                    <div class="player-controls">
+                        <button type="button" class="btn green" id="btnPlay">Play</button>
+                        <button type="button" class="btn" id="btnStop">Stop</button>
+                    </div>
+                    <div class="helper-text">Enter the RTSP stream URL of your camera to view and test the live feed.
+                        Once entered, press PLAY to begin streaming.</div>
                 </div>
-                <div class="player-controls">
-                    <button type="button" class="btn green" id="btnPlay">Play</button>
-                    <button type="button" class="btn" id="btnStop">Stop</button>
+            </div>
+            <div class="status-bar">
+                <span id="connStatus">RTSP Camera Started: —</span>
+                <div class="progress">
+                    <div class="progress-fill" id="connProgress"></div>
                 </div>
-                <div class="helper-text">Enter the RTSP stream URL of your camera to view and test the live feed. Once entered, press PLAY to begin streaming.</div>
             </div>
         </div>
-        <div class="status-bar">
-            <span id="connStatus">RTSP Camera Started: —</span>
-            <div class="progress"><div class="progress-fill" id="connProgress"></div></div>
-        </div>
+        <div class="modal-backdrop"></div>
     </div>
-    <div class="modal-backdrop"></div>
-</div>
 
-<!-- Map Picker Modal -->
-<div id="mapPicker" class="map-picker-overlay hidden">
-    <div class="map-picker-card">
-        <div class="map-picker-header"><div>Pick Location</div><button class="btn-close" id="pickerClose">×</button></div>
-        <div class="map-picker-body"><div id="pickerMap" class="map-picker-map"></div><div class="crosshair"></div></div>
-        <div class="map-picker-footer">
-            <div class="picker-controls">
-                <label>Radius (m):</label>
-                <input id="pickerRadius" class="input-small" type="number" value="200" min="10" step="10" />
-                <button class="btn btn-sm" id="pickerCircle">Circle</button>
-                <button class="btn btn-sm" id="pickerPolygon">Polygon</button>
-                <button class="btn btn-sm" id="pickerAutoCover">Auto Cover</button>
-                <button class="btn btn-sm" id="pickerClear">Clear</button>
+    <!-- Map Picker Modal -->
+    <div id="mapPicker" class="map-picker-overlay hidden">
+        <div class="map-picker-card">
+            <div class="map-picker-header">
+                <div>Pick Location</div><button class="btn-close" id="pickerClose">×</button>
             </div>
-            <div class="picker-controls">
-                <input id="pickerLat" class="input-small" placeholder="lat" />
-                <input id="pickerLng" class="input-small" placeholder="lng" />
-                <button class="btn green btn-sm" id="pickerUse">Use</button>
+            <div class="map-picker-body">
+                <div id="pickerMap" class="map-picker-map"></div>
+                <div class="crosshair"></div>
+            </div>
+            <div class="map-picker-footer">
+                <div class="picker-controls">
+                    <label>Radius (m):</label>
+                    <input id="pickerRadius" class="input-small" type="number" value="200" min="10" step="10" />
+                    <button class="btn btn-sm" id="pickerCircle">Circle</button>
+                    <button class="btn btn-sm" id="pickerPolygon">Polygon</button>
+                    <button class="btn btn-sm" id="pickerAutoCover">Auto Cover</button>
+                    <button class="btn btn-sm" id="pickerClear">Clear</button>
+                </div>
+                <div class="picker-controls">
+                    <input id="pickerLat" class="input-small" placeholder="lat" />
+                    <input id="pickerLng" class="input-small" placeholder="lng" />
+                    <button class="btn green btn-sm" id="pickerUse">Use</button>
+                </div>
             </div>
         </div>
+        <div class="map-picker-backdrop"></div>
     </div>
-    <div class="map-picker-backdrop"></div>
-</div>
 
-<!-- Configure Camera Modal -->
-<div id="configureModal" class="modal-overlay hidden">
-    <div class="modal-card addcam-modal">
-        <div class="modal-header">
-            <div class="modal-header-left">
-                <span class="status-dot"></span>
-                <span class="modal-title">STREAM | Configure Camera</span>
-            </div>
-            <button class="btn-close" id="configureClose" aria-label="Close">×</button>
-        </div>
-        <div class="addcam-body">
-            <div class="config-pane">
-                <div class="group-box"><div class="group-title">Camera Configuration</div></div>
-                <div class="subgroup">
-                    <div class="sub-title">Camera</div>
-                    <label>IP Address <span class="req">*</span></label>
-                    <input id="configIpAddress" class="form-input" placeholder="e.g. 192.168.1.100" />
-                    <label>Port</label>
-                    <input id="configPort" class="form-input" placeholder="e.g. 554" />
-                    <label>Channel</label>
-                    <input id="configChannel" class="form-input" value="Streaming/Channels/101" />
-                    <label>Username</label>
-                    <input id="configUsername" class="form-input" />
-                    <label>Password</label>
-                    <input id="configPassword" type="password" class="form-input" />
+    <!-- Configure Camera Modal -->
+    <div id="configureModal" class="modal-overlay hidden">
+        <div class="modal-card addcam-modal">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="status-dot"></span>
+                    <span class="modal-title">STREAM | Configure Camera</span>
                 </div>
-                <div class="subgroup">
-                    <div class="sub-title">Location</div>
-                    <label>Name <span class="req">*</span></label>
-                    <input id="configLocName" class="form-input" />
-                    <label>Latitude <span class="req">*</span></label>
-                    <input id="configLatitude" class="form-input" />
-                    <label>Longitude <span class="req">*</span></label>
-                    <div class="inline">
-                        <input id="configLongitude" class="form-input" />
-                        <button type="button" class="btn small" id="configBtnMap">Map</button>
+                <button class="btn-close" id="configureClose" aria-label="Close">×</button>
+            </div>
+            <div class="addcam-body">
+                <div class="config-pane">
+                    <div class="group-box">
+                        <div class="group-title">Camera Configuration</div>
+                    </div>
+                    <div class="subgroup">
+                        <div class="sub-title">Camera</div>
+                        <label>IP Address <span class="req">*</span></label>
+                        <input id="configIpAddress" class="form-input" placeholder="e.g. 192.168.1.100" />
+                        <label>Port</label>
+                        <input id="configPort" class="form-input" placeholder="e.g. 554" />
+                        <label>Channel</label>
+                        <input id="configChannel" class="form-input" value="Streaming/Channels/101" />
+                        <label>Username</label>
+                        <input id="configUsername" class="form-input" />
+                        <label>Password</label>
+                        <input id="configPassword" type="password" class="form-input" />
+                    </div>
+                    <div class="subgroup">
+                        <div class="sub-title">Location</div>
+                        <label>Name <span class="req">*</span></label>
+                        <input id="configLocName" class="form-input" />
+                        <label>Latitude <span class="req">*</span></label>
+                        <input id="configLatitude" class="form-input" />
+                        <label>Longitude <span class="req">*</span></label>
+                        <div class="inline">
+                            <input id="configLongitude" class="form-input" />
+                            <button type="button" class="btn small" id="configBtnMap">Map</button>
+                        </div>
+                    </div>
+                    <div class="player-controls">
+                        <button type="button" class="btn green" id="configSave">Save</button>
+                        <button type="button" class="btn" id="configCancel">Cancel</button>
                     </div>
                 </div>
-                <div class="player-controls">
-                    <button type="button" class="btn green" id="configSave">Save</button>
-                    <button type="button" class="btn" id="configCancel">Cancel</button>
-                </div>
             </div>
         </div>
+        <div class="modal-backdrop"></div>
     </div>
-    <div class="modal-backdrop"></div>
-</div>
 
-<!-- Settings Modal -->
-<div id="settingsModal" class="modal-overlay hidden">
-    <div class="modal-card settings-modal">
-        <div class="modal-header">
-            <div class="modal-header-left">
-                <span class="status-dot"></span>
-                <span class="modal-title">STREAM | Settings</span>
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay hidden">
+        <div class="modal-card settings-modal">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="status-dot"></span>
+                    <span class="modal-title">STREAM | Settings</span>
+                </div>
+                <button class="btn-close" id="settingsClose" aria-label="Close">×</button>
             </div>
-            <button class="btn-close" id="settingsClose" aria-label="Close">×</button>
-        </div>
-        
-        <!-- Settings Tabs -->
-        <div class="settings-tabs">
-            <button class="tab-btn active" data-tab="general">General</button>
-            <button class="tab-btn" data-tab="roboflow">AI Model</button>
-            <button class="tab-btn" data-tab="system">System</button>
-        </div>
-        
-        <!-- Tab Content -->
-        <div class="settings-content">
-            <!-- General Tab -->
-            <div class="tab-content active" id="general-tab">
-                <div class="settings-section">
-                    <h4>Application Settings</h4>
-                    <div class="setting-group">
-                        <label>Auto-refresh interval (seconds):</label>
-                        <input type="number" id="refreshInterval" value="30" min="5" max="300">
-                    </div>
-                    <div class="setting-group">
-                        <label>Detection confidence threshold:</label>
-                        <input type="range" id="confidenceThreshold" min="0" max="1" step="0.1" value="0.5">
-                        <span id="confidenceValue">0.5</span>
-                    </div>
-                    <div class="setting-group">
-                        <label>
-                            <input type="checkbox" id="enableNotifications" checked>
-                            Enable flood alerts
-                        </label>
+
+            <!-- Settings Tabs -->
+            <div class="settings-tabs">
+                <button class="tab-btn active" data-tab="general">General</button>
+                <button class="tab-btn" data-tab="roboflow">AI Model</button>
+                <button class="tab-btn" data-tab="system">System</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="settings-content">
+                <!-- General Tab -->
+                <div class="tab-content active" id="general-tab">
+                    <div class="settings-section">
+                        <h4>Application Settings</h4>
+                        <div class="setting-group">
+                            <label>Auto-refresh interval (seconds):</label>
+                            <input type="number" id="refreshInterval" value="30" min="5" max="300">
+                        </div>
+                        <div class="setting-group">
+                            <label>Detection confidence threshold:</label>
+                            <input type="range" id="confidenceThreshold" min="0" max="1" step="0.1" value="0.5">
+                            <span id="confidenceValue">0.5</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="enableNotifications" checked>
+                                Enable flood alerts
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Roboflow Tab -->
-            <div class="tab-content" id="roboflow-tab">
-                <div class="settings-section">
-                    <div class="roboflow-header">
-                        <h4>🤖 Roboflow AI Model</h4>
-                        <span class="roboflow-project">Project: stream-cw7hj</span>
-                    </div>
-                    
-                    <div class="roboflow-stats">
-                        <div class="stat-card">
-                            <div class="stat-label">Images</div>
-                            <div class="stat-value" id="roboflow-images">--</div>
+
+                <!-- Roboflow Tab -->
+                <div class="tab-content" id="roboflow-tab">
+                    <div class="settings-section">
+                        <div class="roboflow-header">
+                            <h4>🤖 Roboflow AI Model</h4>
+                            <span class="roboflow-project">Project: stream-cw7hj</span>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Versions</div>
-                            <div class="stat-value" id="roboflow-versions">--</div>
+
+                        <div class="roboflow-stats">
+                            <div class="stat-card">
+                                <div class="stat-label">Images</div>
+                                <div class="stat-value" id="roboflow-images">--</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Versions</div>
+                                <div class="stat-value" id="roboflow-versions">--</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Classes</div>
+                                <div class="stat-value" id="roboflow-classes">--</div>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Classes</div>
-                            <div class="stat-value" id="roboflow-classes">--</div>
+
+                        <div class="roboflow-actions">
+                            <button class="btn-action primary" id="btnLoadProject">
+                                <span>🔄</span> Load Project
+                            </button>
+                            <button class="btn-action secondary" id="btnDownloadDataset">
+                                <span>📥</span> Download Dataset
+                            </button>
+                            <button class="btn-action success" id="btnTestInference">
+                                <span>🔍</span> Test Inference
+                            </button>
+                            <button class="btn-action warning" id="btnUploadImage">
+                                <span>📤</span> Upload Image
+                            </button>
                         </div>
-                    </div>
-                    
-                    <div class="roboflow-actions">
-                        <button class="btn-action primary" id="btnLoadProject">
-                            <span>🔄</span> Load Project
-                        </button>
-                        <button class="btn-action secondary" id="btnDownloadDataset">
-                            <span>📥</span> Download Dataset
-                        </button>
-                        <button class="btn-action success" id="btnTestInference">
-                            <span>🔍</span> Test Inference
-                        </button>
-                        <button class="btn-action warning" id="btnUploadImage">
-                            <span>📤</span> Upload Image
-                        </button>
                     </div>
                 </div>
-            </div>
-            
-            <!-- System Tab -->
-            <div class="tab-content" id="system-tab">
-                <div class="settings-section">
-                    <h4>System Information</h4>
-                    <div class="info-group">
-                        <div class="info-item">
-                            <span class="info-label">Application Version:</span>
-                            <span class="info-value">1.0.0</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Framework:</span>
-                            <span class="info-value">.NET 9.0</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Environment:</span>
-                            <span class="info-value">Development</span>
+
+                <!-- System Tab -->
+                <div class="tab-content" id="system-tab">
+                    <div class="settings-section">
+                        <h4>System Information</h4>
+                        <div class="info-group">
+                            <div class="info-item">
+                                <span class="info-label">Application Version:</span>
+                                <span class="info-value">1.0.0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Framework:</span>
+                                <span class="info-value">.NET 9.0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Environment:</span>
+                                <span class="info-value">Development</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // Initialize MapLibre map (free, no token required)
-        const phBounds = [
-            [116.0, 4.2],   // Southwest [lng, lat]
-            [127.5, 21.5]   // Northeast [lng, lat]
-        ];
-        
-        var map = new maplibregl.Map({
-            container: 'map',
-            style: {
-                'version': 8,
-                'sources': {
-                    'osm': {
-                        'type': 'raster',
-                        'tiles': [
-                            'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                        ],
-                        'tileSize': 256,
-                        'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+            // Initialize MapLibre map (free, no token required)
+            const phBounds = [
+                [116.0, 4.2],   // Southwest [lng, lat]
+                [127.5, 21.5]   // Northeast [lng, lat]
+            ];
+
+            var map = new maplibregl.Map({
+                container: 'map',
+                style: {
+                    'version': 8,
+                    'sources': {
+                        'osm': {
+                            'type': 'raster',
+                            'tiles': [
+                                'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                            ],
+                            'tileSize': 256,
+                            'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        },
+                        'satellite': {
+                            'type': 'raster',
+                            'tiles': [
+                                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                            ],
+                            'tileSize': 256,
+                            'attribution': 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                        }
                     },
-                    'satellite': {
-                        'type': 'raster',
-                        'tiles': [
-                            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-                        ],
-                        'tileSize': 256,
-                        'attribution': 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-                    }
+                    'layers': [
+                        {
+                            'id': 'osm',
+                            'type': 'raster',
+                            'source': 'osm',
+                            'minzoom': 0,
+                            'maxzoom': 19
+                        }
+                    ]
                 },
-                'layers': [
-                    {
-                        'id': 'osm',
-                        'type': 'raster',
-                        'source': 'osm',
-                        'minzoom': 0,
-                        'maxzoom': 19
-                    }
-                ]
-            },
-            bounds: phBounds,
-            fitBoundsOptions: {
-                padding: 20
-            },
-            minZoom: 5,
-            maxZoom: 19
-        });
-        
-        // Restrict map to Philippines bounds
-        map.setMaxBounds(phBounds);
-        
-        // 3D and style control variables
-        let is3DMode = false;
-        let currentStyle = 'streets';
-        
-        // Add map controls
-        map.addControl(new maplibregl.NavigationControl(), 'top-right');
-        map.addControl(new maplibregl.FullscreenControl(), 'top-right');
-        
-        // Create custom style switcher control
-        class StyleSwitcherControl {
-            onAdd(map) {
-                this._map = map;
-                this._container = document.createElement('div');
-                this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-                this._container.innerHTML = `
-                    <button id="styleBtn" type="button" title="Switch Map Style" style="background: white; border: none; width: 30px; height: 30px; cursor: pointer;">
-                        <i class="fas fa-layer-group" style="color: #666;"></i>
-                    </button>
-                `;
-                this._container.addEventListener('click', this._toggleStyle.bind(this));
-                return this._container;
-            }
-            
-            onRemove() {
-                this._container.parentNode.removeChild(this._container);
-                this._map = undefined;
-            }
-            
-            _toggleStyle() {
-                const btn = document.getElementById('styleBtn');
-                if (currentStyle === 'streets') {
-                    // Switch to satellite
-                    map.removeLayer('osm');
-                    map.addLayer({
-                        'id': 'satellite',
-                        'type': 'raster',
-                        'source': 'satellite',
-                        'minzoom': 0,
-                        'maxzoom': 19
-                    });
-                    currentStyle = 'satellite';
-                    btn.innerHTML = '<i class="fas fa-map" style="color: #666;"></i>';
-                    document.getElementById('threeDBtn').style.display = 'block';
-                } else {
-                    // Switch to streets
-                    map.removeLayer('satellite');
-                    map.addLayer({
-                        'id': 'osm',
-                        'type': 'raster',
-                        'source': 'osm',
-                        'minzoom': 0,
-                        'maxzoom': 19
-                    });
-                    currentStyle = 'streets';
-                    btn.innerHTML = '<i class="fas fa-layer-group" style="color: #666;"></i>';
-                    document.getElementById('threeDBtn').style.display = 'none';
-                    if (is3DMode) {
-                        toggle3DMode();
+                center: [123.2450, 13.6218], // Naga City coordinates - shifted right
+                zoom: 11, // Wider view of Naga City area
+                minZoom: 5,
+                maxZoom: 19
+            });
+
+            // Allow flexible navigation around Naga City area
+            // map.setMaxBounds(phBounds); // Commented out to allow focus on Naga City
+
+            // 3D and style control variables
+            let is3DMode = false;
+            let currentStyle = 'streets';
+
+            // Add map controls
+            map.addControl(new maplibregl.NavigationControl(), 'top-right');
+            map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+
+            // Create custom style switcher control
+            class StyleSwitcherControl {
+                onAdd(map) {
+                    this._map = map;
+                    this._container = document.createElement('div');
+                    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+                    this._container.innerHTML = `
+                                    <button id="styleBtn" type="button" title="Switch Map Style" style="background: white; border: none; width: 30px; height: 30px; cursor: pointer;">
+                                        <i class="fas fa-layer-group" style="color: #666;"></i>
+                                    </button>
+                                `;
+                    this._container.addEventListener('click', this._toggleStyle.bind(this));
+                    return this._container;
+                }
+
+                onRemove() {
+                    this._container.parentNode.removeChild(this._container);
+                    this._map = undefined;
+                }
+
+                _toggleStyle() {
+                    const btn = document.getElementById('styleBtn');
+                    if (currentStyle === 'streets') {
+                        // Switch to satellite
+                        map.removeLayer('osm');
+                        map.addLayer({
+                            'id': 'satellite',
+                            'type': 'raster',
+                            'source': 'satellite',
+                            'minzoom': 0,
+                            'maxzoom': 19
+                        });
+                        currentStyle = 'satellite';
+                        btn.innerHTML = '<i class="fas fa-map" style="color: #666;"></i>';
+                        document.getElementById('threeDBtn').style.display = 'block';
+                    } else {
+                        // Switch to streets
+                        map.removeLayer('satellite');
+                        map.addLayer({
+                            'id': 'osm',
+                            'type': 'raster',
+                            'source': 'osm',
+                            'minzoom': 0,
+                            'maxzoom': 19
+                        });
+                        currentStyle = 'streets';
+                        btn.innerHTML = '<i class="fas fa-layer-group" style="color: #666;"></i>';
+                        document.getElementById('threeDBtn').style.display = 'none';
+                        if (is3DMode) {
+                            toggle3DMode();
+                        }
                     }
                 }
             }
-        }
-        
-        // Create custom 3D control
-        class ThreeDControl {
-            onAdd(map) {
-                this._map = map;
-                this._container = document.createElement('div');
-                this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-                this._container.innerHTML = `
-                    <button id="threeDBtn" type="button" title="Toggle 3D View" style="background: white; border: none; width: 30px; height: 30px; cursor: pointer; display: none;">
-                        <i class="fas fa-cube" style="color: #666;"></i>
-                    </button>
-                `;
-                this._container.addEventListener('click', toggle3DMode);
-                return this._container;
-            }
-            
-            onRemove() {
-                this._container.parentNode.removeChild(this._container);
-                this._map = undefined;
-            }
-        }
-        
-        // Add custom controls
-        map.addControl(new StyleSwitcherControl(), 'top-right');
-        map.addControl(new ThreeDControl(), 'top-right');
-        
-        // 3D mode toggle function
-        function toggle3DMode() {
-            is3DMode = !is3DMode;
-            const btn = document.getElementById('threeDBtn');
-            
-            if (is3DMode) {
-                btn.style.background = '#007cff';
-                btn.innerHTML = '<i class="fas fa-cube" style="color: white;"></i>';
-                
-                // Set 3D view angle
-                map.easeTo({
-                    pitch: 60,
-                    bearing: 20,
-                    duration: 1000
-                });
-                
-                showInstructions();
-                
-            } else {
-                btn.style.background = 'white';
-                btn.innerHTML = '<i class="fas fa-cube" style="color: #666;"></i>';
-                
-                // Reset to 2D view
-                map.easeTo({
-                    pitch: 0,
-                    bearing: 0,
-                    duration: 1000
-                });
-                
-                hideInstructions();
-            }
-        }
-        
-        function showInstructions() {
-            let instructionsDiv = document.getElementById('map-instructions');
-            if (!instructionsDiv) {
-                instructionsDiv = document.createElement('div');
-                instructionsDiv.id = 'map-instructions';
-                instructionsDiv.className = 'threeDMode-instructions';
-                instructionsDiv.innerHTML = '<strong>3D Mode Active</strong><br>Right-click + drag to rotate<br>Ctrl + drag to tilt<br>Scroll to zoom';
-                document.getElementById('map').appendChild(instructionsDiv);
-            }
-            instructionsDiv.style.display = 'block';
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                instructionsDiv.style.display = 'none';
-            }, 5000);
-        }
-        
-        function hideInstructions() {
-            const instructionsDiv = document.getElementById('map-instructions');
-            if (instructionsDiv) {
-                instructionsDiv.style.display = 'none';
-            }
-        }
-        
-        // Camera markers and geofences (using MapLibre markers)
-        const cameraMarkers = [];
-        const geofenceMarkers = [];
 
-        // Hide all sections initially (no cameras yet) and show placeholder
-        ['section-1', 'section-2', 'section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        document.getElementById('no-cameras').classList.remove('hidden');
+            // Create custom 3D control
+            class ThreeDControl {
+                onAdd(map) {
+                    this._map = map;
+                    this._container = document.createElement('div');
+                    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+                    this._container.innerHTML = `
+                                    <button id="threeDBtn" type="button" title="Toggle 3D View" style="background: white; border: none; width: 30px; height: 30px; cursor: pointer; display: none;">
+                                        <i class="fas fa-cube" style="color: #666;"></i>
+                                    </button>
+                                `;
+                    this._container.addEventListener('click', toggle3DMode);
+                    return this._container;
+                }
 
-        // Remove demo auto-loading for camera 2
+                onRemove() {
+                    this._container.parentNode.removeChild(this._container);
+                    this._map = undefined;
+                }
+            }
 
-        // Removed an unused single analytics chart setup to avoid errors
+            // Create custom river refresh control
+            class RiverRefreshControl {
+                onAdd(map) {
+                    this._map = map;
+                    this._container = document.createElement('div');
+                    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+                    this._container.innerHTML = `
+                                    <button id="riverRefreshBtn" type="button" title="Refresh Rivers from Overpass API (Naga City)" 
+                                            style="background: white; border: none; width: 30px; height: 30px; cursor: pointer;">
+                                        <i class="fas fa-water" style="color: #0066cc;"></i>
+                                    </button>
+                                `;
+                    this._container.addEventListener('click', refreshRiverData);
+                    return this._container;
+                }
 
-        // Initialize analytics charts
-        function createAnalyticsChart(canvasId) {
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            return new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['12:00', '12:05', '12:10', '12:15', '12:20', '12:25'],
-                    datasets: [{
-                        label: 'Water Level',
-                        data: [0, 0.5, 1.2, 0.8, 0.3, 0],
-                        fill: true,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
+                onRemove() {
+                    this._container.parentNode.removeChild(this._container);
+                    this._map = undefined;
+                }
+            }
+
+            // Create custom geofence control
+            class GeofenceControl {
+                onAdd(map) {
+                    this._map = map;
+                    this._container = document.createElement('div');
+                    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+                    this._container.innerHTML = `
+                                    <button id="geofenceBtn" type="button" title="Hide Naga City Boundary" 
+                                            style="background: white; border: none; width: 30px; height: 30px; cursor: pointer;">
+                                        <i class="fas fa-map-marker-alt" style="color: #7b1fa2;"></i>
+                                    </button>
+                                    <button id="geofenceRefreshBtn" type="button" title="Refresh Boundary from Overpass API" 
+                                            style="background: white; border: none; width: 30px; height: 30px; cursor: pointer;">
+                                        <i class="fas fa-map-marker-alt" style="color: #9c27b0;"></i>
+                                        <i class="fas fa-sync" style="color: #9c27b0; font-size: 8px; position: absolute; top: 2px; right: 2px;"></i>
+                                    </button>
+                                `;
+                    this._container.querySelector('#geofenceBtn').addEventListener('click', toggleGeofence);
+                    this._container.querySelector('#geofenceRefreshBtn').addEventListener('click', refreshGeofence);
+                    return this._container;
+                }
+
+                onRemove() {
+                    this._container.parentNode.removeChild(this._container);
+                    this._map = undefined;
+                }
+            }
+
+            // Add custom controls
+            map.addControl(new StyleSwitcherControl(), 'top-right');
+            map.addControl(new ThreeDControl(), 'top-right');
+            map.addControl(new RiverRefreshControl(), 'top-right');
+            map.addControl(new GeofenceControl(), 'top-right');
+
+            // Function to refresh river data from Overpass API
+            function refreshRiverData() {
+                const btn = document.getElementById('riverRefreshBtn');
+                const icon = btn.querySelector('i');
+                
+                // Show loading state
+                icon.className = 'fas fa-spinner fa-spin';
+                btn.style.color = '#999';
+                btn.title = 'Loading rivers from Overpass API...';
+                
+                fetch('/api/river-highlights/overpass')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Remove existing river data if it exists
+                        if (map.getSource('river-highlights')) {
+                            map.removeLayer('river-highlights');
+                            map.removeSource('river-highlights');
+                        }
+                        
+                        // Add the new river highlights source
+                        map.addSource('river-highlights', {
+                            'type': 'geojson',
+                            'data': data
+                        });
+
+                        // Add the river highlights layer
+                        map.addLayer({
+                            'id': 'river-highlights',
+                            'type': 'line',
+                            'source': 'river-highlights',
+                            'paint': {
+                                'line-color': '#00A6FFFF',
+                                'line-width': 4,
+                                'line-opacity': 0.8
+                            }
+                        });
+
+                        // Add click event for popups
+                        map.on('click', 'river-highlights', (e) => {
+                            const feature = e.features[0];
+                            if (feature.properties && feature.properties.name) {
+                                new maplibregl.Popup()
+                                    .setLngLat(e.lngLat)
+                                    .setHTML(`<strong>${feature.properties.name}</strong>`)
+                                    .addTo(map);
+                            }
+                        });
+
+                        // Change cursor to pointer when hovering over rivers
+                        map.on('mouseenter', 'river-highlights', () => {
+                            map.getCanvas().style.cursor = 'pointer';
+                        });
+
+                        map.on('mouseleave', 'river-highlights', () => {
+                            map.getCanvas().style.cursor = '';
+                        });
+                        
+                        console.log('River data refreshed from Overpass API');
+                    })
+                    .catch(error => {
+                        console.error('Failed to refresh river data:', error);
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        icon.className = 'fas fa-water';
+                        btn.style.color = '';
+                        btn.title = 'Refresh Rivers from Overpass API (Naga City)';
+                    });
+            }
+
+            // Function to toggle geofence display
+            let geofenceVisible = true; // Default to visible
+            function toggleGeofence() {
+                const btn = document.getElementById('geofenceBtn');
+                const icon = btn.querySelector('i');
+                
+                if (geofenceVisible) {
+                    // Hide geofence
+                    if (map.getSource('naga-geofence')) {
+                        map.removeLayer('naga-geofence-fill');
+                        map.removeLayer('naga-geofence-line');
+                        map.removeSource('naga-geofence');
+                    }
+                    geofenceVisible = false;
+                    icon.style.color = '#9c27b0';
+                    btn.title = 'Show Naga City Boundary';
+                } else {
+                    // Show loading state
+                    icon.className = 'fas fa-spinner fa-spin';
+                    btn.style.color = '#999';
+                    btn.title = 'Loading boundary...';
+                    
+                    // Load geofence
+                    fetch('/api/geofence')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Add the geofence source
+                            map.addSource('naga-geofence', {
+                                'type': 'geojson',
+                                'data': data
+                            });
+
+                            // Add fill layer (semi-transparent)
+                            map.addLayer({
+                                'id': 'naga-geofence-fill',
+                                'type': 'fill',
+                                'source': 'naga-geofence',
+                                'paint': {
+                                    'fill-color': '#9c27b0',
+                                    'fill-opacity': 0.1
+                                }
+                            });
+
+                            // Add line layer (border)
+                            map.addLayer({
+                                'id': 'naga-geofence-line',
+                                'type': 'line',
+                                'source': 'naga-geofence',
+                                'paint': {
+                                    'line-color': '#9c27b0',
+                                    'line-width': 3,
+                                    'line-opacity': 0.8
+                                }
+                            });
+
+                            geofenceVisible = true;
+                            console.log('Naga City geofence loaded');
+                        })
+                        .catch(error => {
+                            console.error('Failed to load geofence:', error);
+                        })
+                        .finally(() => {
+                            // Reset button state
+                            icon.className = 'fas fa-map-marker-alt';
+                            btn.style.color = geofenceVisible ? '#7b1fa2' : '#9c27b0';
+                            btn.title = geofenceVisible ? 'Hide Naga City Boundary' : 'Show Naga City Boundary';
+                        });
+                }
+            }
+
+            // Function to refresh geofence from Overpass API
+            function refreshGeofence() {
+                const btn = document.getElementById('geofenceRefreshBtn');
+                const icon = btn.querySelector('i');
+                
+                // Show loading state
+                icon.className = 'fas fa-spinner fa-spin';
+                btn.style.color = '#999';
+                btn.title = 'Loading boundary from Overpass API...';
+                
+                fetch('/api/geofence/overpass')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Remove existing geofence if it exists
+                        if (map.getSource('naga-geofence')) {
+                            map.removeLayer('naga-geofence-fill');
+                            map.removeLayer('naga-geofence-line');
+                            map.removeSource('naga-geofence');
+                        }
+                        
+                        // Add the new geofence source
+                        map.addSource('naga-geofence', {
+                            'type': 'geojson',
+                            'data': data
+                        });
+
+                        // Add fill layer (semi-transparent)
+                        map.addLayer({
+                            'id': 'naga-geofence-fill',
+                            'type': 'fill',
+                            'source': 'naga-geofence',
+                            'paint': {
+                                'fill-color': '#9c27b0',
+                                'fill-opacity': 0.1
+                            }
+                        });
+
+                        // Add line layer (border)
+                        map.addLayer({
+                            'id': 'naga-geofence-line',
+                            'type': 'line',
+                            'source': 'naga-geofence',
+                            'paint': {
+                                'line-color': '#9c27b0',
+                                'line-width': 3,
+                                'line-opacity': 0.8
+                            }
+                        });
+
+                        geofenceVisible = true;
+                        console.log('Naga City geofence refreshed from Overpass API');
+                    })
+                    .catch(error => {
+                        console.error('Failed to refresh geofence:', error);
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        icon.className = 'fas fa-map-marker-alt';
+                        btn.style.color = '';
+                        btn.title = 'Refresh Boundary from Overpass API';
+                    });
+            }
+
+            // Load river highlights from GeoJSON when map is ready
+            map.on('load', () => {
+                fetch('/api/river-highlights')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Add the river highlights source
+                        map.addSource('river-highlights', {
+                            'type': 'geojson',
+                            'data': data
+                        });
+
+                        // Add the river highlights layer
+                        map.addLayer({
+                            'id': 'river-highlights',
+                            'type': 'line',
+                            'source': 'river-highlights',
+                            'paint': {
+                                'line-color': '#00A6FFFF',
+                                'line-width': 4,
+                                'line-opacity': 0.8
+                            }
+                        });
+
+                        // Add click event for popups
+                        map.on('click', 'river-highlights', (e) => {
+                            const feature = e.features[0];
+                            if (feature.properties && feature.properties.name) {
+                                new maplibregl.Popup()
+                                    .setLngLat(e.lngLat)
+                                    .setHTML(`<strong>${feature.properties.name}</strong>`)
+                                    .addTo(map);
+                            }
+                        });
+
+                        // Change cursor to pointer when hovering over rivers
+                        map.on('mouseenter', 'river-highlights', () => {
+                            map.getCanvas().style.cursor = 'pointer';
+                        });
+
+                        map.on('mouseleave', 'river-highlights', () => {
+                            map.getCanvas().style.cursor = '';
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Failed to load river highlights:', error);
+                    });
+
+                // Load geofence automatically
+                fetch('/api/geofence')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Add the geofence source
+                        map.addSource('naga-geofence', {
+                            'type': 'geojson',
+                            'data': data
+                        });
+
+                        // Add fill layer (semi-transparent)
+                        map.addLayer({
+                            'id': 'naga-geofence-fill',
+                            'type': 'fill',
+                            'source': 'naga-geofence',
+                            'paint': {
+                                'fill-color': '#9c27b0',
+                                'fill-opacity': 0.1
+                            }
+                        });
+
+                        // Add line layer (border)
+                        map.addLayer({
+                            'id': 'naga-geofence-line',
+                            'type': 'line',
+                            'source': 'naga-geofence',
+                            'paint': {
+                                'line-color': '#9c27b0',
+                                'line-width': 3,
+                                'line-opacity': 0.8
+                            }
+                        });
+
+                        // Update button state to show it's active
+                        const btn = document.getElementById('geofenceBtn');
+                        if (btn) {
+                            const icon = btn.querySelector('i');
+                            icon.style.color = '#7b1fa2';
+                            btn.title = 'Hide Naga City Boundary';
+                        }
+
+                        console.log('Naga City geofence loaded automatically');
+                    })
+                    .catch(error => {
+                        console.error('Failed to load geofence:', error);
+                        // Set geofenceVisible to false if loading fails
+                        geofenceVisible = false;
+                    });
+            });
+
+            // 3D mode toggle function
+            function toggle3DMode() {
+                is3DMode = !is3DMode;
+                const btn = document.getElementById('threeDBtn');
+
+                if (is3DMode) {
+                    btn.style.background = '#007cff';
+                    btn.innerHTML = '<i class="fas fa-cube" style="color: white;"></i>';
+
+                    // Set 3D view angle
+                    map.easeTo({
+                        pitch: 60,
+                        bearing: 20,
+                        duration: 1000
+                    });
+
+                    showInstructions();
+
+                } else {
+                    btn.style.background = 'white';
+                    btn.innerHTML = '<i class="fas fa-cube" style="color: #666;"></i>';
+
+                    // Reset to 2D view
+                    map.easeTo({
+                        pitch: 0,
+                        bearing: 0,
+                        duration: 1000
+                    });
+
+                    hideInstructions();
+                }
+            }
+
+            function showInstructions() {
+                let instructionsDiv = document.getElementById('map-instructions');
+                if (!instructionsDiv) {
+                    instructionsDiv = document.createElement('div');
+                    instructionsDiv.id = 'map-instructions';
+                    instructionsDiv.className = 'threeDMode-instructions';
+                    instructionsDiv.innerHTML = '<strong>3D Mode Active</strong><br>Right-click + drag to rotate<br>Ctrl + drag to tilt<br>Scroll to zoom';
+                    document.getElementById('map').appendChild(instructionsDiv);
+                }
+                instructionsDiv.style.display = 'block';
+
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    instructionsDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            function hideInstructions() {
+                const instructionsDiv = document.getElementById('map-instructions');
+                if (instructionsDiv) {
+                    instructionsDiv.style.display = 'none';
+                }
+            }
+
+            // Camera markers and geofences (using MapLibre markers)
+            const cameraMarkers = [];
+            const geofenceMarkers = [];
+
+            // Hide all sections initially (no cameras yet) and show placeholder
+            ['section-1', 'section-2', 'section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById('no-cameras').classList.remove('hidden');
+
+            // Remove demo auto-loading for camera 2
+
+            // Removed an unused single analytics chart setup to avoid errors
+
+            // Initialize analytics charts
+            function createAnalyticsChart(canvasId) {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                return new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['12:00', '12:05', '12:10', '12:15', '12:20', '12:25'],
+                        datasets: [{
+                            label: 'Water Level',
+                            data: [0, 0.5, 1.2, 0.8, 0.3, 0],
+                            fill: true,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            tension: 0.4
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
                                 display: false
                             }
                         },
-                        x: {
-                            grid: {
-                                display: false
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
                             }
                         }
                     }
-                }
-            });
-        }
-
-        // Create charts for each camera
-        const charts = [
-            createAnalyticsChart('analytics1'),
-            createAnalyticsChart('analytics2'),
-            createAnalyticsChart('analytics3')
-        ];
-
-        // Simulate camera feeds
-        function simulateCameraFeed(cameraId) {
-            const timestamp = new Date().getTime();
-            document.getElementById(`${cameraId}-original`).src = `https://picsum.photos/640/360?t=${timestamp}`;
-            document.getElementById(`${cameraId}-ai`).src = `https://picsum.photos/640/360?t=${timestamp + 1}`;
-        }
-
-        // Registry for camera slots and helpers
-        const cameraSlots = {
-            1: {row: 'row-1', orig: 'camera1-original', ai: 'camera1-ai', lu: 'lu-1'},
-            2: {row: 'row-2', orig: 'camera2-original', ai: 'camera2-ai', lu: 'lu-2'},
-            3: {row: 'row-3', orig: 'camera3-original', ai: 'camera3-ai', lu: 'lu-3'}
-        };
-
-        // Update charts with random data periodically
-        setInterval(() => {
-            charts.forEach(chart => {
-                const newData = chart.data.datasets[0].data.slice(1);
-                newData.push(Math.random() * 2);
-                chart.data.datasets[0].data = newData;
-                chart.update('none');
-            });
-        }, 5000);
-
-        // Header clock and last update stamps
-        function updateClock() {
-            const now = new Date();
-            const pad = n => n.toString().padStart(2, '0');
-            const clockStr = now.toLocaleString(undefined, {
-                weekday: 'short', year: 'numeric', month: 'short', day: '2-digit',
-                hour: '2-digit', minute: '2-digit', second: '2-digit'
-            });
-            document.getElementById('headerClock').textContent = clockStr;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        function setLastUpdate(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.textContent = new Date().toLocaleString();
-            }
-        }
-        ['lu-1','lu-2','lu-3'].forEach(setLastUpdate);
-
-        // Actions dropdown behavior
-        document.querySelectorAll('.btn-actions').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = btn.getAttribute('data-actions');
-                const menu = document.getElementById(`menu-${idx}`);
-                // close others
-                document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
-                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-                e.stopPropagation();
-            });
-        });
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
-        });
-
-        // Demo file picker: load image/video into both original and AI of the selected section
-        function bindDemoHandlers() {
-            document.querySelectorAll('.dropdown-item[data-action="demo"]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sectionIdx = btn.getAttribute('data-section');
-                    // build a hidden file input on the fly
-                    const fileInput = document.createElement('input');
-                    fileInput.type = 'file';
-                    fileInput.accept = 'image/*,video/*';
-                    fileInput.onchange = (e) => {
-                        const file = e.target.files?.[0];
-                        if (!file) return;
-                        const url = URL.createObjectURL(file);
-                        // target ids
-                        const origId = `camera${sectionIdx}-original`;
-                        const aiId = `camera${sectionIdx}-ai`;
-                        // swap img elements for video if needed
-                        const isVideo = file.type.startsWith('video/');
-                        [origId, aiId].forEach((id) => {
-                            const container = document.getElementById(id).parentElement;
-                            // remove existing img/video
-                            container.querySelectorAll('img,video').forEach(el => el.remove());
-                            let mediaEl;
-                            if (isVideo) {
-                                mediaEl = document.createElement('video');
-                                mediaEl.autoplay = true; mediaEl.loop = true; mediaEl.muted = true; mediaEl.controls = true;
-                            } else {
-                                mediaEl = document.createElement('img');
-                            }
-                            mediaEl.id = id;
-                            mediaEl.className = 'camera-img camera-media-contain';
-                            mediaEl.src = url;
-                            container.appendChild(mediaEl);
-                            // hide no-signal overlays
-                            const ns = container.querySelector('.no-signal');
-                            if (ns) ns.style.display = 'none';
-                        });
-
-                        // Auto-trigger AI detection for any camera
-                        setTimeout(async () => {
-                            try {
-                                const aiEl = document.getElementById(`camera${sectionIdx}-ai`);
-                                if (aiEl && (aiEl.tagName === 'IMG' || aiEl.tagName === 'VIDEO')) {
-                                    const canvas = document.createElement('canvas');
-                                    const w = aiEl.clientWidth || aiEl.naturalWidth || 640;
-                                    const h = aiEl.clientHeight || aiEl.naturalHeight || 360;
-                                    canvas.width = w; canvas.height = h;
-                                    const ctx = canvas.getContext('2d');
-
-                                    if (aiEl.tagName === 'IMG' && aiEl.complete) {
-                                        ctx.drawImage(aiEl, 0, 0, w, h);
-                                    } else if (aiEl.tagName === 'VIDEO' && aiEl.readyState >= 2) {
-                                        ctx.drawImage(aiEl, 0, 0, w, h);
-                                    }
-
-                                    const imageData = canvas.toDataURL('image/jpeg');
-                                    console.log(`Sending detection request for camera ${sectionIdx}...`);
-                                    const resp = await fetch('http://127.0.0.1:5001/detect', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ imageData })
-                                    });
-
-                                    console.log('Detection response status:', resp.status);
-                                    if (resp.ok) {
-                                        const result = await resp.json();
-                                        console.log(`Detection result for camera ${sectionIdx}:`, result);
-                                        if (Array.isArray(result.detections)) {
-                                            console.log('Rendering detections:', result.detections.length);
-                                            renderDetections(parseInt(sectionIdx), result.detections, result.frameW, result.frameH);
-                                            if (typeof result.gaugePct === 'number') {
-                                                console.log('Setting gauge to:', result.gaugePct);
-                                                setGauge(parseInt(sectionIdx), result.gaugePct);
-                                            }
-                                        }
-                                    } else {
-                                        console.error('Detection request failed:', resp.status, resp.statusText);
-                                    }
-                                }
-                            } catch (error) {
-                                console.log(`Detection error for camera ${sectionIdx}:`, error);
-                            }
-                        }, 1000); // Wait 1 second for media to load
-                    };
-                    fileInput.click();
                 });
-            });
-        }
-        bindDemoHandlers();
-
-        // Configure camera handlers
-        function bindConfigureHandlers() {
-            document.querySelectorAll('.dropdown-item[data-action="configure"]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sectionIdx = btn.getAttribute('data-section');
-                    openConfigureModal(sectionIdx);
-                });
-            });
-        }
-        bindConfigureHandlers();
-
-        // Delete camera handlers
-        function bindDeleteHandlers() {
-            document.querySelectorAll('.dropdown-item[data-action="delete"]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sectionIdx = btn.getAttribute('data-section');
-                    deleteCamera(sectionIdx);
-                });
-            });
-        }
-        bindDeleteHandlers();
-
-        // Example: function to programmatically set gauge value (0-100) for any camera
-        function setGauge(cameraSlot, percent) {
-            console.log(`setGauge called for camera ${cameraSlot} with:`, percent);
-            const clamped = Math.max(0, Math.min(100, percent));
-            const fill = document.getElementById(`gauge${cameraSlot}-fill`);
-            console.log('Gauge fill element:', fill);
-            if (fill) {
-                fill.style.height = clamped + '%';
-                console.log('Set gauge height to:', clamped + '%');
-            } else {
-                console.error(`Gauge fill element for camera ${cameraSlot} not found!`);
-            }
-        }
-
-        // Legacy function for backward compatibility
-        function setGauge2(percent) {
-            setGauge(2, percent);
-        }
-
-        // Draw detections (boxes/labels) on overlay canvas for any camera
-        function renderDetections(cameraSlot, dets, srcW, srcH) {
-            console.log(`renderDetections called for camera ${cameraSlot} with:`, dets.length, 'detections');
-            const canvas = document.getElementById(`det${cameraSlot}`);
-            const img = document.getElementById(`camera${cameraSlot}-ai`);
-            console.log('Canvas:', canvas, 'Image:', img);
-            if (!canvas || !img) {
-                console.error(`Missing canvas or image element for camera ${cameraSlot}`);
-                return;
-            }
-            // Match overlay to on-screen size
-            const cw = img.clientWidth || img.videoWidth || img.naturalWidth || 640;
-            const ch = img.clientHeight || img.videoHeight || img.naturalHeight || 360;
-            canvas.width = cw;
-            canvas.height = ch;
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const scaleX = srcW ? cw / srcW : 1;
-            const scaleY = srcH ? ch / srcH : 1;
-            dets.forEach(d => {
-                const {x, y, w, h, label, score, color = 'rgba(66,133,244,0.9)'} = d;
-                const sx = x * scaleX, sy = y * scaleY, sw = w * scaleX, sh = h * scaleY;
-                ctx.strokeStyle = color; ctx.lineWidth = 2;
-                ctx.strokeRect(sx, sy, sw, sh);
-                ctx.fillStyle = color;
-                const text = `${label}${typeof score === 'number' ? ' ' + score.toFixed(2) : ''}`;
-                const pad = 2; const th = 14; const tw = ctx.measureText(text).width + 8;
-                ctx.fillRect(sx, Math.max(0, sy - th), tw, th);
-                ctx.fillStyle = '#fff'; ctx.font = '12px Segoe UI, Arial'; ctx.fillText(text, sx + pad, sy - 3);
-            });
-        }
-
-        // Legacy function for backward compatibility
-        function renderDetections2(dets, srcW, srcH) {
-            renderDetections(2, dets, srcW, srcH);
-        }
-
-        async function runDetectionFromCurrentMedia(cameraSlot = null) {
-            // If no specific slot provided, run detection on all active cameras
-            if (cameraSlot === null) {
-                for (let slot = 1; slot <= 3; slot++) {
-                    const section = document.getElementById(`section-${slot}`);
-                    if (section && !section.classList.contains('hidden')) {
-                        await runDetectionFromCurrentMedia(slot);
-                    }
-                }
-                return;
             }
 
-            const aiEl = document.getElementById(`camera${cameraSlot}-ai`);
-            if (!aiEl) return;
-            const canvas = document.createElement('canvas');
-            const w = aiEl.clientWidth || aiEl.videoWidth || aiEl.naturalWidth || 640;
-            const h = aiEl.clientHeight || aiEl.videoHeight || aiEl.naturalHeight || 360;
-            canvas.width = w; canvas.height = h;
-            const ctx = canvas.getContext('2d');
-            try {
-                ctx.drawImage(aiEl, 0, 0, w, h);
-            } catch { return; }
-            const imageData = canvas.toDataURL('image/jpeg');
-            try {
-                const resp = await fetch('http://127.0.0.1:5001/detect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageData })});
-                if (resp.ok) {
-                    const result = await resp.json();
-                    if (Array.isArray(result.detections)) renderDetections(cameraSlot, result.detections, result.frameW, result.frameH);
-                    if (typeof result.gaugePct === 'number') setGauge(cameraSlot, result.gaugePct);
-                }
-            } catch {}
-        }
+            // Create charts for each camera
+            const charts = [
+                createAnalyticsChart('analytics1'),
+                createAnalyticsChart('analytics2'),
+                createAnalyticsChart('analytics3')
+            ];
 
-        // Connections modal logic
-        const connectionModal = document.getElementById('connectionModal');
-        function openConnections() { connectionModal.classList.remove('hidden'); }
-        function closeConnections() { connectionModal.classList.add('hidden'); }
-        document.getElementById('menuConnection').addEventListener('click', openConnections);
-        document.getElementById('connClose').addEventListener('click', closeConnections);
-        connectionModal.querySelector('.modal-backdrop').addEventListener('click', closeConnections);
+            // Simulate camera feeds
+            function simulateCameraFeed(cameraId) {
+                const timestamp = new Date().getTime();
+                document.getElementById(`${cameraId}-original`).src = `https://picsum.photos/640/360?t=${timestamp}`;
+                document.getElementById(`${cameraId}-ai`).src = `https://picsum.photos/640/360?t=${timestamp + 1}`;
+            }
 
-        // Configure modal functionality
-        const configureModal = document.getElementById('configureModal');
-        let currentConfigureSection = null;
-
-        function openConfigureModal(sectionIdx) {
-            currentConfigureSection = sectionIdx;
-            configureModal.classList.remove('hidden');
-            
-            // Load current camera data if it exists
-            loadCameraData(sectionIdx);
-        }
-
-        function closeConfigureModal() {
-            configureModal.classList.add('hidden');
-            currentConfigureSection = null;
-        }
-
-        function loadCameraData(sectionIdx) {
-            // Load existing camera configuration data
-            // For now, just clear the form - in a real app, you'd load from storage/server
-            document.getElementById('configIpAddress').value = '';
-            document.getElementById('configPort').value = '';
-            document.getElementById('configChannel').value = 'Streaming/Channels/101';
-            document.getElementById('configUsername').value = '';
-            document.getElementById('configPassword').value = '';
-            document.getElementById('configLocName').value = '';
-            document.getElementById('configLatitude').value = '';
-            document.getElementById('configLongitude').value = '';
-        }
-
-        function saveConfiguration() {
-            if (!currentConfigureSection) return;
-            
-            const config = {
-                ipAddress: document.getElementById('configIpAddress').value,
-                port: document.getElementById('configPort').value,
-                channel: document.getElementById('configChannel').value,
-                username: document.getElementById('configUsername').value,
-                password: document.getElementById('configPassword').value,
-                locationName: document.getElementById('configLocName').value,
-                latitude: document.getElementById('configLatitude').value,
-                longitude: document.getElementById('configLongitude').value
+            // Registry for camera slots and helpers
+            const cameraSlots = {
+                1: { row: 'row-1', orig: 'camera1-original', ai: 'camera1-ai', lu: 'lu-1' },
+                2: { row: 'row-2', orig: 'camera2-original', ai: 'camera2-ai', lu: 'lu-2' },
+                3: { row: 'row-3', orig: 'camera3-original', ai: 'camera3-ai', lu: 'lu-3' }
             };
 
-            // Validate required fields
-            if (!config.ipAddress || !config.locationName || !config.latitude || !config.longitude) {
-                alert('Please fill in all required fields (IP Address, Location Name, Latitude, Longitude)');
-                return;
+            // Update charts with random data periodically
+            setInterval(() => {
+                charts.forEach(chart => {
+                    const newData = chart.data.datasets[0].data.slice(1);
+                    newData.push(Math.random() * 2);
+                    chart.data.datasets[0].data = newData;
+                    chart.update('none');
+                });
+            }, 5000);
+
+            // Header clock and last update stamps
+            function updateClock() {
+                const now = new Date();
+                const pad = n => n.toString().padStart(2, '0');
+                const clockStr = now.toLocaleString(undefined, {
+                    weekday: 'short', year: 'numeric', month: 'short', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                });
+                document.getElementById('headerClock').textContent = clockStr;
             }
+            setInterval(updateClock, 1000);
+            updateClock();
 
-            // Update the camera section title
-            const section = document.getElementById(`section-${currentConfigureSection}`);
-            if (section) {
-                const titleElement = section.querySelector('.panel-title');
-                if (titleElement) {
-                    titleElement.textContent = config.locationName;
-                }
-            }
-
-            // In a real app, you would save this to localStorage or send to server
-            console.log('Saving camera configuration for section', currentConfigureSection, config);
-            
-            // Show success message
-            alert('Camera configuration saved successfully!');
-            
-            closeConfigureModal();
-        }
-
-        function deleteCamera(sectionIdx) {
-            if (confirm('Are you sure you want to delete this camera? This action cannot be undone.')) {
-                const section = document.getElementById(`section-${sectionIdx}`);
-                if (section) {
-                    section.classList.add('hidden');
-                    
-                    // Reset camera content
-                    const originalImg = document.getElementById(`camera${sectionIdx}-original`);
-                    const aiImg = document.getElementById(`camera${sectionIdx}-ai`);
-                    const nosignalOriginal = document.getElementById(`camera${sectionIdx}-nosignal`);
-                    const nosignalAi = document.getElementById(`camera${sectionIdx}-ai-nosignal`);
-                    
-                    if (originalImg) originalImg.src = '';
-                    if (aiImg) aiImg.src = '';
-                    if (nosignalOriginal) nosignalOriginal.style.display = 'block';
-                    if (nosignalAi) nosignalAi.style.display = 'block';
-                    
-                    // Clear gauge
-                    setGauge(sectionIdx, 0);
-                    
-                    // Check if no cameras are visible
-                    const visibleSections = document.querySelectorAll('.location-section:not(.hidden)');
-                    if (visibleSections.length === 0) {
-                        document.getElementById('no-cameras').classList.remove('hidden');
-                    }
-                    
-                    // In a real app, you would also remove from localStorage or send delete request to server
-                    console.log('Deleted camera from section', sectionIdx);
+            function setLastUpdate(id) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.textContent = new Date().toLocaleString();
                 }
             }
-        }
+            ['lu-1', 'lu-2', 'lu-3'].forEach(setLastUpdate);
 
-        // Configure modal event listeners
-        document.getElementById('configureClose').addEventListener('click', closeConfigureModal);
-        document.getElementById('configCancel').addEventListener('click', closeConfigureModal);
-        document.getElementById('configSave').addEventListener('click', saveConfiguration);
-        configureModal.querySelector('.modal-backdrop').addEventListener('click', closeConfigureModal);
-
-        // Configure map button functionality
-        document.getElementById('configBtnMap').addEventListener('click', () => {
-            // Open map picker for configure modal
-            openPicker();
-        });
-
-        // Map Picker logic - Using Leaflet for reliability
-        let pickerMap, polygonPoints = [], drawnShape, isPolygonMode = false, polygonPointMarkers = [];
-        let pickerCurrentStyle = 'streets';
-        
-        function openPicker() {
-            document.getElementById('mapPicker').classList.remove('hidden');
-            setTimeout(() => {
-                if (!pickerMap) {
-                    try {
-                        // Use Leaflet for the picker map - it's more reliable
-                        const phBounds = L.latLngBounds(
-                            L.latLng(4.2, 116.0),   // Southwest
-                            L.latLng(21.5, 127.5)   // Northeast
-                        );
-                        
-                        pickerMap = L.map('pickerMap', {
-                            maxBounds: phBounds,
-                            maxBoundsViscosity: 1.0,
-                            minZoom: 5,
-                            maxZoom: 19,
-                            worldCopyJump: false
-                        }).fitBounds(phBounds);
-                        
-                        // Add OpenStreetMap tiles
-                        const osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            maxZoom: 19,
-                            attribution: '© OpenStreetMap contributors'
-                        }).addTo(pickerMap);
-                        
-                        // Add satellite layer
-                        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                            maxZoom: 19,
-                            attribution: 'Tiles © Esri'
-                        });
-                        
-                        // Create layer control
-                        const baseMaps = {
-                            "Street Map": osmLayer,
-                            "Satellite": satelliteLayer
-                        };
-                        
-                        L.control.layers(baseMaps).addTo(pickerMap);
-                        
-                        // Update coordinates on map move
-                        pickerMap.on('move', () => {
-                            const center = pickerMap.getCenter();
-                            document.getElementById('pickerLat').value = center.lat.toFixed(6);
-                            document.getElementById('pickerLng').value = center.lng.toFixed(6);
-                        });
-                        
-                        // Handle clicks for polygon mode
-                        pickerMap.on('click', (e) => {
-                            if (isPolygonMode) {
-                                polygonPoints.push([e.latlng.lat, e.latlng.lng]);
-                                
-                                // Add visual point marker
-                                const pointMarker = L.circleMarker(e.latlng, {
-                                    radius: 5,
-                                    color: '#2a8',
-                                    fillColor: '#2a8',
-                                    fillOpacity: 0.8
-                                }).addTo(pickerMap);
-                                
-                                polygonPointMarkers.push(pointMarker);
-                                
-                                if (polygonPoints.length > 2) {
-                                    drawPolygon();
-                                }
-                            }
-                        });
-                        
-                        // Set initial center
-                        pickerMap.setView([14.5995, 120.9842], 8);
-                        
-                    } catch (error) {
-                        console.error('Failed to initialize picker map:', error);
-                        // Fallback: just show coordinates input
-                        document.getElementById('pickerLat').value = '14.5995';
-                        document.getElementById('pickerLng').value = '120.9842';
-                    }
-                } else {
-                    // Map already exists, just sync with main map if possible
-                    try {
-                        if (map && map.getCenter) {
-                            const mainCenter = map.getCenter();
-                            const mainZoom = map.getZoom();
-                            pickerMap.setView([mainCenter.lat, mainCenter.lng], mainZoom);
-                        }
-                        pickerMap.invalidateSize(); // Force redraw
-                    } catch (error) {
-                        console.error('Failed to sync picker map:', error);
-                        pickerMap.invalidateSize();
-                    }
-                }
-            }, 100);
-        }
-        
-        function togglePickerStyle() {
-            if (!pickerMap) return;
-            
-            const btn = document.getElementById('pickerToggleBtn');
-            try {
-                if (pickerCurrentStyle === 'streets') {
-                    // Switch to satellite
-                    if (pickerMap.getLayer('osm-layer')) {
-                        pickerMap.removeLayer('osm-layer');
-                    }
-                    pickerMap.addLayer({
-                        'id': 'satellite-layer',
-                        'type': 'raster',
-                        'source': 'satellite-raster'
-                    });
-                    pickerCurrentStyle = 'satellite';
-                    btn.innerHTML = '<i class="fas fa-map" style="color: #666; font-size: 12px;"></i>';
-                } else {
-                    // Switch to streets
-                    if (pickerMap.getLayer('satellite-layer')) {
-                        pickerMap.removeLayer('satellite-layer');
-                    }
-                    pickerMap.addLayer({
-                        'id': 'osm-layer',
-                        'type': 'raster',
-                        'source': 'osm-raster'
-                    });
-                    pickerCurrentStyle = 'streets';
-                    btn.innerHTML = '<i class="fas fa-satellite" style="color: #666; font-size: 12px;"></i>';
-                }
-            } catch (error) {
-                console.error('Failed to toggle picker style:', error);
-            }
-        }
-        function closePicker(){ 
-            document.getElementById('mapPicker').classList.add('hidden'); 
-        }
-        document.getElementById('btnMap').addEventListener('click', openPicker);
-        document.getElementById('pickerClose').addEventListener('click', closePicker);
-        document.querySelector('.map-picker-backdrop').addEventListener('click', closePicker);
-
-        function drawCircle(){
-            if (!pickerMap) return;
-            
-            isPolygonMode = false; 
-            polygonPoints = [];
-            
-            // Clear polygon point markers
-            polygonPointMarkers.forEach(marker => {
-                try {
-                    if (pickerMap) pickerMap.removeLayer(marker);
-                } catch (error) {
-                    console.error('Failed to clear marker:', error);
-                }
+            // Actions dropdown behavior
+            document.querySelectorAll('.btn-actions').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = btn.getAttribute('data-actions');
+                    const menu = document.getElementById(`menu-${idx}`);
+                    // close others
+                    document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+                    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    e.stopPropagation();
+                });
             });
-            polygonPointMarkers = [];
-            
-            try {
-                // Remove existing shape
-                if (drawnShape) {
-                    pickerMap.removeLayer(drawnShape);
-                    drawnShape = null;
-                }
-                
-                const center = pickerMap.getCenter();
-                const radius = Number(document.getElementById('pickerRadius').value || 200);
-                
-                drawnShape = L.circle(center, {
-                    radius: radius,
-                    color: '#2a8',
-                    weight: 3,
-                    fillOpacity: 0.1
-                }).addTo(pickerMap);
-                
-            } catch (error) {
-                console.error('Failed to draw circle:', error);
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+            });
+
+            // Demo file picker: load image/video into both original and AI of the selected section
+            function bindDemoHandlers() {
+                document.querySelectorAll('.dropdown-item[data-action="demo"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const sectionIdx = btn.getAttribute('data-section');
+                        // build a hidden file input on the fly
+                        const fileInput = document.createElement('input');
+                        fileInput.type = 'file';
+                        fileInput.accept = 'image/*,video/*';
+                        fileInput.onchange = (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            const url = URL.createObjectURL(file);
+                            // target ids
+                            const origId = `camera${sectionIdx}-original`;
+                            const aiId = `camera${sectionIdx}-ai`;
+                            // swap img elements for video if needed
+                            const isVideo = file.type.startsWith('video/');
+                            [origId, aiId].forEach((id) => {
+                                const container = document.getElementById(id).parentElement;
+                                // remove existing img/video
+                                container.querySelectorAll('img,video').forEach(el => el.remove());
+                                let mediaEl;
+                                if (isVideo) {
+                                    mediaEl = document.createElement('video');
+                                    mediaEl.autoplay = true; mediaEl.loop = true; mediaEl.muted = true; mediaEl.controls = true;
+                                } else {
+                                    mediaEl = document.createElement('img');
+                                }
+                                mediaEl.id = id;
+                                mediaEl.className = 'camera-img camera-media-contain';
+                                mediaEl.src = url;
+                                container.appendChild(mediaEl);
+                                // hide no-signal overlays
+                                const ns = container.querySelector('.no-signal');
+                                if (ns) ns.style.display = 'none';
+                            });
+
+                            // Auto-trigger AI detection for any camera
+                            setTimeout(async () => {
+                                try {
+                                    const aiEl = document.getElementById(`camera${sectionIdx}-ai`);
+                                    if (aiEl && (aiEl.tagName === 'IMG' || aiEl.tagName === 'VIDEO')) {
+                                        const canvas = document.createElement('canvas');
+                                        const w = aiEl.clientWidth || aiEl.naturalWidth || 640;
+                                        const h = aiEl.clientHeight || aiEl.naturalHeight || 360;
+                                        canvas.width = w; canvas.height = h;
+                                        const ctx = canvas.getContext('2d');
+
+                                        if (aiEl.tagName === 'IMG' && aiEl.complete) {
+                                            ctx.drawImage(aiEl, 0, 0, w, h);
+                                        } else if (aiEl.tagName === 'VIDEO' && aiEl.readyState >= 2) {
+                                            ctx.drawImage(aiEl, 0, 0, w, h);
+                                        }
+
+                                        const imageData = canvas.toDataURL('image/jpeg');
+                                        console.log(`Sending detection request for camera ${sectionIdx}...`);
+                                        const resp = await fetch('http://127.0.0.1:5001/detect', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ imageData })
+                                        });
+
+                                        console.log('Detection response status:', resp.status);
+                                        if (resp.ok) {
+                                            const result = await resp.json();
+                                            console.log(`Detection result for camera ${sectionIdx}:`, result);
+                                            if (Array.isArray(result.detections)) {
+                                                console.log('Rendering detections:', result.detections.length);
+                                                renderDetections(parseInt(sectionIdx), result.detections, result.frameW, result.frameH);
+                                                if (typeof result.gaugePct === 'number') {
+                                                    console.log('Setting gauge to:', result.gaugePct);
+                                                    setGauge(parseInt(sectionIdx), result.gaugePct);
+                                                }
+                                            }
+                                        } else {
+                                            console.error('Detection request failed:', resp.status, resp.statusText);
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.log(`Detection error for camera ${sectionIdx}:`, error);
+                                }
+                            }, 1000); // Wait 1 second for media to load
+                        };
+                        fileInput.click();
+                    });
+                });
             }
-        }
-        
-        function drawPolygon(){
-            if (!pickerMap) return;
-            
-            try {
-                // Remove existing shape
-                if (drawnShape) {
-                    pickerMap.removeLayer(drawnShape);
-                    drawnShape = null;
+            bindDemoHandlers();
+
+            // Configure camera handlers
+            function bindConfigureHandlers() {
+                document.querySelectorAll('.dropdown-item[data-action="configure"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const sectionIdx = btn.getAttribute('data-section');
+                        openConfigureModal(sectionIdx);
+                    });
+                });
+            }
+            bindConfigureHandlers();
+
+            // Delete camera handlers
+            function bindDeleteHandlers() {
+                document.querySelectorAll('.dropdown-item[data-action="delete"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const sectionIdx = btn.getAttribute('data-section');
+                        deleteCamera(sectionIdx);
+                    });
+                });
+            }
+            bindDeleteHandlers();
+
+            // Example: function to programmatically set gauge value (0-100) for any camera
+            function setGauge(cameraSlot, percent) {
+                console.log(`setGauge called for camera ${cameraSlot} with:`, percent);
+                const clamped = Math.max(0, Math.min(100, percent));
+                const fill = document.getElementById(`gauge${cameraSlot}-fill`);
+                console.log('Gauge fill element:', fill);
+                if (fill) {
+                    fill.style.height = clamped + '%';
+                    console.log('Set gauge height to:', clamped + '%');
+                } else {
+                    console.error(`Gauge fill element for camera ${cameraSlot} not found!`);
                 }
-                
-                if (polygonPoints.length > 2) {
-                    drawnShape = L.polygon(polygonPoints, {
+            }
+
+            // Legacy function for backward compatibility
+            function setGauge2(percent) {
+                setGauge(2, percent);
+            }
+
+            // Draw detections (boxes/labels) on overlay canvas for any camera
+            function renderDetections(cameraSlot, dets, srcW, srcH) {
+                console.log(`renderDetections called for camera ${cameraSlot} with:`, dets.length, 'detections');
+                const canvas = document.getElementById(`det${cameraSlot}`);
+                const img = document.getElementById(`camera${cameraSlot}-ai`);
+                console.log('Canvas:', canvas, 'Image:', img);
+                if (!canvas || !img) {
+                    console.error(`Missing canvas or image element for camera ${cameraSlot}`);
+                    return;
+                }
+                // Match overlay to on-screen size
+                const cw = img.clientWidth || img.videoWidth || img.naturalWidth || 640;
+                const ch = img.clientHeight || img.videoHeight || img.naturalHeight || 360;
+                canvas.width = cw;
+                canvas.height = ch;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const scaleX = srcW ? cw / srcW : 1;
+                const scaleY = srcH ? ch / srcH : 1;
+                dets.forEach(d => {
+                    const { x, y, w, h, label, score, color = 'rgba(66,133,244,0.9)' } = d;
+                    const sx = x * scaleX, sy = y * scaleY, sw = w * scaleX, sh = h * scaleY;
+                    ctx.strokeStyle = color; ctx.lineWidth = 2;
+                    ctx.strokeRect(sx, sy, sw, sh);
+                    ctx.fillStyle = color;
+                    const text = `${label}${typeof score === 'number' ? ' ' + score.toFixed(2) : ''}`;
+                    const pad = 2; const th = 14; const tw = ctx.measureText(text).width + 8;
+                    ctx.fillRect(sx, Math.max(0, sy - th), tw, th);
+                    ctx.fillStyle = '#fff'; ctx.font = '12px Segoe UI, Arial'; ctx.fillText(text, sx + pad, sy - 3);
+                });
+            }
+
+            // Legacy function for backward compatibility
+            function renderDetections2(dets, srcW, srcH) {
+                renderDetections(2, dets, srcW, srcH);
+            }
+
+            async function runDetectionFromCurrentMedia(cameraSlot = null) {
+                // If no specific slot provided, run detection on all active cameras
+                if (cameraSlot === null) {
+                    for (let slot = 1; slot <= 3; slot++) {
+                        const section = document.getElementById(`section-${slot}`);
+                        if (section && !section.classList.contains('hidden')) {
+                            await runDetectionFromCurrentMedia(slot);
+                        }
+                    }
+                    return;
+                }
+
+                const aiEl = document.getElementById(`camera${cameraSlot}-ai`);
+                if (!aiEl) return;
+                const canvas = document.createElement('canvas');
+                const w = aiEl.clientWidth || aiEl.videoWidth || aiEl.naturalWidth || 640;
+                const h = aiEl.clientHeight || aiEl.videoHeight || aiEl.naturalHeight || 360;
+                canvas.width = w; canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                try {
+                    ctx.drawImage(aiEl, 0, 0, w, h);
+                } catch { return; }
+                const imageData = canvas.toDataURL('image/jpeg');
+                try {
+                    const resp = await fetch('http://127.0.0.1:5001/detect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageData }) });
+                    if (resp.ok) {
+                        const result = await resp.json();
+                        if (Array.isArray(result.detections)) renderDetections(cameraSlot, result.detections, result.frameW, result.frameH);
+                        if (typeof result.gaugePct === 'number') setGauge(cameraSlot, result.gaugePct);
+                    }
+                } catch { }
+            }
+
+            // Connections modal logic
+            const connectionModal = document.getElementById('connectionModal');
+            function openConnections() { connectionModal.classList.remove('hidden'); }
+            function closeConnections() { connectionModal.classList.add('hidden'); }
+            document.getElementById('menuConnection').addEventListener('click', openConnections);
+            document.getElementById('connClose').addEventListener('click', closeConnections);
+            connectionModal.querySelector('.modal-backdrop').addEventListener('click', closeConnections);
+
+            // Configure modal functionality
+            const configureModal = document.getElementById('configureModal');
+            let currentConfigureSection = null;
+
+            function openConfigureModal(sectionIdx) {
+                currentConfigureSection = sectionIdx;
+                configureModal.classList.remove('hidden');
+
+                // Load current camera data if it exists
+                loadCameraData(sectionIdx);
+            }
+
+            function closeConfigureModal() {
+                configureModal.classList.add('hidden');
+                currentConfigureSection = null;
+            }
+
+            function loadCameraData(sectionIdx) {
+                // Load existing camera configuration data
+                // For now, just clear the form - in a real app, you'd load from storage/server
+                document.getElementById('configIpAddress').value = '';
+                document.getElementById('configPort').value = '';
+                document.getElementById('configChannel').value = 'Streaming/Channels/101';
+                document.getElementById('configUsername').value = '';
+                document.getElementById('configPassword').value = '';
+                document.getElementById('configLocName').value = '';
+                document.getElementById('configLatitude').value = '';
+                document.getElementById('configLongitude').value = '';
+            }
+
+            function saveConfiguration() {
+                if (!currentConfigureSection) return;
+
+                const config = {
+                    ipAddress: document.getElementById('configIpAddress').value,
+                    port: document.getElementById('configPort').value,
+                    channel: document.getElementById('configChannel').value,
+                    username: document.getElementById('configUsername').value,
+                    password: document.getElementById('configPassword').value,
+                    locationName: document.getElementById('configLocName').value,
+                    latitude: document.getElementById('configLatitude').value,
+                    longitude: document.getElementById('configLongitude').value
+                };
+
+                // Validate required fields
+                if (!config.ipAddress || !config.locationName || !config.latitude || !config.longitude) {
+                    alert('Please fill in all required fields (IP Address, Location Name, Latitude, Longitude)');
+                    return;
+                }
+
+                // Update the camera section title
+                const section = document.getElementById(`section-${currentConfigureSection}`);
+                if (section) {
+                    const titleElement = section.querySelector('.panel-title');
+                    if (titleElement) {
+                        titleElement.textContent = config.locationName;
+                    }
+                }
+
+                // In a real app, you would save this to localStorage or send to server
+                console.log('Saving camera configuration for section', currentConfigureSection, config);
+
+                // Show success message
+                alert('Camera configuration saved successfully!');
+
+                closeConfigureModal();
+            }
+
+            function deleteCamera(sectionIdx) {
+                if (confirm('Are you sure you want to delete this camera? This action cannot be undone.')) {
+                    const section = document.getElementById(`section-${sectionIdx}`);
+                    if (section) {
+                        section.classList.add('hidden');
+
+                        // Reset camera content
+                        const originalImg = document.getElementById(`camera${sectionIdx}-original`);
+                        const aiImg = document.getElementById(`camera${sectionIdx}-ai`);
+                        const nosignalOriginal = document.getElementById(`camera${sectionIdx}-nosignal`);
+                        const nosignalAi = document.getElementById(`camera${sectionIdx}-ai-nosignal`);
+
+                        if (originalImg) originalImg.src = '';
+                        if (aiImg) aiImg.src = '';
+                        if (nosignalOriginal) nosignalOriginal.style.display = 'block';
+                        if (nosignalAi) nosignalAi.style.display = 'block';
+
+                        // Clear gauge
+                        setGauge(sectionIdx, 0);
+
+                        // Check if no cameras are visible
+                        const visibleSections = document.querySelectorAll('.location-section:not(.hidden)');
+                        if (visibleSections.length === 0) {
+                            document.getElementById('no-cameras').classList.remove('hidden');
+                        }
+
+                        // In a real app, you would also remove from localStorage or send delete request to server
+                        console.log('Deleted camera from section', sectionIdx);
+                    }
+                }
+            }
+
+            // Configure modal event listeners
+            document.getElementById('configureClose').addEventListener('click', closeConfigureModal);
+            document.getElementById('configCancel').addEventListener('click', closeConfigureModal);
+            document.getElementById('configSave').addEventListener('click', saveConfiguration);
+            configureModal.querySelector('.modal-backdrop').addEventListener('click', closeConfigureModal);
+
+            // Configure map button functionality
+            document.getElementById('configBtnMap').addEventListener('click', () => {
+                // Open map picker for configure modal
+                openPicker();
+            });
+
+            // Map Picker logic - Using Leaflet for reliability
+            let pickerMap, polygonPoints = [], drawnShape, isPolygonMode = false, polygonPointMarkers = [];
+            let pickerCurrentStyle = 'streets';
+
+            function openPicker() {
+                document.getElementById('mapPicker').classList.remove('hidden');
+                setTimeout(() => {
+                    if (!pickerMap) {
+                        try {
+                            // Use Leaflet for the picker map - it's more reliable
+                            const phBounds = L.latLngBounds(
+                                L.latLng(4.2, 116.0),   // Southwest
+                                L.latLng(21.5, 127.5)   // Northeast
+                            );
+
+                            pickerMap = L.map('pickerMap', {
+                                maxBounds: phBounds,
+                                maxBoundsViscosity: 1.0,
+                                minZoom: 5,
+                                maxZoom: 19,
+                                worldCopyJump: false
+                            }).fitBounds(phBounds);
+
+                            // Add OpenStreetMap tiles
+                            const osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                maxZoom: 19,
+                                attribution: '© OpenStreetMap contributors'
+                            }).addTo(pickerMap);
+
+                            // Add satellite layer
+                            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                                maxZoom: 19,
+                                attribution: 'Tiles © Esri'
+                            });
+
+                            // Create layer control
+                            const baseMaps = {
+                                "Street Map": osmLayer,
+                                "Satellite": satelliteLayer
+                            };
+
+                            L.control.layers(baseMaps).addTo(pickerMap);
+
+                            // Update coordinates on map move
+                            pickerMap.on('move', () => {
+                                const center = pickerMap.getCenter();
+                                document.getElementById('pickerLat').value = center.lat.toFixed(6);
+                                document.getElementById('pickerLng').value = center.lng.toFixed(6);
+                            });
+
+                            // Handle clicks for polygon mode
+                            pickerMap.on('click', (e) => {
+                                if (isPolygonMode) {
+                                    polygonPoints.push([e.latlng.lat, e.latlng.lng]);
+
+                                    // Add visual point marker
+                                    const pointMarker = L.circleMarker(e.latlng, {
+                                        radius: 5,
+                                        color: '#2a8',
+                                        fillColor: '#2a8',
+                                        fillOpacity: 0.8
+                                    }).addTo(pickerMap);
+
+                                    polygonPointMarkers.push(pointMarker);
+
+                                    if (polygonPoints.length > 2) {
+                                        drawPolygon();
+                                    }
+                                }
+                            });
+
+                            // Set initial center to Naga City - shifted right
+                            pickerMap.setView([13.6218, 123.2450], 11);
+
+                        } catch (error) {
+                            console.error('Failed to initialize picker map:', error);
+                            // Fallback: show Naga City coordinates - shifted right
+                            document.getElementById('pickerLat').value = '13.6218';
+                            document.getElementById('pickerLng').value = '123.2450';
+                        }
+                    } else {
+                        // Map already exists, just sync with main map if possible
+                        try {
+                            if (map && map.getCenter) {
+                                const mainCenter = map.getCenter();
+                                const mainZoom = map.getZoom();
+                                pickerMap.setView([mainCenter.lat, mainCenter.lng], mainZoom);
+                            }
+                            pickerMap.invalidateSize(); // Force redraw
+                        } catch (error) {
+                            console.error('Failed to sync picker map:', error);
+                            pickerMap.invalidateSize();
+                        }
+                    }
+                }, 100);
+            }
+
+            function togglePickerStyle() {
+                if (!pickerMap) return;
+
+                const btn = document.getElementById('pickerToggleBtn');
+                try {
+                    if (pickerCurrentStyle === 'streets') {
+                        // Switch to satellite
+                        if (pickerMap.getLayer('osm-layer')) {
+                            pickerMap.removeLayer('osm-layer');
+                        }
+                        pickerMap.addLayer({
+                            'id': 'satellite-layer',
+                            'type': 'raster',
+                            'source': 'satellite-raster'
+                        });
+                        pickerCurrentStyle = 'satellite';
+                        btn.innerHTML = '<i class="fas fa-map" style="color: #666; font-size: 12px;"></i>';
+                    } else {
+                        // Switch to streets
+                        if (pickerMap.getLayer('satellite-layer')) {
+                            pickerMap.removeLayer('satellite-layer');
+                        }
+                        pickerMap.addLayer({
+                            'id': 'osm-layer',
+                            'type': 'raster',
+                            'source': 'osm-raster'
+                        });
+                        pickerCurrentStyle = 'streets';
+                        btn.innerHTML = '<i class="fas fa-satellite" style="color: #666; font-size: 12px;"></i>';
+                    }
+                } catch (error) {
+                    console.error('Failed to toggle picker style:', error);
+                }
+            }
+            function closePicker() {
+                document.getElementById('mapPicker').classList.add('hidden');
+            }
+            document.getElementById('btnMap').addEventListener('click', openPicker);
+            document.getElementById('pickerClose').addEventListener('click', closePicker);
+            document.querySelector('.map-picker-backdrop').addEventListener('click', closePicker);
+
+            function drawCircle() {
+                if (!pickerMap) return;
+
+                isPolygonMode = false;
+                polygonPoints = [];
+
+                // Clear polygon point markers
+                polygonPointMarkers.forEach(marker => {
+                    try {
+                        if (pickerMap) pickerMap.removeLayer(marker);
+                    } catch (error) {
+                        console.error('Failed to clear marker:', error);
+                    }
+                });
+                polygonPointMarkers = [];
+
+                try {
+                    // Remove existing shape
+                    if (drawnShape) {
+                        pickerMap.removeLayer(drawnShape);
+                        drawnShape = null;
+                    }
+
+                    const center = pickerMap.getCenter();
+                    const radius = Number(document.getElementById('pickerRadius').value || 200);
+
+                    drawnShape = L.circle(center, {
+                        radius: radius,
                         color: '#2a8',
                         weight: 3,
                         fillOpacity: 0.1
                     }).addTo(pickerMap);
-                }
-            } catch (error) {
-                console.error('Failed to draw polygon:', error);
-            }
-        }
-        
-        // Auto polygon cover (approximate) around currently visible bounds
-        function autoCoverBounds() {
-            if (!pickerMap) return;
-            
-            try {
-                const bounds = pickerMap.getBounds();
-                const sw = bounds.getSouthWest();
-                const ne = bounds.getNorthEast();
-                const nw = L.latLng(ne.lat, sw.lng);
-                const se = L.latLng(sw.lat, ne.lng);
-                
-                polygonPoints = [[sw.lat, sw.lng], [nw.lat, nw.lng], [ne.lat, ne.lng], [se.lat, se.lng]];
-                drawPolygon();
-            } catch (error) {
-                console.error('Failed to auto cover bounds:', error);
-            }
-        }
-        
-        document.getElementById('pickerCircle').addEventListener('click', () => { drawCircle(); });
-        document.getElementById('pickerPolygon').addEventListener('click', () => { 
-            clearDrawnShape(); // Clear any existing shapes and markers
-            isPolygonMode = true; 
-            polygonPoints = []; 
-            polygonPointMarkers = [];
-        });
-        
-        document.getElementById('pickerAutoCover').addEventListener('click', () => { autoCoverBounds(); });
-        document.getElementById('pickerClear').addEventListener('click', () => { clearDrawnShape(); });
-        
-        function clearDrawnShape() {
-            if (drawnShape && pickerMap) { 
-                try {
-                    pickerMap.removeLayer(drawnShape); 
-                    drawnShape = null; 
+
                 } catch (error) {
-                    console.error('Failed to clear shape:', error);
+                    console.error('Failed to draw circle:', error);
                 }
             }
-            
-            // Clear polygon point markers
-            polygonPointMarkers.forEach(marker => {
+
+            function drawPolygon() {
+                if (!pickerMap) return;
+
                 try {
-                    if (pickerMap) pickerMap.removeLayer(marker);
+                    // Remove existing shape
+                    if (drawnShape) {
+                        pickerMap.removeLayer(drawnShape);
+                        drawnShape = null;
+                    }
+
+                    if (polygonPoints.length > 2) {
+                        drawnShape = L.polygon(polygonPoints, {
+                            color: '#2a8',
+                            weight: 3,
+                            fillOpacity: 0.1
+                        }).addTo(pickerMap);
+                    }
                 } catch (error) {
-                    console.error('Failed to clear marker:', error);
+                    console.error('Failed to draw polygon:', error);
                 }
+            }
+
+            // Auto polygon cover (approximate) around currently visible bounds
+            function autoCoverBounds() {
+                if (!pickerMap) return;
+
+                try {
+                    const bounds = pickerMap.getBounds();
+                    const sw = bounds.getSouthWest();
+                    const ne = bounds.getNorthEast();
+                    const nw = L.latLng(ne.lat, sw.lng);
+                    const se = L.latLng(sw.lat, ne.lng);
+
+                    polygonPoints = [[sw.lat, sw.lng], [nw.lat, nw.lng], [ne.lat, ne.lng], [se.lat, se.lng]];
+                    drawPolygon();
+                } catch (error) {
+                    console.error('Failed to auto cover bounds:', error);
+                }
+            }
+
+            document.getElementById('pickerCircle').addEventListener('click', () => { drawCircle(); });
+            document.getElementById('pickerPolygon').addEventListener('click', () => {
+                clearDrawnShape(); // Clear any existing shapes and markers
+                isPolygonMode = true;
+                polygonPoints = [];
+                polygonPointMarkers = [];
             });
-            polygonPointMarkers = [];
-            polygonPoints = [];
-            isPolygonMode = false;
-            
-            // Clear polygon point markers
-            if (polygonPointMarkers && polygonPointMarkers.length > 0) {
+
+            document.getElementById('pickerAutoCover').addEventListener('click', () => { autoCoverBounds(); });
+            document.getElementById('pickerClear').addEventListener('click', () => { clearDrawnShape(); });
+
+            function clearDrawnShape() {
+                if (drawnShape && pickerMap) {
+                    try {
+                        pickerMap.removeLayer(drawnShape);
+                        drawnShape = null;
+                    } catch (error) {
+                        console.error('Failed to clear shape:', error);
+                    }
+                }
+
+                // Clear polygon point markers
                 polygonPointMarkers.forEach(marker => {
                     try {
-                        pickerMap.removeLayer(marker);
+                        if (pickerMap) pickerMap.removeLayer(marker);
                     } catch (error) {
-                        console.error('Failed to remove marker:', error);
+                        console.error('Failed to clear marker:', error);
                     }
                 });
                 polygonPointMarkers = [];
-            }
-            
-            // Reset polygon mode and points
-            isPolygonMode = false;
-            polygonPoints = [];
-        }
-        // Create a quick actions bar for automatic cover
-        const footer = document.querySelector('.map-picker-footer .picker-controls');
-        if (footer) {
-            const btnAuto = document.createElement('button');
-            btnAuto.className = 'btn'; btnAuto.textContent = 'Auto Cover';
-            btnAuto.addEventListener('click', autoCoverBounds);
-            footer.appendChild(btnAuto);
-        }
-        document.getElementById('pickerClear').addEventListener('click', () => { if (drawnShape) { pickerMap.removeLayer(drawnShape); } polygonPoints = []; });
-        document.getElementById('pickerUse').addEventListener('click', () => {
-            const c = pickerMap.getCenter();
-            document.getElementById('latitude').value = c.lat.toFixed(6);
-            document.getElementById('longitude').value = c.lng.toFixed(6);
-            closePicker();
-        });
+                polygonPoints = [];
+                isPolygonMode = false;
 
-        // Build stream URL (supports RTSP with optional user/pass/port/channel)
-        function buildStreamUrl() {
-            const ip = (document.getElementById('ipAddress').value || '').trim();
-            const port = (document.getElementById('port').value || '').trim();
-            const channel = (document.getElementById('channel').value || '').trim();
-            const user = (document.getElementById('username').value || '').trim();
-            const pass = (document.getElementById('password').value || '').trim();
-            if (!ip) return '';
-
-            // If user provided full URL, respect it and just inject credentials if missing
-            let url = ip.match(/^https?:\/\//i) || ip.match(/^rtsp:\/\//i) ? ip : `rtsp://${ip}`;
-
-            // Insert credentials (escape at-sign for Razor)
-            if (user) {
-                const [scheme, rest] = url.split('://');
-                if (rest && rest.indexOf('@@') === -1) {
-                    url = `${scheme}://${user}${pass ? ':' + pass : ''}@@${rest}`;
-                }
-            }
-
-            // Insert port if provided and none present
-            if (port && !/:[0-9]+/.test((url.split('://')[1] || ''))) {
-                const [scheme, rest] = url.split('://');
-                const host = (rest || '').split('/')[0];
-                const path = (rest || '').split('/').slice(1).join('/');
-                url = `${scheme}://${host}:${port}/${path}`.replace(/:\/:/,'://');
-            }
-
-            // Append channel if provided
-            if (channel && url.indexOf(channel) === -1) {
-                if (!url.endsWith('/')) url += '/';
-                url += channel;
-            }
-            return url;
-        }
-
-        // Preview handling (browser supports HTTP(S) video/image; RTSP requires external player)
-        function showPreview(url) {
-            const preview = document.getElementById('connPreview');
-            preview.innerHTML = '';
-            if (!url) return;
-            const isRtsp = /^rtsp:\/\//i.test(url);
-            const videoLike = /\.(mp4|webm|ogg|m3u8)(\?|$)/i.test(url);
-            const imageLike = /\.(png|jpe?g|gif)(\?|$)/i.test(url) || /snapshot|picture/i.test(url);
-            if (imageLike) {
-                const img = document.createElement('img');
-                img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '100%';
-                preview.appendChild(img);
-            } else if (!isRtsp && videoLike) {
-                const vid = document.createElement('video');
-                vid.src = url; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.controls = true;
-                vid.style.maxWidth = '100%'; vid.style.maxHeight = '100%';
-                preview.appendChild(vid);
-            } else if (isRtsp) {
-                const note = document.createElement('div');
-                note.textContent = 'RTSP preview is not supported by browsers. Use an RTSP→HLS proxy if you need live preview here.';
-                note.style.padding = '10px'; note.style.color = '#b94a48';
-                preview.appendChild(note);
-            } else {
-                const txt = document.createElement('div');
-                txt.textContent = 'Unsupported preview format.';
-                txt.style.padding = '10px';
-                preview.appendChild(txt);
-            }
-        }
-
-        document.getElementById('btnPlay').addEventListener('click', async () => {
-            const url = buildStreamUrl();
-            showPreview(url);
-            // If preview is image/video (not RTSP), send to detector API for first frame
-            try {
-                const payload = { source: url };
-                // If using Demo (file:// object URL), snapshot the current image/video frame to base64
-                const aiEl = document.getElementById('camera2-ai');
-                if (aiEl && (aiEl.tagName === 'IMG' || aiEl.tagName === 'VIDEO')) {
-                    const canvas = document.createElement('canvas');
-                    const w = aiEl.clientWidth || 640; const h = aiEl.clientHeight || 360;
-                    canvas.width = w; canvas.height = h; const c2d = canvas.getContext('2d');
-                    try {
-                        if (aiEl.tagName === 'IMG') {
-                            c2d.drawImage(aiEl, 0, 0, w, h);
-                            payload.imageData = canvas.toDataURL('image/jpeg');
-                        } else if (aiEl.tagName === 'VIDEO' && aiEl.readyState >= 2) {
-                            c2d.drawImage(aiEl, 0, 0, w, h);
-                            payload.imageData = canvas.toDataURL('image/jpeg');
+                // Clear polygon point markers
+                if (polygonPointMarkers && polygonPointMarkers.length > 0) {
+                    polygonPointMarkers.forEach(marker => {
+                        try {
+                            pickerMap.removeLayer(marker);
+                        } catch (error) {
+                            console.error('Failed to remove marker:', error);
                         }
-                    } catch {}
+                    });
+                    polygonPointMarkers = [];
                 }
-                const resp = await fetch('http://127.0.0.1:5001/detect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)});
-                if (resp.ok) {
-                    const result = await resp.json();
-                    if (Array.isArray(result.detections)) {
-                        renderDetections(2, result.detections, result.frameW, result.frameH);
-                        if (typeof result.gaugePct === 'number') setGauge(2, result.gaugePct);
+
+                // Reset polygon mode and points
+                isPolygonMode = false;
+                polygonPoints = [];
+            }
+            // Create a quick actions bar for automatic cover
+            const footer = document.querySelector('.map-picker-footer .picker-controls');
+            if (footer) {
+                const btnAuto = document.createElement('button');
+                btnAuto.className = 'btn'; btnAuto.textContent = 'Auto Cover';
+                btnAuto.addEventListener('click', autoCoverBounds);
+                footer.appendChild(btnAuto);
+            }
+            document.getElementById('pickerClear').addEventListener('click', () => { if (drawnShape) { pickerMap.removeLayer(drawnShape); } polygonPoints = []; });
+            document.getElementById('pickerUse').addEventListener('click', () => {
+                const c = pickerMap.getCenter();
+                document.getElementById('latitude').value = c.lat.toFixed(6);
+                document.getElementById('longitude').value = c.lng.toFixed(6);
+                closePicker();
+            });
+
+            // Build stream URL (supports RTSP with optional user/pass/port/channel)
+            function buildStreamUrl() {
+                const ip = (document.getElementById('ipAddress').value || '').trim();
+                const port = (document.getElementById('port').value || '').trim();
+                const channel = (document.getElementById('channel').value || '').trim();
+                const user = (document.getElementById('username').value || '').trim();
+                const pass = (document.getElementById('password').value || '').trim();
+                if (!ip) return '';
+
+                // If user provided full URL, respect it and just inject credentials if missing
+                let url = ip.match(/^https?:\/\//i) || ip.match(/^rtsp:\/\//i) ? ip : `rtsp://${ip}`;
+
+                // Insert credentials (escape at-sign for Razor)
+                if (user) {
+                    const [scheme, rest] = url.split('://');
+                    if (rest && rest.indexOf('@@') === -1) {
+                        url = `${scheme}://${user}${pass ? ':' + pass : ''}@@${rest}`;
                     }
                 }
-            } catch {}
-            // Schedule periodic detection updates for all active cameras
-            if (window.__detInterval) clearInterval(window.__detInterval);
-            window.__detInterval = setInterval(() => runDetectionFromCurrentMedia(), 2000);
-        });
-        document.getElementById('btnStop').addEventListener('click', () => {
-            document.getElementById('connPreview').innerHTML = '';
-            if (window.__detInterval) { clearInterval(window.__detInterval); window.__detInterval = null; }
-            // Clear all detection canvases
-            for (let i = 1; i <= 3; i++) {
-                const canvas = document.getElementById(`det${i}`);
-                if (canvas) {
-                    const ctx = canvas.getContext('2d');
-                    ctx && ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Insert port if provided and none present
+                if (port && !/:[0-9]+/.test((url.split('://')[1] || ''))) {
+                    const [scheme, rest] = url.split('://');
+                    const host = (rest || '').split('/')[0];
+                    const path = (rest || '').split('/').slice(1).join('/');
+                    url = `${scheme}://${host}:${port}/${path}`.replace(/:\/:/, '://');
+                }
+
+                // Append channel if provided
+                if (channel && url.indexOf(channel) === -1) {
+                    if (!url.endsWith('/')) url += '/';
+                    url += channel;
+                }
+                return url;
+            }
+
+            // Preview handling (browser supports HTTP(S) video/image; RTSP requires external player)
+            function showPreview(url) {
+                const preview = document.getElementById('connPreview');
+                preview.innerHTML = '';
+                if (!url) return;
+                const isRtsp = /^rtsp:\/\//i.test(url);
+                const videoLike = /\.(mp4|webm|ogg|m3u8)(\?|$)/i.test(url);
+                const imageLike = /\.(png|jpe?g|gif)(\?|$)/i.test(url) || /snapshot|picture/i.test(url);
+                if (imageLike) {
+                    const img = document.createElement('img');
+                    img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '100%';
+                    preview.appendChild(img);
+                } else if (!isRtsp && videoLike) {
+                    const vid = document.createElement('video');
+                    vid.src = url; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.controls = true;
+                    vid.style.maxWidth = '100%'; vid.style.maxHeight = '100%';
+                    preview.appendChild(vid);
+                } else if (isRtsp) {
+                    const note = document.createElement('div');
+                    note.textContent = 'RTSP preview is not supported by browsers. Use an RTSP→HLS proxy if you need live preview here.';
+                    note.style.padding = '10px'; note.style.color = '#b94a48';
+                    preview.appendChild(note);
+                } else {
+                    const txt = document.createElement('div');
+                    txt.textContent = 'Unsupported preview format.';
+                    txt.style.padding = '10px';
+                    preview.appendChild(txt);
                 }
             }
-        });
-        document.getElementById('btnClear').addEventListener('click', () => {
-            ['ipAddress','port','channel','username','password','locName','latitude','longitude'].forEach(id => { const el = document.getElementById(id); if (el) el.value=''; });
-            document.getElementById('connPreview').innerHTML = '';
-        });
 
-        // Add camera to next available slot and map
-        let nextSlot = 1;
-        document.getElementById('btnAddCamera').addEventListener('click', () => {
-            if (nextSlot > 3) return closeConnections();
-            const url = buildStreamUrl();
-            const lat = parseFloat(document.getElementById('latitude').value);
-            const lng = parseFloat(document.getElementById('longitude').value);
-            const locName = (document.getElementById('locName').value || '').trim();
-            if (!url || Number.isNaN(lat) || Number.isNaN(lng)) return;
-
-            const slot = cameraSlots[nextSlot];
-            document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
-            document.getElementById('no-cameras').classList.add('hidden');
-            document.getElementById(slot.orig).src = url;
-            document.getElementById(slot.ai).src = url;
-            setLastUpdate(slot.lu);
-
-            // Update location header title with provided name
-            const headerTitleEl = document.querySelector(`#section-${nextSlot} .panel-title`);
-            if (headerTitleEl && locName) headerTitleEl.textContent = locName;
-
-            // Initialize AI detection for this camera after a short delay
-            setTimeout(() => {
-                runDetectionFromCurrentMedia(nextSlot);
-            }, 2000);
-
-            // Add map marker to main map (MapLibre GL)
-            if (map && map.loaded && map.loaded()) {
-                const marker = new maplibregl.Marker({
-                    color: '#FF0000'
-                })
-                .setLngLat([lng, lat])
-                .setPopup(new maplibregl.Popup().setText(locName || `Camera ${nextSlot}`))
-                .addTo(map);
-                
-                // Store marker reference
-                cameraMarkers.push({
-                    marker: marker,
-                    slotNumber: nextSlot,
-                    lat: lat,
-                    lng: lng
-                });
-            }
-            
-            // Copy geofence from picker if exists
-            if (drawnShape && pickerMap) {
+            document.getElementById('btnPlay').addEventListener('click', async () => {
+                const url = buildStreamUrl();
+                showPreview(url);
+                // If preview is image/video (not RTSP), send to detector API for first frame
                 try {
-                    let geoJson = null;
-                    
-                    if (drawnShape instanceof L.Circle) {
-                        // Convert Leaflet circle to GeoJSON polygon
-                        const center = drawnShape.getLatLng();
-                        const radius = drawnShape.getRadius();
-                        const points = [];
-                        const numPoints = 32;
-                        for (let i = 0; i < numPoints; i++) {
-                            const angle = (i / numPoints) * 2 * Math.PI;
-                            const dx = radius * Math.cos(angle) / 111320; // Approximate meters to degrees
-                            const dy = radius * Math.sin(angle) / 110540;
-                            points.push([center.lng + dx, center.lat + dy]);
-                        }
-                        points.push(points[0]); // Close the polygon
-                        
-                        geoJson = {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'Polygon',
-                                'coordinates': [points]
+                    const payload = { source: url };
+                    // If using Demo (file:// object URL), snapshot the current image/video frame to base64
+                    const aiEl = document.getElementById('camera2-ai');
+                    if (aiEl && (aiEl.tagName === 'IMG' || aiEl.tagName === 'VIDEO')) {
+                        const canvas = document.createElement('canvas');
+                        const w = aiEl.clientWidth || 640; const h = aiEl.clientHeight || 360;
+                        canvas.width = w; canvas.height = h; const c2d = canvas.getContext('2d');
+                        try {
+                            if (aiEl.tagName === 'IMG') {
+                                c2d.drawImage(aiEl, 0, 0, w, h);
+                                payload.imageData = canvas.toDataURL('image/jpeg');
+                            } else if (aiEl.tagName === 'VIDEO' && aiEl.readyState >= 2) {
+                                c2d.drawImage(aiEl, 0, 0, w, h);
+                                payload.imageData = canvas.toDataURL('image/jpeg');
                             }
-                        };
-                    } else if (drawnShape instanceof L.Polygon) {
-                        // Convert Leaflet polygon to GeoJSON
-                        const latlngs = drawnShape.getLatLngs()[0];
-                        const coordinates = latlngs.map(latlng => [latlng.lng, latlng.lat]);
-                        coordinates.push(coordinates[0]); // Close the polygon
-                        
-                        geoJson = {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'Polygon',
-                                'coordinates': [coordinates]
-                            }
-                        };
+                        } catch { }
                     }
-                    
-                    // Add to main map if we have valid GeoJSON
-                    if (geoJson && map && map.loaded && map.loaded()) {
-                        const sourceId = `geofence-${nextSlot}`;
-                        const layerId = `geofence-layer-${nextSlot}`;
-                        
-                        map.addSource(sourceId, {
-                            'type': 'geojson',
-                            'data': geoJson
-                        });
-                        
-                        map.addLayer({
-                            'id': layerId,
-                            'type': 'line',
-                            'source': sourceId,
-                            'paint': {
-                                'line-color': '#2a8',
-                                'line-width': 3
+                    const resp = await fetch('http://127.0.0.1:5001/detect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (resp.ok) {
+                        const result = await resp.json();
+                        if (Array.isArray(result.detections)) {
+                            renderDetections(2, result.detections, result.frameW, result.frameH);
+                            if (typeof result.gaugePct === 'number') setGauge(2, result.gaugePct);
+                        }
+                    }
+                } catch { }
+                // Schedule periodic detection updates for all active cameras
+                if (window.__detInterval) clearInterval(window.__detInterval);
+                window.__detInterval = setInterval(() => runDetectionFromCurrentMedia(), 2000);
+            });
+            document.getElementById('btnStop').addEventListener('click', () => {
+                document.getElementById('connPreview').innerHTML = '';
+                if (window.__detInterval) { clearInterval(window.__detInterval); window.__detInterval = null; }
+                // Clear all detection canvases
+                for (let i = 1; i <= 3; i++) {
+                    const canvas = document.getElementById(`det${i}`);
+                    if (canvas) {
+                        const ctx = canvas.getContext('2d');
+                        ctx && ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    }
+                }
+            });
+            document.getElementById('btnClear').addEventListener('click', () => {
+                ['ipAddress', 'port', 'channel', 'username', 'password', 'locName', 'latitude', 'longitude'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+                document.getElementById('connPreview').innerHTML = '';
+            });
+
+            // Add camera to next available slot and map
+            let nextSlot = 1;
+            document.getElementById('btnAddCamera').addEventListener('click', () => {
+                if (nextSlot > 3) return closeConnections();
+                const url = buildStreamUrl();
+                const lat = parseFloat(document.getElementById('latitude').value);
+                const lng = parseFloat(document.getElementById('longitude').value);
+                const locName = (document.getElementById('locName').value || '').trim();
+                if (!url || Number.isNaN(lat) || Number.isNaN(lng)) return;
+
+                const slot = cameraSlots[nextSlot];
+                document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
+                document.getElementById('no-cameras').classList.add('hidden');
+                document.getElementById(slot.orig).src = url;
+                document.getElementById(slot.ai).src = url;
+                setLastUpdate(slot.lu);
+
+                // Update location header title with provided name
+                const headerTitleEl = document.querySelector(`#section-${nextSlot} .panel-title`);
+                if (headerTitleEl && locName) headerTitleEl.textContent = locName;
+
+                // Initialize AI detection for this camera after a short delay
+                setTimeout(() => {
+                    runDetectionFromCurrentMedia(nextSlot);
+                }, 2000);
+
+                // Add map marker to main map (MapLibre GL)
+                if (map && map.loaded && map.loaded()) {
+                    const marker = new maplibregl.Marker({
+                        color: '#FF0000'
+                    })
+                        .setLngLat([lng, lat])
+                        .setPopup(new maplibregl.Popup().setText(locName || `Camera ${nextSlot}`))
+                        .addTo(map);
+
+                    // Store marker reference
+                    cameraMarkers.push({
+                        marker: marker,
+                        slotNumber: nextSlot,
+                        lat: lat,
+                        lng: lng
+                    });
+                }
+
+                // Copy geofence from picker if exists
+                if (drawnShape && pickerMap) {
+                    try {
+                        let geoJson = null;
+
+                        if (drawnShape instanceof L.Circle) {
+                            // Convert Leaflet circle to GeoJSON polygon
+                            const center = drawnShape.getLatLng();
+                            const radius = drawnShape.getRadius();
+                            const points = [];
+                            const numPoints = 32;
+                            for (let i = 0; i < numPoints; i++) {
+                                const angle = (i / numPoints) * 2 * Math.PI;
+                                const dx = radius * Math.cos(angle) / 111320; // Approximate meters to degrees
+                                const dy = radius * Math.sin(angle) / 110540;
+                                points.push([center.lng + dx, center.lat + dy]);
                             }
-                        });
+                            points.push(points[0]); // Close the polygon
+
+                            geoJson = {
+                                'type': 'Feature',
+                                'geometry': {
+                                    'type': 'Polygon',
+                                    'coordinates': [points]
+                                }
+                            };
+                        } else if (drawnShape instanceof L.Polygon) {
+                            // Convert Leaflet polygon to GeoJSON
+                            const latlngs = drawnShape.getLatLngs()[0];
+                            const coordinates = latlngs.map(latlng => [latlng.lng, latlng.lat]);
+                            coordinates.push(coordinates[0]); // Close the polygon
+
+                            geoJson = {
+                                'type': 'Feature',
+                                'geometry': {
+                                    'type': 'Polygon',
+                                    'coordinates': [coordinates]
+                                }
+                            };
+                        }
+
+                        // Add to main map if we have valid GeoJSON
+                        if (geoJson && map && map.loaded && map.loaded()) {
+                            const sourceId = `geofence-${nextSlot}`;
+                            const layerId = `geofence-layer-${nextSlot}`;
+
+                            map.addSource(sourceId, {
+                                'type': 'geojson',
+                                'data': geoJson
+                            });
+
+                            map.addLayer({
+                                'id': layerId,
+                                'type': 'line',
+                                'source': sourceId,
+                                'paint': {
+                                    'line-color': '#2a8',
+                                    'line-width': 3
+                                }
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Failed to copy geofence to main map:', error);
+                    }
+                }
+
+                nextSlot += 1;
+                closeConnections();
+            });
+
+            // Settings Modal JavaScript
+            let roboflowApiKey = 'FcbsUMiVOoBJ2B4GXYkl'; // Your API key
+
+            // Settings modal functionality
+            document.getElementById('menuSettings').addEventListener('click', () => {
+                document.getElementById('settingsModal').classList.remove('hidden');
+            });
+
+            document.getElementById('settingsClose').addEventListener('click', () => {
+                document.getElementById('settingsModal').classList.add('hidden');
+            });
+
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.dataset.tab;
+
+                    // Update active tab button
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Update active tab content
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+
+            // Settings controls
+            const confidenceSlider = document.getElementById('confidenceThreshold');
+            const confidenceValue = document.getElementById('confidenceValue');
+
+            confidenceSlider.addEventListener('input', () => {
+                confidenceValue.textContent = confidenceSlider.value;
+            });
+
+            // Load project information
+            async function loadRoboflowProject() {
+                try {
+                    const response = await fetch('/api/roboflow/project', {
+                        headers: {
+                            'Authorization': `Bearer ${roboflowApiKey}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        updateRoboflowStats(data);
+                    } else {
+                        console.error('Failed to load project:', response.statusText);
+                        alert('Failed to load Roboflow project. Please check your API key.');
                     }
                 } catch (error) {
-                    console.error('Failed to copy geofence to main map:', error);
+                    console.error('Error loading project:', error);
+                    alert('Error connecting to Roboflow. Please try again.');
                 }
             }
-            
-            nextSlot += 1;
-            closeConnections();
-        });
 
-        // Settings Modal JavaScript
-        let roboflowApiKey = 'FcbsUMiVOoBJ2B4GXYkl'; // Your API key
-        
-        // Settings modal functionality
-        document.getElementById('menuSettings').addEventListener('click', () => {
-            document.getElementById('settingsModal').classList.remove('hidden');
-        });
-        
-        document.getElementById('settingsClose').addEventListener('click', () => {
-            document.getElementById('settingsModal').classList.add('hidden');
-        });
-        
-        // Tab switching
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabId = btn.dataset.tab;
-                
-                // Update active tab button
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Update active tab content
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-                document.getElementById(tabId + '-tab').classList.add('active');
-            });
-        });
-        
-        // Settings controls
-        const confidenceSlider = document.getElementById('confidenceThreshold');
-        const confidenceValue = document.getElementById('confidenceValue');
-        
-        confidenceSlider.addEventListener('input', () => {
-            confidenceValue.textContent = confidenceSlider.value;
-        });
-
-        // Load project information
-        async function loadRoboflowProject() {
-            try {
-                const response = await fetch('/api/roboflow/project', {
-                    headers: {
-                        'Authorization': `Bearer ${roboflowApiKey}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    updateRoboflowStats(data);
-                } else {
-                    console.error('Failed to load project:', response.statusText);
-                    alert('Failed to load Roboflow project. Please check your API key.');
+            // Update dashboard stats
+            function updateRoboflowStats(projectData) {
+                if (projectData.project) {
+                    document.getElementById('roboflow-images').textContent = projectData.project.images || 0;
+                    document.getElementById('roboflow-classes').textContent = projectData.project.classes?.join(', ') || 'N/A';
                 }
-            } catch (error) {
-                console.error('Error loading project:', error);
-                alert('Error connecting to Roboflow. Please try again.');
-            }
-        }
-
-        // Update dashboard stats
-        function updateRoboflowStats(projectData) {
-            if (projectData.project) {
-                document.getElementById('roboflow-images').textContent = projectData.project.images || 0;
-                document.getElementById('roboflow-classes').textContent = projectData.project.classes?.join(', ') || 'N/A';
-            }
-            if (projectData.versions) {
-                document.getElementById('roboflow-versions').textContent = projectData.versions.length || 0;
-            }
-        }
-
-        // Download dataset
-        async function downloadDataset() {
-            const version = prompt('Enter version number to download:', '1');
-            if (!version) return;
-
-            try {
-                const response = await fetch(`/api/roboflow/download/${version}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${roboflowApiKey}`
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.downloadLink) {
-                        window.open(data.downloadLink, '_blank');
-                    }
-                } else {
-                    alert('Failed to get download link. Please try again.');
+                if (projectData.versions) {
+                    document.getElementById('roboflow-versions').textContent = projectData.versions.length || 0;
                 }
-            } catch (error) {
-                console.error('Error downloading dataset:', error);
-                alert('Error downloading dataset. Please try again.');
             }
-        }
 
-        // Test inference
-        async function testInference() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const version = prompt('Enter version number for inference:', '1');
+            // Download dataset
+            async function downloadDataset() {
+                const version = prompt('Enter version number to download:', '1');
                 if (!version) return;
 
-                const formData = new FormData();
-                formData.append('image', file);
-
                 try {
-                    const response = await fetch(`/api/roboflow/inference/${version}?confidence=0.5`, {
+                    const response = await fetch(`/api/roboflow/download/${version}`, {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${roboflowApiKey}`
-                        },
-                        body: formData
+                        }
                     });
-                    
+
                     if (response.ok) {
-                        const result = await response.json();
-                        alert(`Inference complete! Found ${result.predictions?.length || 0} detections.`);
-                        console.log('Inference result:', result);
-                    } else {
-                        alert('Failed to run inference. Please try again.');
-                    }
-                } catch (error) {
-                    console.error('Error running inference:', error);
-                    alert('Error running inference. Please try again.');
-                }
-            };
-            input.click();
-        }
-
-        // Upload image to project
-        async function uploadToRoboflow() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const name = prompt('Enter image name:', file.name);
-                if (!name) return;
-
-                const formData = new FormData();
-                formData.append('image', file);
-
-                try {
-                    const response = await fetch(`/api/roboflow/upload?name=${encodeURIComponent(name)}&split=false`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${roboflowApiKey}`
-                        },
-                        body: formData
-                    });
-                    
-                    if (response.ok) {
-                        const result = await response.json();
-                        if (result.success) {
-                            alert('Image uploaded successfully!');
-                            loadRoboflowProject(); // Refresh stats
-                        } else {
-                            alert('Upload failed. Please try again.');
+                        const data = await response.json();
+                        if (data.downloadLink) {
+                            window.open(data.downloadLink, '_blank');
                         }
                     } else {
-                        alert('Failed to upload image. Please try again.');
+                        alert('Failed to get download link. Please try again.');
                     }
                 } catch (error) {
-                    console.error('Error uploading image:', error);
-                    alert('Error uploading image. Please try again.');
+                    console.error('Error downloading dataset:', error);
+                    alert('Error downloading dataset. Please try again.');
                 }
-            };
-            input.click();
-        }
+            }
 
-        // Event listeners for Roboflow buttons
-        document.getElementById('btnLoadProject').addEventListener('click', loadRoboflowProject);
-        document.getElementById('btnDownloadDataset').addEventListener('click', downloadDataset);
-        document.getElementById('btnTestInference').addEventListener('click', testInference);
-        document.getElementById('btnUploadImage').addEventListener('click', uploadToRoboflow);
+            // Test inference
+            async function testInference() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
 
-        // Auto-load project when Settings modal opens
-        document.getElementById('menuSettings').addEventListener('click', () => {
-            setTimeout(loadRoboflowProject, 500); // Load after modal opens
-        });
-    </script>
+                    const version = prompt('Enter version number for inference:', '1');
+                    if (!version) return;
+
+                    const formData = new FormData();
+                    formData.append('image', file);
+
+                    try {
+                        const response = await fetch(`/api/roboflow/inference/${version}?confidence=0.5`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${roboflowApiKey}`
+                            },
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            alert(`Inference complete! Found ${result.predictions?.length || 0} detections.`);
+                            console.log('Inference result:', result);
+                        } else {
+                            alert('Failed to run inference. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error running inference:', error);
+                        alert('Error running inference. Please try again.');
+                    }
+                };
+                input.click();
+            }
+
+            // Upload image to project
+            async function uploadToRoboflow() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const name = prompt('Enter image name:', file.name);
+                    if (!name) return;
+
+                    const formData = new FormData();
+                    formData.append('image', file);
+
+                    try {
+                        const response = await fetch(`/api/roboflow/upload?name=${encodeURIComponent(name)}&split=false`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${roboflowApiKey}`
+                            },
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                alert('Image uploaded successfully!');
+                                loadRoboflowProject(); // Refresh stats
+                            } else {
+                                alert('Upload failed. Please try again.');
+                            }
+                        } else {
+                            alert('Failed to upload image. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error uploading image:', error);
+                        alert('Error uploading image. Please try again.');
+                    }
+                };
+                input.click();
+            }
+
+            // Event listeners for Roboflow buttons
+            document.getElementById('btnLoadProject').addEventListener('click', loadRoboflowProject);
+            document.getElementById('btnDownloadDataset').addEventListener('click', downloadDataset);
+            document.getElementById('btnTestInference').addEventListener('click', testInference);
+            document.getElementById('btnUploadImage').addEventListener('click', uploadToRoboflow);
+
+            // Auto-load project when Settings modal opens
+            document.getElementById('menuSettings').addEventListener('click', () => {
+                setTimeout(loadRoboflowProject, 500); // Load after modal opens
+            });
+        </script>
 }
