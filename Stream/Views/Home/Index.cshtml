@@ -272,6 +272,7 @@
                 <input id="pickerRadius" class="input-small" type="number" value="200" min="10" step="10" />
                 <button class="btn" id="pickerCircle">Circle</button>
                 <button class="btn" id="pickerPolygon">Polygon</button>
+                <button class="btn" id="pickerAutoCover">Auto Cover</button>
                 <button class="btn" id="pickerClear">Clear</button>
             </div>
             <div class="picker-controls">
@@ -392,30 +393,208 @@
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialize map (restricted to Philippines)
-        const phBounds = L.latLngBounds(
-            L.latLng(4.2, 116.0),   // Southwest (near Sabah/Palawan)
-            L.latLng(21.5, 127.5)   // Northeast (Batanes/Philippine Sea)
-        );
-        var map = L.map('map', {
-            maxBounds: phBounds,
-            maxBoundsViscosity: 1.0,
+        // Initialize MapLibre map (free, no token required)
+        const phBounds = [
+            [116.0, 4.2],   // Southwest [lng, lat]
+            [127.5, 21.5]   // Northeast [lng, lat]
+        ];
+        
+        var map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                'version': 8,
+                'sources': {
+                    'osm': {
+                        'type': 'raster',
+                        'tiles': [
+                            'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                        ],
+                        'tileSize': 256,
+                        'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    },
+                    'satellite': {
+                        'type': 'raster',
+                        'tiles': [
+                            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                        ],
+                        'tileSize': 256,
+                        'attribution': 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                    }
+                },
+                'layers': [
+                    {
+                        'id': 'osm',
+                        'type': 'raster',
+                        'source': 'osm',
+                        'minzoom': 0,
+                        'maxzoom': 19
+                    }
+                ]
+            },
+            bounds: phBounds,
+            fitBoundsOptions: {
+                padding: 20
+            },
             minZoom: 5,
-            maxZoom: 19,
-            worldCopyJump: false
-        }).fitBounds(phBounds);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-
-
-        // Layers to hold dynamic cameras and geofences
-        const cameraMarkers = L.layerGroup().addTo(map);
-        const geofenceLayer = L.layerGroup().addTo(map);
+            maxZoom: 19
+        });
+        
+        // Restrict map to Philippines bounds
+        map.setMaxBounds(phBounds);
+        
+        // 3D and style control variables
+        let is3DMode = false;
+        let currentStyle = 'streets';
+        
+        // Add map controls
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
+        map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+        
+        // Create custom style switcher control
+        class StyleSwitcherControl {
+            onAdd(map) {
+                this._map = map;
+                this._container = document.createElement('div');
+                this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+                this._container.innerHTML = `
+                    <button id="styleBtn" type="button" title="Switch Map Style" style="background: white; border: none; width: 30px; height: 30px; cursor: pointer;">
+                        <i class="fas fa-layer-group" style="color: #666;"></i>
+                    </button>
+                `;
+                this._container.addEventListener('click', this._toggleStyle.bind(this));
+                return this._container;
+            }
+            
+            onRemove() {
+                this._container.parentNode.removeChild(this._container);
+                this._map = undefined;
+            }
+            
+            _toggleStyle() {
+                const btn = document.getElementById('styleBtn');
+                if (currentStyle === 'streets') {
+                    // Switch to satellite
+                    map.removeLayer('osm');
+                    map.addLayer({
+                        'id': 'satellite',
+                        'type': 'raster',
+                        'source': 'satellite',
+                        'minzoom': 0,
+                        'maxzoom': 19
+                    });
+                    currentStyle = 'satellite';
+                    btn.innerHTML = '<i class="fas fa-map" style="color: #666;"></i>';
+                    document.getElementById('threeDBtn').style.display = 'block';
+                } else {
+                    // Switch to streets
+                    map.removeLayer('satellite');
+                    map.addLayer({
+                        'id': 'osm',
+                        'type': 'raster',
+                        'source': 'osm',
+                        'minzoom': 0,
+                        'maxzoom': 19
+                    });
+                    currentStyle = 'streets';
+                    btn.innerHTML = '<i class="fas fa-layer-group" style="color: #666;"></i>';
+                    document.getElementById('threeDBtn').style.display = 'none';
+                    if (is3DMode) {
+                        toggle3DMode();
+                    }
+                }
+            }
+        }
+        
+        // Create custom 3D control
+        class ThreeDControl {
+            onAdd(map) {
+                this._map = map;
+                this._container = document.createElement('div');
+                this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+                this._container.innerHTML = `
+                    <button id="threeDBtn" type="button" title="Toggle 3D View" style="background: white; border: none; width: 30px; height: 30px; cursor: pointer; display: none;">
+                        <i class="fas fa-cube" style="color: #666;"></i>
+                    </button>
+                `;
+                this._container.addEventListener('click', toggle3DMode);
+                return this._container;
+            }
+            
+            onRemove() {
+                this._container.parentNode.removeChild(this._container);
+                this._map = undefined;
+            }
+        }
+        
+        // Add custom controls
+        map.addControl(new StyleSwitcherControl(), 'top-right');
+        map.addControl(new ThreeDControl(), 'top-right');
+        
+        // 3D mode toggle function
+        function toggle3DMode() {
+            is3DMode = !is3DMode;
+            const btn = document.getElementById('threeDBtn');
+            
+            if (is3DMode) {
+                btn.style.background = '#007cff';
+                btn.innerHTML = '<i class="fas fa-cube" style="color: white;"></i>';
+                
+                // Set 3D view angle
+                map.easeTo({
+                    pitch: 60,
+                    bearing: 20,
+                    duration: 1000
+                });
+                
+                showInstructions();
+                
+            } else {
+                btn.style.background = 'white';
+                btn.innerHTML = '<i class="fas fa-cube" style="color: #666;"></i>';
+                
+                // Reset to 2D view
+                map.easeTo({
+                    pitch: 0,
+                    bearing: 0,
+                    duration: 1000
+                });
+                
+                hideInstructions();
+            }
+        }
+        
+        function showInstructions() {
+            let instructionsDiv = document.getElementById('map-instructions');
+            if (!instructionsDiv) {
+                instructionsDiv = document.createElement('div');
+                instructionsDiv.id = 'map-instructions';
+                instructionsDiv.className = 'threeDMode-instructions';
+                instructionsDiv.innerHTML = '<strong>3D Mode Active</strong><br>Right-click + drag to rotate<br>Ctrl + drag to tilt<br>Scroll to zoom';
+                document.getElementById('map').appendChild(instructionsDiv);
+            }
+            instructionsDiv.style.display = 'block';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                instructionsDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function hideInstructions() {
+            const instructionsDiv = document.getElementById('map-instructions');
+            if (instructionsDiv) {
+                instructionsDiv.style.display = 'none';
+            }
+        }
+        
+        // Camera markers and geofences (using MapLibre markers)
+        const cameraMarkers = [];
+        const geofenceMarkers = [];
 
         // Hide all sections initially (no cameras yet) and show placeholder
         ['section-1','section-2','section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
@@ -841,65 +1020,248 @@
         document.getElementById('connClose').addEventListener('click', closeConnections);
         connectionModal.querySelector('.modal-backdrop').addEventListener('click', closeConnections);
 
-        // Map Picker logic and Add Camera
-        let pickerMap, polygonPoints = [], drawnShape, isPolygonMode = false;
+        // Map Picker logic - Using Leaflet for reliability
+        let pickerMap, polygonPoints = [], drawnShape, isPolygonMode = false, polygonPointMarkers = [];
+        let pickerCurrentStyle = 'streets';
+        
         function openPicker() {
             document.getElementById('mapPicker').classList.remove('hidden');
             setTimeout(() => {
                 if (!pickerMap) {
-                    pickerMap = L.map('pickerMap', {
-                        maxBounds: phBounds,
-                        maxBoundsViscosity: 1.0,
-                        minZoom: 5,
-                        maxZoom: 19,
-                        worldCopyJump: false
-                    }).fitBounds(phBounds);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(pickerMap);
-                    pickerMap.on('move', () => {
-                        const c = pickerMap.getCenter();
-                        document.getElementById('pickerLat').value = c.lat.toFixed(6);
-                        document.getElementById('pickerLng').value = c.lng.toFixed(6);
-                    });
-                    pickerMap.on('click', (e) => {
-                        if (isPolygonMode) {
-                            polygonPoints.push([e.latlng.lat, e.latlng.lng]);
-                            drawPolygon();
+                    try {
+                        // Use Leaflet for the picker map - it's more reliable
+                        const phBounds = L.latLngBounds(
+                            L.latLng(4.2, 116.0),   // Southwest
+                            L.latLng(21.5, 127.5)   // Northeast
+                        );
+                        
+                        pickerMap = L.map('pickerMap', {
+                            maxBounds: phBounds,
+                            maxBoundsViscosity: 1.0,
+                            minZoom: 5,
+                            maxZoom: 19,
+                            worldCopyJump: false
+                        }).fitBounds(phBounds);
+                        
+                        // Add OpenStreetMap tiles
+                        const osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '© OpenStreetMap contributors'
+                        }).addTo(pickerMap);
+                        
+                        // Add satellite layer
+                        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                            maxZoom: 19,
+                            attribution: 'Tiles © Esri'
+                        });
+                        
+                        // Create layer control
+                        const baseMaps = {
+                            "Street Map": osmLayer,
+                            "Satellite": satelliteLayer
+                        };
+                        
+                        L.control.layers(baseMaps).addTo(pickerMap);
+                        
+                        // Update coordinates on map move
+                        pickerMap.on('move', () => {
+                            const center = pickerMap.getCenter();
+                            document.getElementById('pickerLat').value = center.lat.toFixed(6);
+                            document.getElementById('pickerLng').value = center.lng.toFixed(6);
+                        });
+                        
+                        // Handle clicks for polygon mode
+                        pickerMap.on('click', (e) => {
+                            if (isPolygonMode) {
+                                polygonPoints.push([e.latlng.lat, e.latlng.lng]);
+                                
+                                // Add visual point marker
+                                const pointMarker = L.circleMarker(e.latlng, {
+                                    radius: 5,
+                                    color: '#2a8',
+                                    fillColor: '#2a8',
+                                    fillOpacity: 0.8
+                                }).addTo(pickerMap);
+                                
+                                polygonPointMarkers.push(pointMarker);
+                                
+                                if (polygonPoints.length > 2) {
+                                    drawPolygon();
+                                }
+                            }
+                        });
+                        
+                        // Set initial center
+                        pickerMap.setView([14.5995, 120.9842], 8);
+                        
+                    } catch (error) {
+                        console.error('Failed to initialize picker map:', error);
+                        // Fallback: just show coordinates input
+                        document.getElementById('pickerLat').value = '14.5995';
+                        document.getElementById('pickerLng').value = '120.9842';
+                    }
+                } else {
+                    // Map already exists, just sync with main map if possible
+                    try {
+                        if (map && map.getCenter) {
+                            const mainCenter = map.getCenter();
+                            const mainZoom = map.getZoom();
+                            pickerMap.setView([mainCenter.lat, mainCenter.lng], mainZoom);
                         }
-                    });
+                        pickerMap.invalidateSize(); // Force redraw
+                    } catch (error) {
+                        console.error('Failed to sync picker map:', error);
+                        pickerMap.invalidateSize();
+                    }
                 }
-                pickerMap.invalidateSize();
-                pickerMap.setView(map.getCenter(), map.getZoom());
-            }, 50);
+            }, 100);
         }
-        function closePicker(){ document.getElementById('mapPicker').classList.add('hidden'); }
+        
+        function togglePickerStyle() {
+            if (!pickerMap) return;
+            
+            const btn = document.getElementById('pickerToggleBtn');
+            try {
+                if (pickerCurrentStyle === 'streets') {
+                    // Switch to satellite
+                    if (pickerMap.getLayer('osm-layer')) {
+                        pickerMap.removeLayer('osm-layer');
+                    }
+                    pickerMap.addLayer({
+                        'id': 'satellite-layer',
+                        'type': 'raster',
+                        'source': 'satellite-raster'
+                    });
+                    pickerCurrentStyle = 'satellite';
+                    btn.innerHTML = '<i class="fas fa-map" style="color: #666; font-size: 12px;"></i>';
+                } else {
+                    // Switch to streets
+                    if (pickerMap.getLayer('satellite-layer')) {
+                        pickerMap.removeLayer('satellite-layer');
+                    }
+                    pickerMap.addLayer({
+                        'id': 'osm-layer',
+                        'type': 'raster',
+                        'source': 'osm-raster'
+                    });
+                    pickerCurrentStyle = 'streets';
+                    btn.innerHTML = '<i class="fas fa-satellite" style="color: #666; font-size: 12px;"></i>';
+                }
+            } catch (error) {
+                console.error('Failed to toggle picker style:', error);
+            }
+        }
+        function closePicker(){ 
+            document.getElementById('mapPicker').classList.add('hidden'); 
+        }
         document.getElementById('btnMap').addEventListener('click', openPicker);
         document.getElementById('pickerClose').addEventListener('click', closePicker);
         document.querySelector('.map-picker-backdrop').addEventListener('click', closePicker);
 
         function drawCircle(){
-            isPolygonMode = false; polygonPoints = [];
-            if (drawnShape) { pickerMap.removeLayer(drawnShape); }
-            const center = pickerMap.getCenter();
-            const radius = Number(document.getElementById('pickerRadius').value || 200);
-            drawnShape = L.circle(center, {radius, color: '#2a8'}).addTo(pickerMap);
+            if (!pickerMap) return;
+            
+            isPolygonMode = false; 
+            polygonPoints = [];
+            
+            try {
+                // Remove existing shape
+                if (drawnShape) {
+                    pickerMap.removeLayer(drawnShape);
+                    drawnShape = null;
+                }
+                
+                const center = pickerMap.getCenter();
+                const radius = Number(document.getElementById('pickerRadius').value || 200);
+                
+                drawnShape = L.circle(center, {
+                    radius: radius,
+                    color: '#2a8',
+                    weight: 3,
+                    fillOpacity: 0.1
+                }).addTo(pickerMap);
+                
+            } catch (error) {
+                console.error('Failed to draw circle:', error);
+            }
         }
+        
         function drawPolygon(){
-            if (drawnShape) { pickerMap.removeLayer(drawnShape); }
-            drawnShape = L.polygon(polygonPoints, {color: '#2a8'}).addTo(pickerMap);
+            if (!pickerMap) return;
+            
+            try {
+                // Remove existing shape
+                if (drawnShape) {
+                    pickerMap.removeLayer(drawnShape);
+                    drawnShape = null;
+                }
+                
+                if (polygonPoints.length > 2) {
+                    drawnShape = L.polygon(polygonPoints, {
+                        color: '#2a8',
+                        weight: 3,
+                        fillOpacity: 0.1
+                    }).addTo(pickerMap);
+                }
+            } catch (error) {
+                console.error('Failed to draw polygon:', error);
+            }
         }
+        
         // Auto polygon cover (approximate) around currently visible bounds
         function autoCoverBounds() {
-            const b = pickerMap.getBounds();
-            const sw = b.getSouthWest();
-            const ne = b.getNorthEast();
-            const nw = L.latLng(ne.lat, sw.lng);
-            const se = L.latLng(sw.lat, ne.lng);
-            if (drawnShape) { pickerMap.removeLayer(drawnShape); }
-            drawnShape = L.polygon([sw, nw, ne, se], {color:'#2a8'}).addTo(pickerMap);
-            polygonPoints = [sw, nw, ne, se];
+            if (!pickerMap) return;
+            
+            try {
+                const bounds = pickerMap.getBounds();
+                const sw = bounds.getSouthWest();
+                const ne = bounds.getNorthEast();
+                const nw = L.latLng(ne.lat, sw.lng);
+                const se = L.latLng(sw.lat, ne.lng);
+                
+                polygonPoints = [[sw.lat, sw.lng], [nw.lat, nw.lng], [ne.lat, ne.lng], [se.lat, se.lng]];
+                drawPolygon();
+            } catch (error) {
+                console.error('Failed to auto cover bounds:', error);
+            }
         }
+        
         document.getElementById('pickerCircle').addEventListener('click', () => { drawCircle(); });
-        document.getElementById('pickerPolygon').addEventListener('click', () => { isPolygonMode = true; polygonPoints = []; if (drawnShape) { pickerMap.removeLayer(drawnShape);} });
+        document.getElementById('pickerPolygon').addEventListener('click', () => { 
+            isPolygonMode = true; 
+            polygonPoints = []; 
+            clearDrawnShape();
+        });
+        
+        document.getElementById('pickerAutoCover').addEventListener('click', () => { autoCoverBounds(); });
+        document.getElementById('pickerClear').addEventListener('click', () => { clearDrawnShape(); });
+        
+        function clearDrawnShape() {
+            if (drawnShape && pickerMap) { 
+                try {
+                    pickerMap.removeLayer(drawnShape); 
+                    drawnShape = null; 
+                } catch (error) {
+                    console.error('Failed to clear shape:', error);
+                }
+            }
+            
+            // Clear polygon point markers
+            if (polygonPointMarkers && polygonPointMarkers.length > 0) {
+                polygonPointMarkers.forEach(marker => {
+                    try {
+                        pickerMap.removeLayer(marker);
+                    } catch (error) {
+                        console.error('Failed to remove marker:', error);
+                    }
+                });
+                polygonPointMarkers = [];
+            }
+            
+            // Reset polygon mode and points
+            isPolygonMode = false;
+            polygonPoints = [];
+        }
         // Create a quick actions bar for automatic cover
         const footer = document.querySelector('.map-picker-footer .picker-controls');
         if (footer) {
@@ -1091,17 +1453,26 @@
                 headerTitleEl.textContent = configData.locName;
             }
 
-            // Add map marker
-            L.marker([configData.latitude, configData.longitude])
-                .addTo(cameraMarkers)
-                .bindPopup(configData.locName || `Camera ${slotNumber}`);
+            // Add map marker (MapLibre)
+            const marker = new maplibregl.Marker({
+                color: '#FF0000'
+            })
+            .setLngLat([configData.longitude, configData.latitude])
+            .setPopup(new maplibregl.Popup().setText(configData.locName || `Camera ${slotNumber}`))
+            .addTo(map);
             
-            // Add geofence if exists
+            // Store marker reference
+            cameraMarkers.push({
+                marker: marker,
+                slotNumber: slotNumber,
+                lat: configData.latitude,
+                lng: configData.longitude
+            });
+            
+            // Add geofence if exists (TODO: Implement for Mapbox)
+            // Note: Geofence drawing will need to be reimplemented for Mapbox GL JS
             if (drawnShape) {
-                const shape = (drawnShape instanceof L.Circle) 
-                    ? L.circle(drawnShape.getLatLng(), {radius: drawnShape.getRadius(), color:'#2a8'}) 
-                    : L.polygon(drawnShape.getLatLngs(), {color:'#2a8'});
-                shape.addTo(geofenceLayer);
+                console.log('Geofence drawing available in picker - will be added to main map in future update');
             }
             
             // Update configure button states
@@ -1127,21 +1498,33 @@
                 headerTitleEl.textContent = configData.locName;
             }
 
-            // Update map marker
+            // Update map marker (Mapbox)
             if (oldConfig) {
                 // Remove old marker
-                cameraMarkers.eachLayer(layer => {
-                    if (layer.getLatLng().lat === oldConfig.latitude && 
-                        layer.getLatLng().lng === oldConfig.longitude) {
-                        cameraMarkers.removeLayer(layer);
-                    }
-                });
+                const markerIndex = cameraMarkers.findIndex(item => 
+                    item.lat === oldConfig.latitude && item.lng === oldConfig.longitude
+                );
+                if (markerIndex !== -1) {
+                    cameraMarkers[markerIndex].marker.remove();
+                    cameraMarkers.splice(markerIndex, 1);
+                }
             }
             
             // Add new marker
-            L.marker([configData.latitude, configData.longitude])
-                .addTo(cameraMarkers)
-                .bindPopup(configData.locName || `Camera ${slotNumber}`);
+            const marker = new maplibregl.Marker({
+                color: '#FF0000'
+            })
+            .setLngLat([configData.longitude, configData.latitude])
+            .setPopup(new maplibregl.Popup().setText(configData.locName || `Camera ${slotNumber}`))
+            .addTo(map);
+            
+            // Store marker reference
+            cameraMarkers.push({
+                marker: marker,
+                slotNumber: slotNumber,
+                lat: configData.latitude,
+                lng: configData.longitude
+            });
                 
             // Update configure button states
             updateConfigureButtonStates();
@@ -1170,13 +1553,14 @@
                 headerTitleEl.textContent = `Camera ${slotNumber}`;
             }
             
-            // Remove map marker
-            cameraMarkers.eachLayer(layer => {
-                if (layer.getLatLng().lat === config.latitude && 
-                    layer.getLatLng().lng === config.longitude) {
-                    cameraMarkers.removeLayer(layer);
-                }
-            });
+            // Remove map marker (Mapbox)
+            const markerIndex = cameraMarkers.findIndex(item => 
+                item.lat === config.latitude && item.lng === config.longitude
+            );
+            if (markerIndex !== -1) {
+                cameraMarkers[markerIndex].marker.remove();
+                cameraMarkers.splice(markerIndex, 1);
+            }
             
             // Clear any detection canvas overlays
             const detectionCanvas = document.getElementById(`det${slotNumber}`);
