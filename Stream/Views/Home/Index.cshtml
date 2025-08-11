@@ -521,6 +521,16 @@
             3: {row: 'row-3', orig: 'camera3-original', ai: 'camera3-ai', lu: 'lu-3'}
         };
 
+        // Camera configurations storage
+        const cameraConfigs = {
+            1: null,
+            2: null,
+            3: null
+        };
+
+        // Variable to track current editing mode
+        let currentEditingSection = null;
+
         // Update charts with random data periodically
         setInterval(() => {
             charts.forEach(chart => {
@@ -659,6 +669,44 @@
         }
         bindDemoHandlers();
 
+        // Configure button handlers
+        function bindConfigureHandlers() {
+            document.querySelectorAll('.dropdown-item[data-action="configure"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sectionIdx = parseInt(btn.getAttribute('data-section'));
+                    
+                    // Check if camera exists in this section
+                    if (!cameraConfigs[sectionIdx]) {
+                        alert('No camera configuration found for this section. Please add a camera first.');
+                        return;
+                    }
+                    
+                    currentEditingSection = sectionIdx;
+                    openConfigureModal(sectionIdx);
+                });
+            });
+        }
+        bindConfigureHandlers();
+        
+        // Function to update configure button states
+        function updateConfigureButtonStates() {
+            document.querySelectorAll('.dropdown-item[data-action="configure"]').forEach(btn => {
+                const sectionIdx = parseInt(btn.getAttribute('data-section'));
+                if (cameraConfigs[sectionIdx]) {
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                    btn.title = 'Configure this camera';
+                } else {
+                    btn.style.opacity = '0.5';
+                    btn.style.pointerEvents = 'auto'; // Keep enabled to show the alert
+                    btn.title = 'No camera configured for this section';
+                }
+            });
+        }
+        
+        // Initialize button states
+        updateConfigureButtonStates();
+
         // Example: function to programmatically set gauge value (0-100)
         function setGauge2(percent) {
             console.log('setGauge2 called with:', percent);
@@ -729,8 +777,62 @@
 
         // Connections modal logic
         const connectionModal = document.getElementById('connectionModal');
-        function openConnections() { connectionModal.classList.remove('hidden'); }
-        function closeConnections() { connectionModal.classList.add('hidden'); }
+        function openConnections() { 
+            currentEditingSection = null;
+            updateModalTitle(false);
+            clearFormFields();
+            connectionModal.classList.remove('hidden'); 
+        }
+        function openConfigureModal(sectionIdx) {
+            currentEditingSection = sectionIdx;
+            updateModalTitle(true, sectionIdx);
+            populateFormFields(sectionIdx);
+            connectionModal.classList.remove('hidden');
+        }
+        function closeConnections() { 
+            currentEditingSection = null;
+            connectionModal.classList.add('hidden'); 
+        }
+        
+        function updateModalTitle(isEditing, sectionIdx = null) {
+            const titleElement = document.querySelector('.modal-title');
+            const buttonElement = document.getElementById('btnAddCamera');
+            if (isEditing && sectionIdx) {
+                titleElement.textContent = `STREAM | Configure Camera ${sectionIdx}`;
+                buttonElement.textContent = '💾 Update Camera';
+            } else {
+                titleElement.textContent = 'STREAM | Add Camera';
+                buttonElement.textContent = '📷 Add Camera';
+            }
+        }
+        
+        function clearFormFields() {
+            ['ipAddress','port','channel','username','password','locName','latitude','longitude'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const useAsRef = document.getElementById('useAsRef');
+            if (useAsRef) useAsRef.checked = false;
+            // Reset channel to default value
+            const channel = document.getElementById('channel');
+            if (channel) channel.value = 'Streaming/Channels/101';
+        }
+        
+        function populateFormFields(sectionIdx) {
+            const config = cameraConfigs[sectionIdx];
+            if (config) {
+                document.getElementById('ipAddress').value = config.ipAddress || '';
+                document.getElementById('port').value = config.port || '';
+                document.getElementById('channel').value = config.channel || 'Streaming/Channels/101';
+                document.getElementById('username').value = config.username || '';
+                document.getElementById('password').value = config.password || '';
+                document.getElementById('locName').value = config.locName || '';
+                document.getElementById('latitude').value = config.latitude || '';
+                document.getElementById('longitude').value = config.longitude || '';
+                const useAsRef = document.getElementById('useAsRef');
+                if (useAsRef) useAsRef.checked = config.useAsRef || false;
+            }
+        }
         document.getElementById('menuConnection').addEventListener('click', openConnections);
         document.getElementById('connClose').addEventListener('click', closeConnections);
         connectionModal.querySelector('.modal-backdrop').addEventListener('click', closeConnections);
@@ -917,40 +1019,128 @@
             const canvas = document.getElementById('det2'); if (canvas) { const ctx = canvas.getContext('2d'); ctx && ctx.clearRect(0,0,canvas.width, canvas.height); }
         });
         document.getElementById('btnClear').addEventListener('click', () => {
-            ['ipAddress','port','channel','username','password','locName','latitude','longitude'].forEach(id => { const el = document.getElementById(id); if (el) el.value=''; });
+            clearFormFields();
             document.getElementById('connPreview').innerHTML = '';
+            // Reset to add mode if we were editing
+            if (currentEditingSection) {
+                currentEditingSection = null;
+                updateModalTitle(false);
+            }
         });
 
-        // Add camera to next available slot and map
+        // Add/Update camera functionality
         let nextSlot = 1;
         document.getElementById('btnAddCamera').addEventListener('click', () => {
-            if (nextSlot > 3) return closeConnections();
             const url = buildStreamUrl();
             const lat = parseFloat(document.getElementById('latitude').value);
             const lng = parseFloat(document.getElementById('longitude').value);
             const locName = (document.getElementById('locName').value || '').trim();
+            const useAsRef = document.getElementById('useAsRef').checked;
+            
             if (!url || Number.isNaN(lat) || Number.isNaN(lng)) return;
 
-            const slot = cameraSlots[nextSlot];
-            document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
-            document.getElementById('no-cameras').classList.add('hidden');
-            document.getElementById(slot.orig).src = url;
-            document.getElementById(slot.ai).src = url;
-            setLastUpdate(slot.lu);
+            // Get form data for configuration storage
+            const configData = {
+                ipAddress: document.getElementById('ipAddress').value,
+                port: document.getElementById('port').value,
+                channel: document.getElementById('channel').value,
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                locName: locName,
+                latitude: lat,
+                longitude: lng,
+                useAsRef: useAsRef,
+                url: url
+            };
 
-            // Update location header title with provided name
-            const headerTitleEl = document.querySelector(`#section-${nextSlot} .panel-title`);
-            if (headerTitleEl && locName) headerTitleEl.textContent = locName;
-
-            // Map marker and geofence copy from picker
-            L.marker([lat, lng]).addTo(cameraMarkers).bindPopup(locName || `Camera ${nextSlot}`);
-            if (drawnShape) {
-                const shape = (drawnShape instanceof L.Circle) ? L.circle(drawnShape.getLatLng(), {radius: drawnShape.getRadius(), color:'#2a8'}) : L.polygon(drawnShape.getLatLngs(), {color:'#2a8'});
-                shape.addTo(geofenceLayer);
+            if (currentEditingSection) {
+                // Update existing camera
+                updateCamera(currentEditingSection, configData);
+            } else {
+                // Add new camera
+                if (nextSlot > 3) return closeConnections();
+                addNewCamera(nextSlot, configData);
+                nextSlot += 1;
             }
-            nextSlot += 1;
+            
             closeConnections();
         });
+        
+        function addNewCamera(slotNumber, configData) {
+            const slot = cameraSlots[slotNumber];
+            
+            // Save configuration
+            cameraConfigs[slotNumber] = configData;
+            
+            // Show camera section
+            document.getElementById(`section-${slotNumber}`).classList.remove('hidden');
+            document.getElementById('no-cameras').classList.add('hidden');
+            
+            // Set camera sources
+            document.getElementById(slot.orig).src = configData.url;
+            document.getElementById(slot.ai).src = configData.url;
+            setLastUpdate(slot.lu);
+
+            // Update location header title
+            const headerTitleEl = document.querySelector(`#section-${slotNumber} .panel-title`);
+            if (headerTitleEl && configData.locName) {
+                headerTitleEl.textContent = configData.locName;
+            }
+
+            // Add map marker
+            L.marker([configData.latitude, configData.longitude])
+                .addTo(cameraMarkers)
+                .bindPopup(configData.locName || `Camera ${slotNumber}`);
+            
+            // Add geofence if exists
+            if (drawnShape) {
+                const shape = (drawnShape instanceof L.Circle) 
+                    ? L.circle(drawnShape.getLatLng(), {radius: drawnShape.getRadius(), color:'#2a8'}) 
+                    : L.polygon(drawnShape.getLatLngs(), {color:'#2a8'});
+                shape.addTo(geofenceLayer);
+            }
+            
+            // Update configure button states
+            updateConfigureButtonStates();
+        }
+        
+        function updateCamera(slotNumber, configData) {
+            const slot = cameraSlots[slotNumber];
+            
+            // Update configuration
+            const oldConfig = cameraConfigs[slotNumber];
+            cameraConfigs[slotNumber] = configData;
+            
+            // Update camera sources
+            document.getElementById(slot.orig).src = configData.url;
+            document.getElementById(slot.ai).src = configData.url;
+            setLastUpdate(slot.lu);
+
+            // Update location header title
+            const headerTitleEl = document.querySelector(`#section-${slotNumber} .panel-title`);
+            if (headerTitleEl && configData.locName) {
+                headerTitleEl.textContent = configData.locName;
+            }
+
+            // Update map marker
+            if (oldConfig) {
+                // Remove old marker
+                cameraMarkers.eachLayer(layer => {
+                    if (layer.getLatLng().lat === oldConfig.latitude && 
+                        layer.getLatLng().lng === oldConfig.longitude) {
+                        cameraMarkers.removeLayer(layer);
+                    }
+                });
+            }
+            
+            // Add new marker
+            L.marker([configData.latitude, configData.longitude])
+                .addTo(cameraMarkers)
+                .bindPopup(configData.locName || `Camera ${slotNumber}`);
+                
+            // Update configure button states
+            updateConfigureButtonStates();
+        }
 
         // Settings Modal JavaScript
         let roboflowApiKey = 'FcbsUMiVOoBJ2B4GXYkl'; // Your API key
