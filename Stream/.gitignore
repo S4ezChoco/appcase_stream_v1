@@ -1,7 +1,9 @@
 # .gitignore for ASP.NET Core + Python (YOLOv7)
 # Build and publish folders
 bin/
+bin/**
 obj/
+obj/**
 
 # User-specific files
 *.user
