@@ -1,0 +1,1 @@
+gusto ko kapag pag nag add ako ng camera basta dapat gumagana sa laaht yong sa camera 2 yong sa ai detection hindi lang sa isa  dapat sa lahat and ayoko ng mock 
