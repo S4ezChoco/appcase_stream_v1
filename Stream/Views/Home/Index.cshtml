@@ -25,13 +25,7 @@
 
 <div class="dashboard-container">
     <div class="left-section">
-        <div id="no-cameras" class="no-cameras">
-            <div style="text-align: center;">
-                <div style="font-size: 24px; margin-bottom: 10px;">📷</div>
-                <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;">No Cameras Available</div>
-                <div style="font-size: 14px; color: #868e96;">Click "Connection" in the menu to add your first camera</div>
-            </div>
-        </div>
+        <div id="no-cameras" class="no-cameras">No Camera</div>
         <div class="location-section" id="section-1">
             <div class="panel-header">
                 <div class="panel-title">BINAG (Bohol)</div>
@@ -44,7 +38,6 @@
                         <button class="dropdown-item" data-action="configure" data-section="1">⚙ Configure</button>
                         <button class="dropdown-item" data-action="capture" data-section="1">📸 Capture</button>
                         <div class="dropdown-sep"></div>
-                        <button class="dropdown-item" data-action="delete" data-section="1" style="color: #dc3545;">🗑️ Delete Camera</button>
                         <button class="dropdown-item" data-action="demo" data-section="1">🎬 Demo</button>
                     </div>
                 </div>
@@ -61,6 +54,24 @@
                         <span class="no-signal-text">No Signal</span>
                     </div>
                     <img src="" alt="Camera 1 AI" id="camera1-ai" class="camera-img">
+                    <canvas id="det1" class="det-overlay"></canvas>
+                    <!-- Gauge overlay for Camera 1 (right side) -->
+                    <div class="gauge-overlay" id="gauge1">
+                        <div class="gauge-scale">
+                            <span>90</span>
+                            <span>80</span>
+                            <span>70</span>
+                            <span>60</span>
+                            <span>50</span>
+                            <span>40</span>
+                            <span>30</span>
+                            <span>20</span>
+                            <span>10</span>
+                        </div>
+                        <div class="gauge-bar">
+                            <div class="gauge-fill" id="gauge1-fill" style="height: 10%"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="analytics-section compact">
                     <div class="analytics-header-compact">
@@ -90,7 +101,6 @@
                         <button class="dropdown-item" data-action="configure" data-section="2">⚙ Configure</button>
                         <button class="dropdown-item" data-action="capture" data-section="2">📸 Capture</button>
                         <div class="dropdown-sep"></div>
-                        <button class="dropdown-item" data-action="delete" data-section="2" style="color: #dc3545;">🗑️ Delete Camera</button>
                         <button class="dropdown-item" data-action="demo" data-section="2">🎬 Demo</button>
                     </div>
                 </div>
@@ -154,7 +164,6 @@
                         <button class="dropdown-item" data-action="configure" data-section="3">⚙ Configure</button>
                         <button class="dropdown-item" data-action="capture" data-section="3">📸 Capture</button>
                         <div class="dropdown-sep"></div>
-                        <button class="dropdown-item" data-action="delete" data-section="3" style="color: #dc3545;">🗑️ Delete Camera</button>
                         <button class="dropdown-item" data-action="demo" data-section="3">🎬 Demo</button>
                     </div>
                 </div>
@@ -171,6 +180,24 @@
                         <span class="no-signal-text">No Signal</span>
                     </div>
                     <img src="" alt="Camera 3 AI" id="camera3-ai" class="camera-img">
+                    <canvas id="det3" class="det-overlay"></canvas>
+                    <!-- Gauge overlay for Camera 3 (right side) -->
+                    <div class="gauge-overlay" id="gauge3">
+                        <div class="gauge-scale">
+                            <span>90</span>
+                            <span>80</span>
+                            <span>70</span>
+                            <span>60</span>
+                            <span>50</span>
+                            <span>40</span>
+                            <span>30</span>
+                            <span>20</span>
+                            <span>10</span>
+                        </div>
+                        <div class="gauge-bar">
+                            <div class="gauge-fill" id="gauge3-fill" style="height: 10%"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="analytics-section compact">
                     <div class="analytics-header-compact">
@@ -597,8 +624,53 @@
         const geofenceMarkers = [];
 
         // Hide all sections initially (no cameras yet) and show placeholder
-        ['section-1','section-2','section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        document.getElementById('no-cameras').classList.remove('hidden');
+        ['section-1','section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        // Keep section-2 visible for testing
+        document.getElementById('section-2').classList.remove('hidden');
+        document.getElementById('no-cameras').classList.add('hidden');
+
+        // Auto-load demo images for Camera 2 for testing (keeping only camera 2 visible for demo)
+        setTimeout(() => {
+            const demoImageUrl = 'https://picsum.photos/640/360?random=1';
+            document.getElementById('camera2-original').src = demoImageUrl;
+            document.getElementById('camera2-ai').src = demoImageUrl;
+            document.getElementById('camera2-nosignal').style.display = 'none';
+            document.getElementById('camera2-ai-nosignal').style.display = 'none';
+
+            // Trigger detection after image loads
+            setTimeout(async () => {
+                try {
+                    const aiEl = document.getElementById('camera2-ai');
+                    if (aiEl && aiEl.complete) {
+                        const canvas = document.createElement('canvas');
+                        const w = aiEl.naturalWidth || 640;
+                        const h = aiEl.naturalHeight || 360;
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(aiEl, 0, 0, w, h);
+
+                        const imageData = canvas.toDataURL('image/jpeg');
+                        console.log('Auto-triggering detection for demo image...');
+                        const resp = await fetch('http://127.0.0.1:5001/detect', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ imageData })
+                        });
+
+                        if (resp.ok) {
+                            const result = await resp.json();
+                            console.log('Auto-detection result:', result);
+                            if (Array.isArray(result.detections)) {
+                                renderDetections(2, result.detections, result.frameW, result.frameH);
+                                if (typeof result.gaugePct === 'number') setGauge(2, result.gaugePct);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log('Auto-detection error:', error);
+                }
+            }, 2000);
+        }, 1000);
 
         // Removed an unused single analytics chart setup to avoid errors
 
@@ -663,16 +735,6 @@
             2: {row: 'row-2', orig: 'camera2-original', ai: 'camera2-ai', lu: 'lu-2'},
             3: {row: 'row-3', orig: 'camera3-original', ai: 'camera3-ai', lu: 'lu-3'}
         };
-
-        // Camera configurations storage
-        const cameraConfigs = {
-            1: null,
-            2: null,
-            3: null
-        };
-
-        // Variable to track current editing mode
-        let currentEditingSection = null;
 
         // Update charts with random data periodically
         setInterval(() => {
@@ -758,7 +820,7 @@
                             if (ns) ns.style.display = 'none';
                         });
 
-                        // Auto-trigger AI detection for any camera with demo content
+                        // Auto-trigger AI detection for any camera
                         setTimeout(async () => {
                             try {
                                 const aiEl = document.getElementById(`camera${sectionIdx}-ai`);
@@ -776,7 +838,7 @@
                                     }
 
                                     const imageData = canvas.toDataURL('image/jpeg');
-                                    console.log('Sending detection request...');
+                                    console.log(`Sending detection request for camera ${sectionIdx}...`);
                                     const resp = await fetch('http://127.0.0.1:5001/detect', {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
@@ -786,16 +848,13 @@
                                     console.log('Detection response status:', resp.status);
                                     if (resp.ok) {
                                         const result = await resp.json();
-                                        console.log('Detection result:', result);
+                                        console.log(`Detection result for camera ${sectionIdx}:`, result);
                                         if (Array.isArray(result.detections)) {
                                             console.log('Rendering detections:', result.detections.length);
-                                            // Use dynamic detection rendering based on section
-                                            if (sectionIdx === '2') {
-                                                renderDetections2(result.detections, result.frameW, result.frameH);
-                                                if (typeof result.gaugePct === 'number') {
-                                                    console.log('Setting gauge to:', result.gaugePct);
-                                                    setGauge2(result.gaugePct);
-                                                }
+                                            renderDetections(parseInt(sectionIdx), result.detections, result.frameW, result.frameH);
+                                            if (typeof result.gaugePct === 'number') {
+                                                console.log('Setting gauge to:', result.gaugePct);
+                                                setGauge(parseInt(sectionIdx), result.gaugePct);
                                             }
                                         }
                                     } else {
@@ -803,7 +862,7 @@
                                     }
                                 }
                             } catch (error) {
-                                console.log('Detection error:', error);
+                                console.log(`Detection error for camera ${sectionIdx}:`, error);
                             }
                         }, 1000); // Wait 1 second for media to load
                     };
@@ -813,105 +872,33 @@
         }
         bindDemoHandlers();
 
-        // Configure button handlers
-        function bindConfigureHandlers() {
-            document.querySelectorAll('.dropdown-item[data-action="configure"]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sectionIdx = parseInt(btn.getAttribute('data-section'));
-                    
-                    // Check if camera exists in this section
-                    if (!cameraConfigs[sectionIdx]) {
-                        alert('No camera configuration found for this section. Please add a camera first.');
-                        return;
-                    }
-                    
-                    currentEditingSection = sectionIdx;
-                    openConfigureModal(sectionIdx);
-                });
-            });
-        }
-        bindConfigureHandlers();
-        
-        // Delete button handlers
-        function bindDeleteHandlers() {
-            document.querySelectorAll('.dropdown-item[data-action="delete"]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sectionIdx = parseInt(btn.getAttribute('data-section'));
-                    
-                    // Check if camera exists in this section
-                    if (!cameraConfigs[sectionIdx]) {
-                        alert('No camera found in this section to delete.');
-                        return;
-                    }
-                    
-                    // Confirmation dialog
-                    const cameraName = cameraConfigs[sectionIdx].locName || `Camera ${sectionIdx}`;
-                    if (confirm(`Are you sure you want to delete "${cameraName}"?\n\nThis action cannot be undone.`)) {
-                        deleteCamera(sectionIdx);
-                    }
-                });
-            });
-        }
-        bindDeleteHandlers();
-        
-        // Function to update configure button states
-        function updateConfigureButtonStates() {
-            document.querySelectorAll('.dropdown-item[data-action="configure"]').forEach(btn => {
-                const sectionIdx = parseInt(btn.getAttribute('data-section'));
-                if (cameraConfigs[sectionIdx]) {
-                    btn.style.opacity = '1';
-                    btn.style.pointerEvents = 'auto';
-                    btn.title = 'Configure this camera';
-                } else {
-                    btn.style.opacity = '0.5';
-                    btn.style.pointerEvents = 'auto'; // Keep enabled to show the alert
-                    btn.title = 'No camera configured for this section';
-                }
-            });
-        }
-        
-        // Function to update delete button states
-        function updateDeleteButtonStates() {
-            document.querySelectorAll('.dropdown-item[data-action="delete"]').forEach(btn => {
-                const sectionIdx = parseInt(btn.getAttribute('data-section'));
-                if (cameraConfigs[sectionIdx]) {
-                    btn.style.opacity = '1';
-                    btn.style.pointerEvents = 'auto';
-                    btn.title = 'Delete this camera';
-                } else {
-                    btn.style.opacity = '0.5';
-                    btn.style.pointerEvents = 'auto'; // Keep enabled to show the alert
-                    btn.title = 'No camera configured for this section';
-                }
-            });
-        }
-        
-        // Initialize button states
-        updateConfigureButtonStates();
-        updateDeleteButtonStates();
-
-        // Example: function to programmatically set gauge value (0-100)
-        function setGauge2(percent) {
-            console.log('setGauge2 called with:', percent);
+        // Example: function to programmatically set gauge value (0-100) for any camera
+        function setGauge(cameraSlot, percent) {
+            console.log(`setGauge called for camera ${cameraSlot} with:`, percent);
             const clamped = Math.max(0, Math.min(100, percent));
-            const fill = document.getElementById('gauge2-fill');
+            const fill = document.getElementById(`gauge${cameraSlot}-fill`);
             console.log('Gauge fill element:', fill);
             if (fill) {
                 fill.style.height = clamped + '%';
                 console.log('Set gauge height to:', clamped + '%');
             } else {
-                console.error('Gauge fill element not found!');
+                console.error(`Gauge fill element for camera ${cameraSlot} not found!`);
             }
         }
 
-        // Draw detections (boxes/labels) on overlay canvas for Camera 2
-        function renderDetections2(dets, srcW, srcH) {
-            console.log('renderDetections2 called with:', dets.length, 'detections');
-            const canvas = document.getElementById('det2');
-            const img = document.getElementById('camera2-ai');
+        // Legacy function for backward compatibility
+        function setGauge2(percent) {
+            setGauge(2, percent);
+        }
+
+        // Draw detections (boxes/labels) on overlay canvas for any camera
+        function renderDetections(cameraSlot, dets, srcW, srcH) {
+            console.log(`renderDetections called for camera ${cameraSlot} with:`, dets.length, 'detections');
+            const canvas = document.getElementById(`det${cameraSlot}`);
+            const img = document.getElementById(`camera${cameraSlot}-ai`);
             console.log('Canvas:', canvas, 'Image:', img);
             if (!canvas || !img) {
-                console.error('Missing canvas or image element');
+                console.error(`Missing canvas or image element for camera ${cameraSlot}`);
                 return;
             }
             // Match overlay to on-screen size
@@ -936,8 +923,24 @@
             });
         }
 
-        async function runDetectionFromCurrentMedia() {
-            const aiEl = document.getElementById('camera2-ai');
+        // Legacy function for backward compatibility
+        function renderDetections2(dets, srcW, srcH) {
+            renderDetections(2, dets, srcW, srcH);
+        }
+
+        async function runDetectionFromCurrentMedia(cameraSlot = null) {
+            // If no specific slot provided, run detection on all active cameras
+            if (cameraSlot === null) {
+                for (let slot = 1; slot <= 3; slot++) {
+                    const section = document.getElementById(`section-${slot}`);
+                    if (section && !section.classList.contains('hidden')) {
+                        await runDetectionFromCurrentMedia(slot);
+                    }
+                }
+                return;
+            }
+
+            const aiEl = document.getElementById(`camera${cameraSlot}-ai`);
             if (!aiEl) return;
             const canvas = document.createElement('canvas');
             const w = aiEl.clientWidth || aiEl.videoWidth || aiEl.naturalWidth || 640;
@@ -952,70 +955,16 @@
                 const resp = await fetch('http://127.0.0.1:5001/detect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageData })});
                 if (resp.ok) {
                     const result = await resp.json();
-                    if (Array.isArray(result.detections)) renderDetections2(result.detections);
-                    if (typeof result.gaugePct === 'number') setGauge2(result.gaugePct);
+                    if (Array.isArray(result.detections)) renderDetections(cameraSlot, result.detections, result.frameW, result.frameH);
+                    if (typeof result.gaugePct === 'number') setGauge(cameraSlot, result.gaugePct);
                 }
             } catch {}
         }
 
         // Connections modal logic
         const connectionModal = document.getElementById('connectionModal');
-        function openConnections() { 
-            currentEditingSection = null;
-            updateModalTitle(false);
-            clearFormFields();
-            connectionModal.classList.remove('hidden'); 
-        }
-        function openConfigureModal(sectionIdx) {
-            currentEditingSection = sectionIdx;
-            updateModalTitle(true, sectionIdx);
-            populateFormFields(sectionIdx);
-            connectionModal.classList.remove('hidden');
-        }
-        function closeConnections() { 
-            currentEditingSection = null;
-            connectionModal.classList.add('hidden'); 
-        }
-        
-        function updateModalTitle(isEditing, sectionIdx = null) {
-            const titleElement = document.querySelector('.modal-title');
-            const buttonElement = document.getElementById('btnAddCamera');
-            if (isEditing && sectionIdx) {
-                titleElement.textContent = `STREAM | Configure Camera ${sectionIdx}`;
-                buttonElement.textContent = '💾 Update Camera';
-            } else {
-                titleElement.textContent = 'STREAM | Add Camera';
-                buttonElement.textContent = '📷 Add Camera';
-            }
-        }
-        
-        function clearFormFields() {
-            ['ipAddress','port','channel','username','password','locName','latitude','longitude'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = '';
-            });
-            const useAsRef = document.getElementById('useAsRef');
-            if (useAsRef) useAsRef.checked = false;
-            // Reset channel to default value
-            const channel = document.getElementById('channel');
-            if (channel) channel.value = 'Streaming/Channels/101';
-        }
-        
-        function populateFormFields(sectionIdx) {
-            const config = cameraConfigs[sectionIdx];
-            if (config) {
-                document.getElementById('ipAddress').value = config.ipAddress || '';
-                document.getElementById('port').value = config.port || '';
-                document.getElementById('channel').value = config.channel || 'Streaming/Channels/101';
-                document.getElementById('username').value = config.username || '';
-                document.getElementById('password').value = config.password || '';
-                document.getElementById('locName').value = config.locName || '';
-                document.getElementById('latitude').value = config.latitude || '';
-                document.getElementById('longitude').value = config.longitude || '';
-                const useAsRef = document.getElementById('useAsRef');
-                if (useAsRef) useAsRef.checked = config.useAsRef || false;
-            }
-        }
+        function openConnections() { connectionModal.classList.remove('hidden'); }
+        function closeConnections() { connectionModal.classList.add('hidden'); }
         document.getElementById('menuConnection').addEventListener('click', openConnections);
         document.getElementById('connClose').addEventListener('click', closeConnections);
         connectionModal.querySelector('.modal-backdrop').addEventListener('click', closeConnections);
@@ -1370,220 +1319,145 @@
                 if (resp.ok) {
                     const result = await resp.json();
                     if (Array.isArray(result.detections)) {
-                        renderDetections2(result.detections, result.frameW, result.frameH);
-                        if (typeof result.gaugePct === 'number') setGauge2(result.gaugePct);
+                        renderDetections(2, result.detections, result.frameW, result.frameH);
+                        if (typeof result.gaugePct === 'number') setGauge(2, result.gaugePct);
                     }
                 }
             } catch {}
-            // Schedule periodic detection updates while preview is visible
+            // Schedule periodic detection updates for all active cameras
             if (window.__detInterval) clearInterval(window.__detInterval);
-            window.__detInterval = setInterval(runDetectionFromCurrentMedia, 2000);
+            window.__detInterval = setInterval(() => runDetectionFromCurrentMedia(), 2000);
         });
         document.getElementById('btnStop').addEventListener('click', () => {
             document.getElementById('connPreview').innerHTML = '';
             if (window.__detInterval) { clearInterval(window.__detInterval); window.__detInterval = null; }
-            const canvas = document.getElementById('det2'); if (canvas) { const ctx = canvas.getContext('2d'); ctx && ctx.clearRect(0,0,canvas.width, canvas.height); }
-        });
-        document.getElementById('btnClear').addEventListener('click', () => {
-            clearFormFields();
-            document.getElementById('connPreview').innerHTML = '';
-            // Reset to add mode if we were editing
-            if (currentEditingSection) {
-                currentEditingSection = null;
-                updateModalTitle(false);
+            // Clear all detection canvases
+            for (let i = 1; i <= 3; i++) {
+                const canvas = document.getElementById(`det${i}`);
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    ctx && ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
             }
         });
+        document.getElementById('btnClear').addEventListener('click', () => {
+            ['ipAddress','port','channel','username','password','locName','latitude','longitude'].forEach(id => { const el = document.getElementById(id); if (el) el.value=''; });
+            document.getElementById('connPreview').innerHTML = '';
+        });
 
-        // Add/Update camera functionality
+        // Add camera to next available slot and map
         let nextSlot = 1;
         document.getElementById('btnAddCamera').addEventListener('click', () => {
+            if (nextSlot > 3) return closeConnections();
             const url = buildStreamUrl();
             const lat = parseFloat(document.getElementById('latitude').value);
             const lng = parseFloat(document.getElementById('longitude').value);
             const locName = (document.getElementById('locName').value || '').trim();
-            const useAsRef = document.getElementById('useAsRef').checked;
-            
             if (!url || Number.isNaN(lat) || Number.isNaN(lng)) return;
 
-            // Get form data for configuration storage
-            const configData = {
-                ipAddress: document.getElementById('ipAddress').value,
-                port: document.getElementById('port').value,
-                channel: document.getElementById('channel').value,
-                username: document.getElementById('username').value,
-                password: document.getElementById('password').value,
-                locName: locName,
-                latitude: lat,
-                longitude: lng,
-                useAsRef: useAsRef,
-                url: url
-            };
-
-            if (currentEditingSection) {
-                // Update existing camera
-                updateCamera(currentEditingSection, configData);
-            } else {
-                // Add new camera
-                if (nextSlot > 3) return closeConnections();
-                addNewCamera(nextSlot, configData);
-                nextSlot += 1;
-            }
-            
-            closeConnections();
-        });
-        
-        function addNewCamera(slotNumber, configData) {
-            const slot = cameraSlots[slotNumber];
-            
-            // Save configuration
-            cameraConfigs[slotNumber] = configData;
-            
-            // Show camera section
-            document.getElementById(`section-${slotNumber}`).classList.remove('hidden');
+            const slot = cameraSlots[nextSlot];
+            document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
             document.getElementById('no-cameras').classList.add('hidden');
-            
-            // Set camera sources
-            document.getElementById(slot.orig).src = configData.url;
-            document.getElementById(slot.ai).src = configData.url;
+            document.getElementById(slot.orig).src = url;
+            document.getElementById(slot.ai).src = url;
             setLastUpdate(slot.lu);
 
-            // Update location header title
-            const headerTitleEl = document.querySelector(`#section-${slotNumber} .panel-title`);
-            if (headerTitleEl && configData.locName) {
-                headerTitleEl.textContent = configData.locName;
-            }
+            // Update location header title with provided name
+            const headerTitleEl = document.querySelector(`#section-${nextSlot} .panel-title`);
+            if (headerTitleEl && locName) headerTitleEl.textContent = locName;
 
-            // Add map marker (MapLibre)
-            const marker = new maplibregl.Marker({
-                color: '#FF0000'
-            })
-            .setLngLat([configData.longitude, configData.latitude])
-            .setPopup(new maplibregl.Popup().setText(configData.locName || `Camera ${slotNumber}`))
-            .addTo(map);
-            
-            // Store marker reference
-            cameraMarkers.push({
-                marker: marker,
-                slotNumber: slotNumber,
-                lat: configData.latitude,
-                lng: configData.longitude
-            });
-            
-            // Add geofence if exists (TODO: Implement for Mapbox)
-            // Note: Geofence drawing will need to be reimplemented for Mapbox GL JS
-            if (drawnShape) {
-                console.log('Geofence drawing available in picker - will be added to main map in future update');
+            // Initialize AI detection for this camera after a short delay
+            setTimeout(() => {
+                runDetectionFromCurrentMedia(nextSlot);
+            }, 2000);
+
+            // Add map marker to main map (MapLibre GL)
+            if (map && map.loaded && map.loaded()) {
+                const marker = new maplibregl.Marker({
+                    color: '#FF0000'
+                })
+                .setLngLat([lng, lat])
+                .setPopup(new maplibregl.Popup().setText(locName || `Camera ${nextSlot}`))
+                .addTo(map);
+                
+                // Store marker reference
+                cameraMarkers.push({
+                    marker: marker,
+                    slotNumber: nextSlot,
+                    lat: lat,
+                    lng: lng
+                });
             }
             
-            // Update configure button states
-            updateConfigureButtonStates();
-            updateDeleteButtonStates();
-        }
-        
-        function updateCamera(slotNumber, configData) {
-            const slot = cameraSlots[slotNumber];
-            
-            // Update configuration
-            const oldConfig = cameraConfigs[slotNumber];
-            cameraConfigs[slotNumber] = configData;
-            
-            // Update camera sources
-            document.getElementById(slot.orig).src = configData.url;
-            document.getElementById(slot.ai).src = configData.url;
-            setLastUpdate(slot.lu);
-
-            // Update location header title
-            const headerTitleEl = document.querySelector(`#section-${slotNumber} .panel-title`);
-            if (headerTitleEl && configData.locName) {
-                headerTitleEl.textContent = configData.locName;
-            }
-
-            // Update map marker (Mapbox)
-            if (oldConfig) {
-                // Remove old marker
-                const markerIndex = cameraMarkers.findIndex(item => 
-                    item.lat === oldConfig.latitude && item.lng === oldConfig.longitude
-                );
-                if (markerIndex !== -1) {
-                    cameraMarkers[markerIndex].marker.remove();
-                    cameraMarkers.splice(markerIndex, 1);
+            // Copy geofence from picker if exists
+            if (drawnShape && pickerMap) {
+                try {
+                    let geoJson = null;
+                    
+                    if (drawnShape instanceof L.Circle) {
+                        // Convert Leaflet circle to GeoJSON polygon
+                        const center = drawnShape.getLatLng();
+                        const radius = drawnShape.getRadius();
+                        const points = [];
+                        const numPoints = 32;
+                        for (let i = 0; i < numPoints; i++) {
+                            const angle = (i / numPoints) * 2 * Math.PI;
+                            const dx = radius * Math.cos(angle) / 111320; // Approximate meters to degrees
+                            const dy = radius * Math.sin(angle) / 110540;
+                            points.push([center.lng + dx, center.lat + dy]);
+                        }
+                        points.push(points[0]); // Close the polygon
+                        
+                        geoJson = {
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Polygon',
+                                'coordinates': [points]
+                            }
+                        };
+                    } else if (drawnShape instanceof L.Polygon) {
+                        // Convert Leaflet polygon to GeoJSON
+                        const latlngs = drawnShape.getLatLngs()[0];
+                        const coordinates = latlngs.map(latlng => [latlng.lng, latlng.lat]);
+                        coordinates.push(coordinates[0]); // Close the polygon
+                        
+                        geoJson = {
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Polygon',
+                                'coordinates': [coordinates]
+                            }
+                        };
+                    }
+                    
+                    // Add to main map if we have valid GeoJSON
+                    if (geoJson && map && map.loaded && map.loaded()) {
+                        const sourceId = `geofence-${nextSlot}`;
+                        const layerId = `geofence-layer-${nextSlot}`;
+                        
+                        map.addSource(sourceId, {
+                            'type': 'geojson',
+                            'data': geoJson
+                        });
+                        
+                        map.addLayer({
+                            'id': layerId,
+                            'type': 'line',
+                            'source': sourceId,
+                            'paint': {
+                                'line-color': '#2a8',
+                                'line-width': 3
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Failed to copy geofence to main map:', error);
                 }
             }
             
-            // Add new marker
-            const marker = new maplibregl.Marker({
-                color: '#FF0000'
-            })
-            .setLngLat([configData.longitude, configData.latitude])
-            .setPopup(new maplibregl.Popup().setText(configData.locName || `Camera ${slotNumber}`))
-            .addTo(map);
-            
-            // Store marker reference
-            cameraMarkers.push({
-                marker: marker,
-                slotNumber: slotNumber,
-                lat: configData.latitude,
-                lng: configData.longitude
-            });
-                
-            // Update configure button states
-            updateConfigureButtonStates();
-            updateDeleteButtonStates();
-        }
-        
-        function deleteCamera(slotNumber) {
-            const slot = cameraSlots[slotNumber];
-            const config = cameraConfigs[slotNumber];
-            
-            if (!config) return;
-            
-            // Remove camera configuration
-            cameraConfigs[slotNumber] = null;
-            
-            // Hide camera section
-            document.getElementById(`section-${slotNumber}`).classList.add('hidden');
-            
-            // Clear camera sources
-            document.getElementById(slot.orig).src = '';
-            document.getElementById(slot.ai).src = '';
-            
-            // Reset section title to default
-            const headerTitleEl = document.querySelector(`#section-${slotNumber} .panel-title`);
-            if (headerTitleEl) {
-                headerTitleEl.textContent = `Camera ${slotNumber}`;
-            }
-            
-            // Remove map marker (Mapbox)
-            const markerIndex = cameraMarkers.findIndex(item => 
-                item.lat === config.latitude && item.lng === config.longitude
-            );
-            if (markerIndex !== -1) {
-                cameraMarkers[markerIndex].marker.remove();
-                cameraMarkers.splice(markerIndex, 1);
-            }
-            
-            // Clear any detection canvas overlays
-            const detectionCanvas = document.getElementById(`det${slotNumber}`);
-            if (detectionCanvas) {
-                const ctx = detectionCanvas.getContext('2d');
-                if (ctx) ctx.clearRect(0, 0, detectionCanvas.width, detectionCanvas.height);
-            }
-            
-            // Show "no cameras" message if all cameras are deleted
-            const activeCameras = Object.values(cameraConfigs).filter(config => config !== null);
-            if (activeCameras.length === 0) {
-                document.getElementById('no-cameras').classList.remove('hidden');
-            }
-            
-            // Update configure button states
-            updateConfigureButtonStates();
-            updateDeleteButtonStates();
-            
-            // If this was the last added camera, adjust nextSlot
-            if (slotNumber === nextSlot - 1) {
-                nextSlot = slotNumber;
-            }
-        }
+            nextSlot += 1;
+            closeConnections();
+        });
 
         // Settings Modal JavaScript
         let roboflowApiKey = 'FcbsUMiVOoBJ2B4GXYkl'; // Your API key
