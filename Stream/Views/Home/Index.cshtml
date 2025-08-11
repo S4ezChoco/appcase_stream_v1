@@ -1,0 +1,846 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="app-header">
+    <div class="header-left">
+        <span class="status-dot"></span>
+        <span class="app-title">STREAM | Dashboard</span>
+        <nav class="menu-items">
+            <button class="menu-item" id="menuFile">File</button>
+            <button class="menu-item" id="menuConnection">Connection</button>
+            <button class="menu-item" id="menuAnalytics">Analytics</button>
+            <button class="menu-item" id="menuSettings">Settings</button>
+            <button class="menu-item" id="menuExit">Exit</button>
+        </nav>
+    </div>
+    <div class="header-right">
+        <span id="headerClock"></span>
+    </div>
+    
+</div>
+
+<div class="dashboard-container">
+    <div class="left-section">
+        <div id="no-cameras" class="no-cameras">No Camera</div>
+        <div class="location-section" id="section-1">
+            <div class="panel-header">
+                <div class="panel-title">BINAG (Bohol)</div>
+                <div class="panel-lastupdate">Last Update: <span id="lu-1">--</span></div>
+                <div class="panel-actions">
+                    <button class="btn-actions" data-actions="1">Actions ▾</button>
+                    <div class="dropdown-menu" id="menu-1">
+                        <button class="dropdown-item" data-action="reconnect" data-section="1">🔄 Reconnect</button>
+                        <button class="dropdown-item" data-action="actions" data-section="1">🧰 Actions</button>
+                        <button class="dropdown-item" data-action="configure" data-section="1">⚙ Configure</button>
+                        <button class="dropdown-item" data-action="capture" data-section="1">📸 Capture</button>
+                        <div class="dropdown-sep"></div>
+                        <button class="dropdown-item" data-action="demo" data-section="1">🎬 Demo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="camera-analytics-row" id="row-1">
+                <div class="camera-feed">
+                    <div class="no-signal" id="camera1-nosignal">
+                        <span class="no-signal-text">No Signal</span>
+                    </div>
+                    <img src="" alt="Camera 1 Original" id="camera1-original" class="camera-img">
+                </div>
+                <div class="camera-feed">
+                    <div class="no-signal" id="camera1-ai-nosignal">
+                        <span class="no-signal-text">No Signal</span>
+                    </div>
+                    <img src="" alt="Camera 1 AI" id="camera1-ai" class="camera-img">
+                </div>
+                <div class="analytics-section compact">
+                    <div class="analytics-header-compact">
+                        <label for="hr-1">Hour Range</label>
+                        <select id="hr-1" class="hour-range-select">
+                            <option>4</option>
+                            <option>6</option>
+                            <option selected>8</option>
+                            <option>12</option>
+                            <option>24</option>
+                        </select>
+                    </div>
+                    <canvas id="analytics1"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="location-section" id="section-2">
+            <div class="panel-header">
+                <div class="panel-title">San Vicente (Bohol)</div>
+                <div class="panel-lastupdate">Last Update: <span id="lu-2">--</span></div>
+                <div class="panel-actions">
+                    <button class="btn-actions" data-actions="2">Actions ▾</button>
+                    <div class="dropdown-menu" id="menu-2">
+                        <button class="dropdown-item" data-action="reconnect" data-section="2">🔄 Reconnect</button>
+                        <button class="dropdown-item" data-action="actions" data-section="2">🧰 Actions</button>
+                        <button class="dropdown-item" data-action="configure" data-section="2">⚙ Configure</button>
+                        <button class="dropdown-item" data-action="capture" data-section="2">📸 Capture</button>
+                        <div class="dropdown-sep"></div>
+                        <button class="dropdown-item" data-action="demo" data-section="2">🎬 Demo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="camera-analytics-row" id="row-2">
+                <div class="camera-feed">
+                    <div class="no-signal" id="camera2-nosignal">
+                        <span class="no-signal-text">No Signal</span>
+                    </div>
+                    <img src="" alt="Camera 2 Original" id="camera2-original" class="camera-img">
+                </div>
+                <div class="camera-feed">
+                    <div class="no-signal" id="camera2-ai-nosignal">
+                        <span class="no-signal-text">No Signal</span>
+                    </div>
+                    <img src="" alt="Camera 2 AI" id="camera2-ai" class="camera-img">
+                    <canvas id="det2" class="det-overlay"></canvas>
+                    <!-- Gauge overlay for Camera 2 (right side) -->
+                    <div class="gauge-overlay" id="gauge2">
+                        <div class="gauge-scale">
+                            <span>90</span>
+                            <span>80</span>
+                            <span>70</span>
+                            <span>60</span>
+                            <span>50</span>
+                            <span>40</span>
+                            <span>30</span>
+                            <span>20</span>
+                            <span>10</span>
+                        </div>
+                        <div class="gauge-bar">
+                            <div class="gauge-fill" id="gauge2-fill" style="height: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="analytics-section compact">
+                    <div class="analytics-header-compact">
+                        <label for="hr-2">Hour Range</label>
+                        <select id="hr-2" class="hour-range-select">
+                            <option>4</option>
+                            <option>6</option>
+                            <option selected>8</option>
+                            <option>12</option>
+                            <option>24</option>
+                        </select>
+                    </div>
+                    <canvas id="analytics2"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="location-section" id="section-3">
+            <div class="panel-header">
+                <div class="panel-title">Bandahug (Bohol)</div>
+                <div class="panel-lastupdate">Last Update: <span id="lu-3">--</span></div>
+                <div class="panel-actions">
+                    <button class="btn-actions" data-actions="3">Actions ▾</button>
+                    <div class="dropdown-menu" id="menu-3">
+                        <button class="dropdown-item" data-action="reconnect" data-section="3">🔄 Reconnect</button>
+                        <button class="dropdown-item" data-action="actions" data-section="3">🧰 Actions</button>
+                        <button class="dropdown-item" data-action="configure" data-section="3">⚙ Configure</button>
+                        <button class="dropdown-item" data-action="capture" data-section="3">📸 Capture</button>
+                        <div class="dropdown-sep"></div>
+                        <button class="dropdown-item" data-action="demo" data-section="3">🎬 Demo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="camera-analytics-row" id="row-3">
+                <div class="camera-feed">
+                    <div class="no-signal" id="camera3-nosignal">
+                        <span class="no-signal-text">No Signal</span>
+                    </div>
+                    <img src="" alt="Camera 3 Original" id="camera3-original" class="camera-img">
+                </div>
+                <div class="camera-feed">
+                    <div class="no-signal" id="camera3-ai-nosignal">
+                        <span class="no-signal-text">No Signal</span>
+                    </div>
+                    <img src="" alt="Camera 3 AI" id="camera3-ai" class="camera-img">
+                </div>
+                <div class="analytics-section compact">
+                    <div class="analytics-header-compact">
+                        <label for="hr-3">Hour Range</label>
+                        <select id="hr-3" class="hour-range-select">
+                            <option>4</option>
+                            <option>6</option>
+                            <option selected>8</option>
+                            <option>12</option>
+                            <option>24</option>
+                        </select>
+                    </div>
+                    <canvas id="analytics3"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-section">
+        <div class="status-section">
+            <div class="measurement">12m</div>
+            <div class="status-text">Flooding</div>
+            <div class="status-indicators">
+                <span class="indicator high">High</span>
+                <span class="indicator normal">Normal</span>
+                <span class="indicator normal">Normal</span>
+            </div>
+        </div>
+        <div id="map"></div>
+
+    </div>
+<!-- Connections Modal (Add Camera) -->
+<div id="connectionModal" class="modal-overlay hidden">
+    <div class="modal-card addcam-modal">
+        <div class="modal-header">
+            <div class="modal-header-left">
+                <span class="status-dot"></></span>
+                <span class="modal-title">STREAM | Add Camera</span>
+            </div>
+            <button class="btn-close" id="connClose" aria-label="Close">×</button>
+        </div>
+        <div class="modal-toolbar">
+            <button type="button" class="tool-btn" id="btnAddCamera">📷 Add Camera</button>
+            <button type="button" class="tool-btn" id="btnClear">🧹 Clear</button>
+        </div>
+        <div class="addcam-body">
+            <div class="preview-pane"><div class="preview-video" id="connPreview"></div></div>
+            <div class="config-pane">
+                <div class="group-box"><div class="group-title">Configuration</div></div>
+                <div class="subgroup">
+                    <div class="sub-title">Camera</div>
+                    <label>IP Address <span class="req">*</span></label>
+                    <input id="ipAddress" class="form-input" placeholder="e.g. 192.168.1.100" />
+                    <label>Port</label>
+                    <input id="port" class="form-input" placeholder="e.g. 554" />
+                    <label>Channel</label>
+                    <input id="channel" class="form-input" value="Streaming/Channels/101" />
+                    <label>Username</label>
+                    <input id="username" class="form-input" />
+                    <label>Password</label>
+                    <input id="password" type="password" class="form-input" />
+                    <label class="checkbox"><input id="useAsRef" type="checkbox" /><span>Use as Reference for AI</span></label>
+                </div>
+                <div class="subgroup">
+                    <div class="sub-title">Location</div>
+                    <label>Name <span class="req">*</span></label>
+                    <input id="locName" class="form-input" />
+                    <label>Latitude <span class="req">*</span></label>
+                    <input id="latitude" class="form-input" />
+                    <label>Longitude <span class="req">*</span></label>
+                    <div class="inline">
+                        <input id="longitude" class="form-input" />
+                        <button type="button" class="btn small" id="btnMap">Map</button>
+                    </div>
+                </div>
+                <div class="player-controls">
+                    <button type="button" class="btn green" id="btnPlay">Play</button>
+                    <button type="button" class="btn" id="btnStop">Stop</button>
+                </div>
+                <div class="helper-text">Enter the RTSP stream URL of your camera to view and test the live feed. Once entered, press PLAY to begin streaming.</div>
+            </div>
+        </div>
+        <div class="status-bar">
+            <span id="connStatus">RTSP Camera Started: —</span>
+            <div class="progress"><div class="progress-fill" id="connProgress"></div></div>
+        </div>
+    </div>
+    <div class="modal-backdrop"></div>
+</div>
+
+<!-- Map Picker Modal -->
+<div id="mapPicker" class="map-picker-overlay hidden">
+    <div class="map-picker-card">
+        <div class="map-picker-header"><div>Pick Location</div><button class="btn-close" id="pickerClose">×</button></div>
+        <div class="map-picker-body"><div id="pickerMap" class="map-picker-map"></div><div class="crosshair"></div></div>
+        <div class="map-picker-footer">
+            <div class="picker-controls">
+                <label>Radius (m):</label>
+                <input id="pickerRadius" class="input-small" type="number" value="200" min="10" step="10" />
+                <button class="btn" id="pickerCircle">Circle</button>
+                <button class="btn" id="pickerPolygon">Polygon</button>
+                <button class="btn" id="pickerClear">Clear</button>
+            </div>
+            <div class="picker-controls">
+                <input id="pickerLat" class="input-small" placeholder="lat" />
+                <input id="pickerLng" class="input-small" placeholder="lng" />
+                <button class="btn green" id="pickerUse">Use</button>
+            </div>
+        </div>
+    </div>
+    <div class="map-picker-backdrop"></div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map (restricted to Philippines)
+        const phBounds = L.latLngBounds(
+            L.latLng(4.2, 116.0),   // Southwest (near Sabah/Palawan)
+            L.latLng(21.5, 127.5)   // Northeast (Batanes/Philippine Sea)
+        );
+        var map = L.map('map', {
+            maxBounds: phBounds,
+            maxBoundsViscosity: 1.0,
+            minZoom: 5,
+            maxZoom: 19,
+            worldCopyJump: false
+        }).fitBounds(phBounds);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+
+
+        // Layers to hold dynamic cameras and geofences
+        const cameraMarkers = L.layerGroup().addTo(map);
+        const geofenceLayer = L.layerGroup().addTo(map);
+
+        // Hide all sections initially (no cameras yet) and show placeholder
+        ['section-1','section-3'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        // Keep section-2 visible for testing
+        document.getElementById('section-2').classList.remove('hidden');
+        document.getElementById('no-cameras').classList.add('hidden');
+
+        // Auto-load demo images for Camera 2 for testing
+        setTimeout(() => {
+            const demoImageUrl = 'https://picsum.photos/640/360?random=1';
+            document.getElementById('camera2-original').src = demoImageUrl;
+            document.getElementById('camera2-ai').src = demoImageUrl;
+            document.getElementById('camera2-nosignal').style.display = 'none';
+            document.getElementById('camera2-ai-nosignal').style.display = 'none';
+
+            // Trigger detection after image loads
+            setTimeout(async () => {
+                try {
+                    const aiEl = document.getElementById('camera2-ai');
+                    if (aiEl && aiEl.complete) {
+                        const canvas = document.createElement('canvas');
+                        const w = aiEl.naturalWidth || 640;
+                        const h = aiEl.naturalHeight || 360;
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(aiEl, 0, 0, w, h);
+
+                        const imageData = canvas.toDataURL('image/jpeg');
+                        console.log('Auto-triggering detection for demo image...');
+                        const resp = await fetch('http://127.0.0.1:5001/detect', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ imageData })
+                        });
+
+                        if (resp.ok) {
+                            const result = await resp.json();
+                            console.log('Auto-detection result:', result);
+                            if (Array.isArray(result.detections)) {
+                                renderDetections2(result.detections, result.frameW, result.frameH);
+                                if (typeof result.gaugePct === 'number') setGauge2(result.gaugePct);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log('Auto-detection error:', error);
+                }
+            }, 2000);
+        }, 1000);
+
+        // Removed an unused single analytics chart setup to avoid errors
+
+        // Initialize analytics charts
+        function createAnalyticsChart(canvasId) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['12:00', '12:05', '12:10', '12:15', '12:20', '12:25'],
+                    datasets: [{
+                        label: 'Water Level',
+                        data: [0, 0.5, 1.2, 0.8, 0.3, 0],
+                        fill: true,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create charts for each camera
+        const charts = [
+            createAnalyticsChart('analytics1'),
+            createAnalyticsChart('analytics2'),
+            createAnalyticsChart('analytics3')
+        ];
+
+        // Simulate camera feeds
+        function simulateCameraFeed(cameraId) {
+            const timestamp = new Date().getTime();
+            document.getElementById(`${cameraId}-original`).src = `https://picsum.photos/640/360?t=${timestamp}`;
+            document.getElementById(`${cameraId}-ai`).src = `https://picsum.photos/640/360?t=${timestamp + 1}`;
+        }
+
+        // Registry for camera slots and helpers
+        const cameraSlots = {
+            1: {row: 'row-1', orig: 'camera1-original', ai: 'camera1-ai', lu: 'lu-1'},
+            2: {row: 'row-2', orig: 'camera2-original', ai: 'camera2-ai', lu: 'lu-2'},
+            3: {row: 'row-3', orig: 'camera3-original', ai: 'camera3-ai', lu: 'lu-3'}
+        };
+
+        // Update charts with random data periodically
+        setInterval(() => {
+            charts.forEach(chart => {
+                const newData = chart.data.datasets[0].data.slice(1);
+                newData.push(Math.random() * 2);
+                chart.data.datasets[0].data = newData;
+                chart.update('none');
+            });
+        }, 5000);
+
+        // Header clock and last update stamps
+        function updateClock() {
+            const now = new Date();
+            const pad = n => n.toString().padStart(2, '0');
+            const clockStr = now.toLocaleString(undefined, {
+                weekday: 'short', year: 'numeric', month: 'short', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+            document.getElementById('headerClock').textContent = clockStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function setLastUpdate(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = new Date().toLocaleString();
+            }
+        }
+        ['lu-1','lu-2','lu-3'].forEach(setLastUpdate);
+
+        // Actions dropdown behavior
+        document.querySelectorAll('.btn-actions').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = btn.getAttribute('data-actions');
+                const menu = document.getElementById(`menu-${idx}`);
+                // close others
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                e.stopPropagation();
+            });
+        });
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+        });
+
+        // Demo file picker: load image/video into both original and AI of the selected section
+        function bindDemoHandlers() {
+            document.querySelectorAll('.dropdown-item[data-action="demo"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sectionIdx = btn.getAttribute('data-section');
+                    // build a hidden file input on the fly
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = 'image/*,video/*';
+                    fileInput.onchange = (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const url = URL.createObjectURL(file);
+                        // target ids
+                        const origId = `camera${sectionIdx}-original`;
+                        const aiId = `camera${sectionIdx}-ai`;
+                        // swap img elements for video if needed
+                        const isVideo = file.type.startsWith('video/');
+                        [origId, aiId].forEach((id) => {
+                            const container = document.getElementById(id).parentElement;
+                            // remove existing img/video
+                            container.querySelectorAll('img,video').forEach(el => el.remove());
+                            let mediaEl;
+                            if (isVideo) {
+                                mediaEl = document.createElement('video');
+                                mediaEl.autoplay = true; mediaEl.loop = true; mediaEl.muted = true; mediaEl.controls = true;
+                            } else {
+                                mediaEl = document.createElement('img');
+                            }
+                            mediaEl.id = id;
+                            mediaEl.className = 'camera-img camera-media-contain';
+                            mediaEl.src = url;
+                            container.appendChild(mediaEl);
+                            // hide no-signal overlays
+                            const ns = container.querySelector('.no-signal');
+                            if (ns) ns.style.display = 'none';
+                        });
+
+                        // Auto-trigger AI detection for Camera 2
+                        if (sectionIdx === '2') {
+                            setTimeout(async () => {
+                                try {
+                                    const aiEl = document.getElementById('camera2-ai');
+                                    if (aiEl && (aiEl.tagName === 'IMG' || aiEl.tagName === 'VIDEO')) {
+                                        const canvas = document.createElement('canvas');
+                                        const w = aiEl.clientWidth || aiEl.naturalWidth || 640;
+                                        const h = aiEl.clientHeight || aiEl.naturalHeight || 360;
+                                        canvas.width = w; canvas.height = h;
+                                        const ctx = canvas.getContext('2d');
+
+                                        if (aiEl.tagName === 'IMG' && aiEl.complete) {
+                                            ctx.drawImage(aiEl, 0, 0, w, h);
+                                        } else if (aiEl.tagName === 'VIDEO' && aiEl.readyState >= 2) {
+                                            ctx.drawImage(aiEl, 0, 0, w, h);
+                                        }
+
+                                        const imageData = canvas.toDataURL('image/jpeg');
+                                        console.log('Sending detection request...');
+                                        const resp = await fetch('http://127.0.0.1:5001/detect', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ imageData })
+                                        });
+
+                                        console.log('Detection response status:', resp.status);
+                                        if (resp.ok) {
+                                            const result = await resp.json();
+                                            console.log('Detection result:', result);
+                                            if (Array.isArray(result.detections)) {
+                                                console.log('Rendering detections:', result.detections.length);
+                                                renderDetections2(result.detections, result.frameW, result.frameH);
+                                                if (typeof result.gaugePct === 'number') {
+                                                    console.log('Setting gauge to:', result.gaugePct);
+                                                    setGauge2(result.gaugePct);
+                                                }
+                                            }
+                                        } else {
+                                            console.error('Detection request failed:', resp.status, resp.statusText);
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.log('Detection error:', error);
+                                }
+                            }, 1000); // Wait 1 second for media to load
+                        }
+                    };
+                    fileInput.click();
+                });
+            });
+        }
+        bindDemoHandlers();
+
+        // Example: function to programmatically set gauge value (0-100)
+        function setGauge2(percent) {
+            console.log('setGauge2 called with:', percent);
+            const clamped = Math.max(0, Math.min(100, percent));
+            const fill = document.getElementById('gauge2-fill');
+            console.log('Gauge fill element:', fill);
+            if (fill) {
+                fill.style.height = clamped + '%';
+                console.log('Set gauge height to:', clamped + '%');
+            } else {
+                console.error('Gauge fill element not found!');
+            }
+        }
+
+        // Draw detections (boxes/labels) on overlay canvas for Camera 2
+        function renderDetections2(dets, srcW, srcH) {
+            console.log('renderDetections2 called with:', dets.length, 'detections');
+            const canvas = document.getElementById('det2');
+            const img = document.getElementById('camera2-ai');
+            console.log('Canvas:', canvas, 'Image:', img);
+            if (!canvas || !img) {
+                console.error('Missing canvas or image element');
+                return;
+            }
+            // Match overlay to on-screen size
+            const cw = img.clientWidth || img.videoWidth || img.naturalWidth || 640;
+            const ch = img.clientHeight || img.videoHeight || img.naturalHeight || 360;
+            canvas.width = cw;
+            canvas.height = ch;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const scaleX = srcW ? cw / srcW : 1;
+            const scaleY = srcH ? ch / srcH : 1;
+            dets.forEach(d => {
+                const {x, y, w, h, label, score, color = 'rgba(66,133,244,0.9)'} = d;
+                const sx = x * scaleX, sy = y * scaleY, sw = w * scaleX, sh = h * scaleY;
+                ctx.strokeStyle = color; ctx.lineWidth = 2;
+                ctx.strokeRect(sx, sy, sw, sh);
+                ctx.fillStyle = color;
+                const text = `${label}${typeof score === 'number' ? ' ' + score.toFixed(2) : ''}`;
+                const pad = 2; const th = 14; const tw = ctx.measureText(text).width + 8;
+                ctx.fillRect(sx, Math.max(0, sy - th), tw, th);
+                ctx.fillStyle = '#fff'; ctx.font = '12px Segoe UI, Arial'; ctx.fillText(text, sx + pad, sy - 3);
+            });
+        }
+
+        async function runDetectionFromCurrentMedia() {
+            const aiEl = document.getElementById('camera2-ai');
+            if (!aiEl) return;
+            const canvas = document.createElement('canvas');
+            const w = aiEl.clientWidth || aiEl.videoWidth || aiEl.naturalWidth || 640;
+            const h = aiEl.clientHeight || aiEl.videoHeight || aiEl.naturalHeight || 360;
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            try {
+                ctx.drawImage(aiEl, 0, 0, w, h);
+            } catch { return; }
+            const imageData = canvas.toDataURL('image/jpeg');
+            try {
+                const resp = await fetch('http://127.0.0.1:5001/detect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageData })});
+                if (resp.ok) {
+                    const result = await resp.json();
+                    if (Array.isArray(result.detections)) renderDetections2(result.detections);
+                    if (typeof result.gaugePct === 'number') setGauge2(result.gaugePct);
+                }
+            } catch {}
+        }
+
+        // Connections modal logic
+        const connectionModal = document.getElementById('connectionModal');
+        function openConnections() { connectionModal.classList.remove('hidden'); }
+        function closeConnections() { connectionModal.classList.add('hidden'); }
+        document.getElementById('menuConnection').addEventListener('click', openConnections);
+        document.getElementById('connClose').addEventListener('click', closeConnections);
+        connectionModal.querySelector('.modal-backdrop').addEventListener('click', closeConnections);
+
+        // Map Picker logic and Add Camera
+        let pickerMap, polygonPoints = [], drawnShape, isPolygonMode = false;
+        function openPicker() {
+            document.getElementById('mapPicker').classList.remove('hidden');
+            setTimeout(() => {
+                if (!pickerMap) {
+                    pickerMap = L.map('pickerMap', {
+                        maxBounds: phBounds,
+                        maxBoundsViscosity: 1.0,
+                        minZoom: 5,
+                        maxZoom: 19,
+                        worldCopyJump: false
+                    }).fitBounds(phBounds);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(pickerMap);
+                    pickerMap.on('move', () => {
+                        const c = pickerMap.getCenter();
+                        document.getElementById('pickerLat').value = c.lat.toFixed(6);
+                        document.getElementById('pickerLng').value = c.lng.toFixed(6);
+                    });
+                    pickerMap.on('click', (e) => {
+                        if (isPolygonMode) {
+                            polygonPoints.push([e.latlng.lat, e.latlng.lng]);
+                            drawPolygon();
+                        }
+                    });
+                }
+                pickerMap.invalidateSize();
+                pickerMap.setView(map.getCenter(), map.getZoom());
+            }, 50);
+        }
+        function closePicker(){ document.getElementById('mapPicker').classList.add('hidden'); }
+        document.getElementById('btnMap').addEventListener('click', openPicker);
+        document.getElementById('pickerClose').addEventListener('click', closePicker);
+        document.querySelector('.map-picker-backdrop').addEventListener('click', closePicker);
+
+        function drawCircle(){
+            isPolygonMode = false; polygonPoints = [];
+            if (drawnShape) { pickerMap.removeLayer(drawnShape); }
+            const center = pickerMap.getCenter();
+            const radius = Number(document.getElementById('pickerRadius').value || 200);
+            drawnShape = L.circle(center, {radius, color: '#2a8'}).addTo(pickerMap);
+        }
+        function drawPolygon(){
+            if (drawnShape) { pickerMap.removeLayer(drawnShape); }
+            drawnShape = L.polygon(polygonPoints, {color: '#2a8'}).addTo(pickerMap);
+        }
+        // Auto polygon cover (approximate) around currently visible bounds
+        function autoCoverBounds() {
+            const b = pickerMap.getBounds();
+            const sw = b.getSouthWest();
+            const ne = b.getNorthEast();
+            const nw = L.latLng(ne.lat, sw.lng);
+            const se = L.latLng(sw.lat, ne.lng);
+            if (drawnShape) { pickerMap.removeLayer(drawnShape); }
+            drawnShape = L.polygon([sw, nw, ne, se], {color:'#2a8'}).addTo(pickerMap);
+            polygonPoints = [sw, nw, ne, se];
+        }
+        document.getElementById('pickerCircle').addEventListener('click', () => { drawCircle(); });
+        document.getElementById('pickerPolygon').addEventListener('click', () => { isPolygonMode = true; polygonPoints = []; if (drawnShape) { pickerMap.removeLayer(drawnShape);} });
+        // Create a quick actions bar for automatic cover
+        const footer = document.querySelector('.map-picker-footer .picker-controls');
+        if (footer) {
+            const btnAuto = document.createElement('button');
+            btnAuto.className = 'btn'; btnAuto.textContent = 'Auto Cover';
+            btnAuto.addEventListener('click', autoCoverBounds);
+            footer.appendChild(btnAuto);
+        }
+        document.getElementById('pickerClear').addEventListener('click', () => { if (drawnShape) { pickerMap.removeLayer(drawnShape); } polygonPoints = []; });
+        document.getElementById('pickerUse').addEventListener('click', () => {
+            const c = pickerMap.getCenter();
+            document.getElementById('latitude').value = c.lat.toFixed(6);
+            document.getElementById('longitude').value = c.lng.toFixed(6);
+            closePicker();
+        });
+
+        // Build stream URL (supports RTSP with optional user/pass/port/channel)
+        function buildStreamUrl() {
+            const ip = (document.getElementById('ipAddress').value || '').trim();
+            const port = (document.getElementById('port').value || '').trim();
+            const channel = (document.getElementById('channel').value || '').trim();
+            const user = (document.getElementById('username').value || '').trim();
+            const pass = (document.getElementById('password').value || '').trim();
+            if (!ip) return '';
+
+            // If user provided full URL, respect it and just inject credentials if missing
+            let url = ip.match(/^https?:\/\//i) || ip.match(/^rtsp:\/\//i) ? ip : `rtsp://${ip}`;
+
+            // Insert credentials (escape at-sign for Razor)
+            if (user) {
+                const [scheme, rest] = url.split('://');
+                if (rest && rest.indexOf('@@') === -1) {
+                    url = `${scheme}://${user}${pass ? ':' + pass : ''}@@${rest}`;
+                }
+            }
+
+            // Insert port if provided and none present
+            if (port && !/:[0-9]+/.test((url.split('://')[1] || ''))) {
+                const [scheme, rest] = url.split('://');
+                const host = (rest || '').split('/')[0];
+                const path = (rest || '').split('/').slice(1).join('/');
+                url = `${scheme}://${host}:${port}/${path}`.replace(/:\/:/,'://');
+            }
+
+            // Append channel if provided
+            if (channel && url.indexOf(channel) === -1) {
+                if (!url.endsWith('/')) url += '/';
+                url += channel;
+            }
+            return url;
+        }
+
+        // Preview handling (browser supports HTTP(S) video/image; RTSP requires external player)
+        function showPreview(url) {
+            const preview = document.getElementById('connPreview');
+            preview.innerHTML = '';
+            if (!url) return;
+            const isRtsp = /^rtsp:\/\//i.test(url);
+            const videoLike = /\.(mp4|webm|ogg|m3u8)(\?|$)/i.test(url);
+            const imageLike = /\.(png|jpe?g|gif)(\?|$)/i.test(url) || /snapshot|picture/i.test(url);
+            if (imageLike) {
+                const img = document.createElement('img');
+                img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '100%';
+                preview.appendChild(img);
+            } else if (!isRtsp && videoLike) {
+                const vid = document.createElement('video');
+                vid.src = url; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.controls = true;
+                vid.style.maxWidth = '100%'; vid.style.maxHeight = '100%';
+                preview.appendChild(vid);
+            } else if (isRtsp) {
+                const note = document.createElement('div');
+                note.textContent = 'RTSP preview is not supported by browsers. Use an RTSP→HLS proxy if you need live preview here.';
+                note.style.padding = '10px'; note.style.color = '#b94a48';
+                preview.appendChild(note);
+            } else {
+                const txt = document.createElement('div');
+                txt.textContent = 'Unsupported preview format.';
+                txt.style.padding = '10px';
+                preview.appendChild(txt);
+            }
+        }
+
+        document.getElementById('btnPlay').addEventListener('click', async () => {
+            const url = buildStreamUrl();
+            showPreview(url);
+            // If preview is image/video (not RTSP), send to detector API for first frame
+            try {
+                const payload = { source: url };
+                // If using Demo (file:// object URL), snapshot the current image/video frame to base64
+                const aiEl = document.getElementById('camera2-ai');
+                if (aiEl && (aiEl.tagName === 'IMG' || aiEl.tagName === 'VIDEO')) {
+                    const canvas = document.createElement('canvas');
+                    const w = aiEl.clientWidth || 640; const h = aiEl.clientHeight || 360;
+                    canvas.width = w; canvas.height = h; const c2d = canvas.getContext('2d');
+                    try {
+                        if (aiEl.tagName === 'IMG') {
+                            c2d.drawImage(aiEl, 0, 0, w, h);
+                            payload.imageData = canvas.toDataURL('image/jpeg');
+                        } else if (aiEl.tagName === 'VIDEO' && aiEl.readyState >= 2) {
+                            c2d.drawImage(aiEl, 0, 0, w, h);
+                            payload.imageData = canvas.toDataURL('image/jpeg');
+                        }
+                    } catch {}
+                }
+                const resp = await fetch('http://127.0.0.1:5001/detect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)});
+                if (resp.ok) {
+                    const result = await resp.json();
+                    if (Array.isArray(result.detections)) {
+                        renderDetections2(result.detections, result.frameW, result.frameH);
+                        if (typeof result.gaugePct === 'number') setGauge2(result.gaugePct);
+                    }
+                }
+            } catch {}
+            // Schedule periodic detection updates while preview is visible
+            if (window.__detInterval) clearInterval(window.__detInterval);
+            window.__detInterval = setInterval(runDetectionFromCurrentMedia, 2000);
+        });
+        document.getElementById('btnStop').addEventListener('click', () => {
+            document.getElementById('connPreview').innerHTML = '';
+            if (window.__detInterval) { clearInterval(window.__detInterval); window.__detInterval = null; }
+            const canvas = document.getElementById('det2'); if (canvas) { const ctx = canvas.getContext('2d'); ctx && ctx.clearRect(0,0,canvas.width, canvas.height); }
+        });
+        document.getElementById('btnClear').addEventListener('click', () => {
+            ['ipAddress','port','channel','username','password','locName','latitude','longitude'].forEach(id => { const el = document.getElementById(id); if (el) el.value=''; });
+            document.getElementById('connPreview').innerHTML = '';
+        });
+
+        // Add camera to next available slot and map
+        let nextSlot = 1;
+        document.getElementById('btnAddCamera').addEventListener('click', () => {
+            if (nextSlot > 3) return closeConnections();
+            const url = buildStreamUrl();
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lng = parseFloat(document.getElementById('longitude').value);
+            const locName = (document.getElementById('locName').value || '').trim();
+            if (!url || Number.isNaN(lat) || Number.isNaN(lng)) return;
+
+            const slot = cameraSlots[nextSlot];
+            document.getElementById(`section-${nextSlot}`).classList.remove('hidden');
+            document.getElementById('no-cameras').classList.add('hidden');
+            document.getElementById(slot.orig).src = url;
+            document.getElementById(slot.ai).src = url;
+            setLastUpdate(slot.lu);
+
+            // Update location header title with provided name
+            const headerTitleEl = document.querySelector(`#section-${nextSlot} .panel-title`);
+            if (headerTitleEl && locName) headerTitleEl.textContent = locName;
+
+            // Map marker and geofence copy from picker
+            L.marker([lat, lng]).addTo(cameraMarkers).bindPopup(locName || `Camera ${nextSlot}`);
+            if (drawnShape) {
+                const shape = (drawnShape instanceof L.Circle) ? L.circle(drawnShape.getLatLng(), {radius: drawnShape.getRadius(), color:'#2a8'}) : L.polygon(drawnShape.getLatLngs(), {color:'#2a8'});
+                shape.addTo(geofenceLayer);
+            }
+            nextSlot += 1;
+            closeConnections();
+        });
+    </script>
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detection Test</title>
+</head>
+<body>
+    <h1>Detection Server Test</h1>
+    <button onclick="testDetection()">Test Detection</button>
+    <div id="result"></div>
+
+    <script>
+        async function testDetection() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            // Create a simple 1x1 pixel image in base64
+            const testImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
+            
+            try {
+                const response = await fetch('http://127.0.0.1:5001/detect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        imageData: testImage
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    resultDiv.innerHTML = `
+                        <h3>Success!</h3>
+                        <p>Detections: ${result.detections.length}</p>
+                        <p>Gauge: ${result.gaugePct}%</p>
+                        <p>Frame: ${result.frameW}x${result.frameH}</p>
+                        <pre>${JSON.stringify(result, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<p style="color: red;">Error: ${response.status} ${response.statusText}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
