@@ -63,3 +63,36 @@ C:\Users\AppCase\streamUI\stream\obj\Debug\net8.0\refint\Stream.dll
 C:\Users\AppCase\streamUI\stream\obj\Debug\net8.0\Stream.pdb
 C:\Users\AppCase\streamUI\stream\obj\Debug\net8.0\Stream.genruntimeconfig.cache
 C:\Users\AppCase\streamUI\stream\obj\Debug\net8.0\ref\Stream.dll
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\appsettings.Development.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\appsettings.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\Stream.staticwebassets.runtime.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\Stream.staticwebassets.endpoints.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\Stream.exe
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\Stream.deps.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\Stream.runtimeconfig.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\Stream.dll
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\bin\Debug\net8.0\Stream.pdb
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.GeneratedMSBuildEditorConfig.editorconfig
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.AssemblyInfoInputs.cache
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.AssemblyInfo.cs
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.csproj.CoreCompileInputs.cache
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.MvcApplicationPartsAssemblyInfo.cache
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.RazorAssemblyInfo.cache
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.RazorAssemblyInfo.cs
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.sourcelink.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\scopedcss\bundle\Stream.styles.css
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\scopedcss\projectbundle\Stream.bundle.scp.css
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\staticwebassets.build.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\staticwebassets.build.json.cache
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\staticwebassets.development.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.dll
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\refint\Stream.dll
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.pdb
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\Stream.genruntimeconfig.cache
+D:\SCHOOL\ojt\APPCASE PROJECTS\jz\REPOSTREAM\appcase_stream_v1\Stream\obj\Debug\net8.0\ref\Stream.dll

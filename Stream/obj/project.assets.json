@@ -1,44 +1,43 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net9.0": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\AppCase\\.nuget\\packages\\": {},
+    "C:\\Users\\seana\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\AppCase\\streamUI\\stream\\Stream.csproj",
+      "projectUniqueName": "D:\\SCHOOL\\ojt\\APPCASE PROJECTS\\jz\\REPOSTREAM\\appcase_stream_v1\\Stream\\Stream.csproj",
       "projectName": "Stream",
-      "projectPath": "C:\\Users\\AppCase\\streamUI\\stream\\Stream.csproj",
-      "packagesPath": "C:\\Users\\AppCase\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AppCase\\streamUI\\stream\\obj\\",
+      "projectPath": "D:\\SCHOOL\\ojt\\APPCASE PROJECTS\\jz\\REPOSTREAM\\appcase_stream_v1\\Stream\\Stream.csproj",
+      "packagesPath": "C:\\Users\\seana\\.nuget\\packages\\",
+      "outputPath": "D:\\SCHOOL\\ojt\\APPCASE PROJECTS\\jz\\REPOSTREAM\\appcase_stream_v1\\Stream\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\AppCase\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\seana\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net8.0"
+        "net9.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "projectReferences": {}
         }
       },
@@ -52,11 +51,11 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
-      "net8.0": {
-        "targetAlias": "net8.0",
+      "net9.0": {
+        "targetAlias": "net9.0",
         "imports": [
           "net461",
           "net462",
@@ -76,7 +75,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
